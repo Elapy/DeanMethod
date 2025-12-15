@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pricing — DeanMethod (Method)</title>
+  <meta name="description" content="Pricing for DeanMethod under Method." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html" aria-label="DeanMethod home">
+        <div class="brand-logos">
+          <img class="brand-logo brand-logo--lg" src="assets/logo.svg" alt="Method logo">
+          <img class="brand-logo brand-logo--lg" src="assets/dean-photo.jpg" alt="DeanMethod logo">
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">DeanMethod</div>
+          <div class="brand-sub">Method • Pricing</div>
+        </div>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html#services">Services</a>
+        <a class="nav-cta" href="pricing.html">Pricing</a>
+        <a href="index.html#training-hours">Training Hours</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-grid">
+        <div>
+          <div class="pill">Pricing</div>
+          <h1>Simple packages</h1>
+          <p class="lead">Choose a straightforward starting point, then refine based on goals.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="contact.html">Request scheduling</a>
+            <a class="btn" href="index.html#services">View services</a>
+          </div>
+        </div>
+        <figure class="media-card">
+          <img
+            src="https://images.unsplash.com/photo-1517964603305-11c0f6f66012?auto=format&fit=crop&w=1600&q=80"
+            alt="Training equipment"
+            loading="lazy"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="pricing-grid">
+          <article class="price-card">
+            <div class="price-top">
+              <div class="price-name">Single session</div>
+              <div class="price-value">$95</div>
+            </div>
+            <div class="muted">Focused session for technique, structure, or troubleshooting.</div>
+            <ul class="bullets">
+              <li>1:1 session</li>
+              <li>Clear next steps</li>
+              <li>Follow-up summary</li>
+            </ul>
+            <a class="btn primary" href="contact.html">Request</a>
+          </article>
+
+          <article class="price-card price-card--featured">
+            <div class="badge">Most popular</div>
+            <div class="price-top">
+              <div class="price-name">Starter pack</div>
+              <div class="price-value">$360</div>
+            </div>
+            <div class="muted">A structured ramp-up designed for real momentum.</div>
+            <ul class="bullets">
+              <li>4 sessions</li>
+              <li>Progression structure</li>
+              <li>Priority scheduling</li>
+            </ul>
+            <a class="btn primary" href="contact.html">Request</a>
+          </article>
+
+          <article class="price-card">
+            <div class="price-top">
+              <div class="price-name">Online coaching</div>
+              <div class="price-value">$149<span class="muted">/mo</span></div>
+            </div>
+            <div class="muted">Programming + feedback loop built for consistency.</div>
+            <ul class="bullets">
+              <li>Monthly programming</li>
+              <li>Check-ins</li>
+              <li>Adjustments</li>
+            </ul>
+            <a class="btn primary" href="contact.html">Request</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container footer-bottom">
+        <div class="muted small">© <span id="year"></span> Method</div>
+        <div class="muted small"><a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a></div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="src/site-config.js"></script>
+  <script>
+    document.getElementById("year").textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>
