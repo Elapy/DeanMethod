@@ -1,9 +1,299 @@
-window.DEANMETHOD_CONFIG = {
-  orgName: "Method",
-  brandName: "DeanMethod",
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DeanMethod — Method</title>
+  <meta name="description" content="DeanMethod by Method — Personal training. View training hour patterns and contact to schedule." />
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
 
-  // Set these:
-  businessEmail: "method.dean@outlook.com",
-  businessPhoneDisplay: "(805) 665-3528",
-  businessPhoneE164: "+18056653528"
-};
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#top" aria-label="DeanMethod home">
+        <div class="brand-logos">
+          <!-- Remove onerror while debugging so you can SEE broken icons -->
+          <img class="brand-logo" src="assets/method-logo.svg" alt="Method logo">
+          <img class="brand-logo" src="assets/deanmethod-logo.svg" alt="DeanMethod logo">
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">DeanMethod</div>
+          <div class="brand-sub">Method • Personal Training</div>
+        </div>
+      </a>
+
+      <nav class="nav">
+        <a href="#services">Services</a>
+        <a href="#training-hours">Training Hours</a>
+        <a href="#results">Results</a>
+        <a href="#schedule">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Method</div>
+          <h1>Structured training. Measurable progress.</h1>
+          <p class="lead">
+            A streamlined hub for DeanMethod: clear service overview, training-hours visualization,
+            and a simple way to reach out to schedule.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn primary" href="#schedule">Request scheduling</a>
+            <a class="btn" href="#training-hours">View heatmap</a>
+          </div>
+
+          <div class="trust-row">
+            <div class="trust-item">Professional process</div>
+            <div class="trust-item">Simple scheduling</div>
+            <div class="trust-item">Data-backed view</div>
+          </div>
+        </div>
+
+        <div class="hero-media">
+          <figure class="media-card">
+            <img
+              src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=80"
+              alt="Gym training atmosphere"
+              loading="lazy"
+            />
+            <figcaption class="attribution">
+              Replace this gallery anytime. Example image source: Unsplash. :contentReference[oaicite:0]{index=0}
+            </figcaption>
+          </figure>
+
+          <div class="mini-gallery">
+            <img src="https://unsplash.com/photos/JY8DUr2azFg/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8a2V0dGxlYmVsbHxlbnwwfHx8fDE3MDAwMDAwMDA&force=true&w=640" alt="Kettlebell training" loading="lazy">
+            <img src="https://unsplash.com/photos/RpZP11IxqUE/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8cGVyc29uYWwgdHJhaW5lcnxlbnwwfHx8fDE3MDAwMDAwMDA&force=true&w=640" alt="Trainer consulting" loading="lazy">
+            <img src="https://unsplash.com/photos/Iiv3GedU9Wg/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8Z3ltIHRyYWluaW5nfGVufDB8fHx8MTcwMDAwMDAwMA&force=true&w=640" alt="Coaching session" loading="lazy">
+            <img src="https://unsplash.com/photos/o46dymHhfes/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8a2V0dGxlYmVsbHxlbnwwfHx8fDE3MDAwMDAwMDA&force=true&w=640" alt="Kettlebell swing" loading="lazy">
+          </div>
+
+          <div class="muted small">
+            Photo pages used above (for attribution): 
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Services</h2>
+          <p class="muted">
+            Edit these descriptions as you like. No claims or credentials are implied.
+          </p>
+        </div>
+
+        <div class="card-grid">
+          <article class="card">
+            <h3>1:1 Training</h3>
+            <p class="muted">Goal-driven sessions with a clear plan and progress tracking cadence.</p>
+            <ul class="bullets">
+              <li>Session structure and consistency</li>
+              <li>Progress milestones</li>
+              <li>Simple follow-up notes</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Program Design</h3>
+            <p class="muted">A repeatable training template you can run independently.</p>
+            <ul class="bullets">
+              <li>Weekly structure</li>
+              <li>Progression logic</li>
+              <li>Adjustments based on feedback</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Form + Fundamentals</h3>
+            <p class="muted">Technique-first sessions focused on safe, repeatable movement quality.</p>
+            <ul class="bullets">
+              <li>Movement patterns</li>
+              <li>Tempo and control</li>
+              <li>Practical cues</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAINING HOURS -->
+    <section id="training-hours" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Average training hours</h2>
+          <p class="muted">
+            7×24 heatmap computed from <code>data/sessions.json</code>.
+            Darker = more time in that weekday/hour. No gradients.
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-top">
+            <div class="legend">
+              <span class="muted small">Less</span>
+              <span class="legend-squares" aria-hidden="true">
+                <span class="sq s1"></span><span class="sq s2"></span><span class="sq s3"></span><span class="sq s4"></span><span class="sq s5"></span>
+              </span>
+              <span class="muted small">More</span>
+            </div>
+            <div class="muted small" id="heatmapStats">Loading…</div>
+          </div>
+
+          <div class="heatmap-wrap">
+            <canvas id="heatmapCanvas" width="1080" height="430"></canvas>
+          </div>
+
+          <details class="howto">
+            <summary>How to update the data</summary>
+            <ol>
+              <li>Edit <code>data/sessions.json</code> and add sessions.</li>
+              <li>Commit/push. GitHub Pages deploys after build + CDN cache.</li>
+            </ol>
+            <p class="muted small">
+              GitHub Pages can take minutes and sometimes longer due to build + CDN caching. :contentReference[oaicite:2]{index=2}
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS / CONTENT FILLER -->
+    <section id="results" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Results framework</h2>
+          <p class="muted">
+            These are example “process” sections you can rewrite to match your real approach.
+          </p>
+        </div>
+
+        <div class="split">
+          <div class="stack">
+            <div class="card">
+              <h3>Assessment → Plan</h3>
+              <p class="muted">Start with inputs, then pick a plan you can actually repeat.</p>
+            </div>
+            <div class="card">
+              <h3>Execution → Review</h3>
+              <p class="muted">Train, log, review what worked, then adjust the next block.</p>
+            </div>
+            <div class="card">
+              <h3>Consistency → Progress</h3>
+              <p class="muted">Small, sustainable steps beat perfect weeks that don’t repeat.</p>
+            </div>
+          </div>
+
+          <div class="stack">
+            <figure class="media-card">
+              <img
+                src="https://unsplash.com/photos/qBs2nrOsg5o/download?force=true&w=1400"
+                alt="Coaching in a gym"
+                loading="lazy"
+              />
+              <figcaption class="attribution">
+                Example image: Unsplash. 
+              </figcaption>
+            </figure>
+
+            <div class="logo-wall">
+              <div class="logo-pill">Method</div>
+              <div class="logo-pill">DeanMethod</div>
+              <div class="logo-pill">Training</div>
+              <div class="logo-pill">Performance</div>
+              <div class="logo-pill">Strength</div>
+              <div class="logo-pill">Mobility</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / SCHEDULING -->
+    <section id="schedule" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Contact to schedule</h2>
+          <p class="muted">
+            Use the form (recommended) or direct contact. Visitors enter their email so you can respond.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="card">
+            <h3>Send a request</h3>
+            <p class="muted small">
+              This uses a form provider endpoint (no visitor email account access needed). Formspree is a common static-site option. :contentReference[oaicite:4]{index=4}
+            </p>
+
+            <!-- IMPORTANT:
+              1) Create a Formspree form.
+              2) Replace YOUR_FORM_ID below with your endpoint.
+            -->
+            <form class="form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+              <label>
+                <span>Name</span>
+                <input name="name" type="text" required placeholder="Your name" />
+              </label>
+
+              <label>
+                <span>Email</span>
+                <input name="email" type="email" required placeholder="you@example.com" />
+              </label>
+
+              <label>
+                <span>Phone (optional)</span>
+                <input name="phone" type="tel" placeholder="(optional)" />
+              </label>
+
+              <label>
+                <span>Message</span>
+                <textarea name="message" rows="6" required placeholder="Goals, availability, and any context."></textarea>
+              </label>
+
+              <input type="hidden" name="source" value="DeanMethod GitHub Pages" />
+              <button class="btn primary" type="submit">Send</button>
+            </form>
+
+            <div class="muted small">
+              After you set up Formspree, submissions go to the email you configure there. :contentReference[oaicite:5]{index=5}
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Direct contact</h3>
+            <p class="muted">Set your email/phone in <code>src/site-config.js</code>.</p>
+
+            <div class="contact-actions">
+              <a class="btn" id="emailLink" href="#">Email</a>
+              <a class="btn" id="smsLink" href="#">Text</a>
+              <a class="btn" id="telLink" href="#">Call</a>
+            </div>
+
+            <div class="muted small">
+              SMS links vary by platform; the site generates the best option automatically. :contentReference[oaicite:6]{index=6}
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="muted small">© <span id="year"></span> Method</div>
+          <div class="muted small">DeanMethod</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="src/site-config.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
