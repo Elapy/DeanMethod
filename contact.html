@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — DeanMethod (Method)</title>
+  <meta name="description" content="Contact DeanMethod under Method to schedule training or ask a question." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html" aria-label="DeanMethod home">
+        <div class="brand-logos">
+          <img class="brand-logo brand-logo--lg" src="assets/logo.svg" alt="Method logo">
+          <img class="brand-logo brand-logo--lg" src="assets/dean-photo.jpg" alt="DeanMethod logo">
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">DeanMethod</div>
+          <div class="brand-sub">Method • Contact</div>
+        </div>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a href="index.html#training-hours">Training Hours</a>
+        <a class="nav-cta" href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container page-hero-grid">
+        <div>
+          <div class="pill">Contact</div>
+          <h1>Request scheduling</h1>
+          <p class="lead">
+            Send a message with your goals and availability. Include an email so we can respond.
+          </p>
+        </div>
+        <figure class="media-card">
+          <img
+            src="https://images.unsplash.com/photo-1526401485004-2aa6b6b5f8b2?auto=format&fit=crop&w=1600&q=80"
+            alt="Trainer planning"
+            loading="lazy"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container contact-grid">
+        <div class="card">
+          <h2 class="h2tight">Send a message</h2>
+          <p class="muted">This form submits to a form endpoint and emails the message to Method.</p>
+
+          <form class="form" id="contactForm" method="POST">
+            <label>
+              <span>Name</span>
+              <input name="name" type="text" required autocomplete="name" />
+            </label>
+
+            <label>
+              <span>Email</span>
+              <input name="email" type="email" required autocomplete="email" />
+            </label>
+
+            <label>
+              <span>Phone (optional)</span>
+              <input name="phone" type="tel" autocomplete="tel" />
+            </label>
+
+            <label>
+              <span>Message</span>
+              <textarea name="message" rows="7" required></textarea>
+            </label>
+
+            <input type="hidden" name="_subject" value="New coaching inquiry (DeanMethod)" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+            <input type="hidden" name="_captcha" value="true" />
+
+            <button class="btn primary" type="submit">Send</button>
+          </form>
+
+          <div class="form-note muted small" id="formNote"></div>
+        </div>
+
+        <div class="card" id="direct">
+          <h2 class="h2tight">Direct contact</h2>
+          <p class="muted">If you prefer, text or email directly.</p>
+
+          <div class="contact-actions">
+            <a class="btn" id="emailLink" href="#">Email</a>
+            <a class="btn" id="smsLink" href="#">Text</a>
+            <a class="btn" id="telLink" href="#">Call</a>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="muted small">
+            For fastest scheduling, include: goals, training background, and best days/times.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container footer-bottom">
+        <div class="muted small">© <span id="year"></span> Method</div>
+        <div class="muted small"><a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a></div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="src/site-config.js"></script>
+  <script src="src/contact.js"></script>
+</body>
+</html>
