@@ -61,7 +61,7 @@ a{color:inherit}
 .btn-lg{padding:14px 18px; border-radius:16px; font-size:1.02rem}
 .btn-time{color:#ffffff !important}
 
-/* Gray CTA used only for the 3 “contact for scheduling” buttons in method cards */
+/* Gray CTA used only in method cards */
 .cta-muted{
   background: rgba(255,255,255,.03);
   border-color: rgba(255,255,255,.14);
@@ -236,14 +236,13 @@ canvas{display:block; max-width:100%}
 .contact-grid{display:grid; grid-template-columns:1fr; gap:14px}
 .contact-grid--single{grid-template-columns:1fr}
 .contact-title{margin:0 0 10px}
-.hint{margin-top:8px}
 
-.form{display:flex; flex-direction:column; gap:12px; margin-top:10px}
+.form{display:flex; flex-direction:column; gap:14px; margin-top:10px}
 .form-row{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
 @media (max-width:720px){ .form-row{grid-template-columns:1fr} }
 
 label span{display:block; font-weight:750; margin:0 0 6px; color: rgba(238,242,248,.92)}
-input, select, textarea{
+input, textarea{
   width:100%;
   border-radius: 14px;
   border:1px solid rgba(255,255,255,.12);
@@ -252,25 +251,108 @@ input, select, textarea{
   padding: 12px 12px;
   outline:none;
 }
-
-/* Make dropdown list text readable */
-select{
-  background: #ffffff;
-  color: #000000;
-}
-select option{
-  color:#000000;
-  background:#ffffff;
-}
-
-textarea{resize: vertical; min-height: 140px}
-input:focus, select:focus, textarea:focus{
+textarea{resize: vertical; min-height: 160px}
+input:focus, textarea:focus{
   border-color: rgba(47,111,235,.45);
   box-shadow: 0 0 0 3px rgba(47,111,235,.15);
 }
-.form-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:6px}
+
+/* Chips */
+.form-row--chips{align-items:start}
+.chip-field .label-row{margin-bottom:8px}
+.chip-field .label{display:block; font-weight:750; color: rgba(238,242,248,.92)}
+.chip-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.chip-grid--tight{gap:10px}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.02);
+  color: rgba(238,242,248,.92);
+  cursor:pointer;
+  user-select:none;
+  transition: background .15s ease, border-color .15s ease, transform .08s ease;
+}
+.chip:hover{
+  background: rgba(255,255,255,.04);
+  border-color: rgba(47,111,235,.28);
+  transform: translateY(-1px);
+}
+
+.chip input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+/* square indicator = multi */
+.chip--square::before{
+  content:"";
+  width:14px;height:14px;
+  border-radius:4px;
+  border:1px solid rgba(255,255,255,.22);
+  background: rgba(0,0,0,.18);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.10);
+}
+.chip--square:has(input:checked){
+  border-color: rgba(47,111,235,.45);
+  background: rgba(47,111,235,.10);
+}
+.chip--square:has(input:checked)::before{
+  background: rgba(47,111,235,.75);
+  border-color: rgba(47,111,235,.75);
+}
+
+/* round indicator = single */
+.chip--round::before{
+  content:"";
+  width:14px;height:14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);
+  background: rgba(0,0,0,.18);
+}
+.chip--round:has(input:checked){
+  border-color: rgba(47,111,235,.45);
+  background: rgba(47,111,235,.10);
+}
+.chip--round:has(input:checked)::before{
+  background: rgba(47,111,235,.75);
+  border-color: rgba(47,111,235,.75);
+}
+
+/* Message split: textarea left, send + small contacts right */
+.message-split{
+  display:grid;
+  grid-template-columns: 1fr 220px;
+  gap:12px;
+  align-items:stretch;
+}
+@media (max-width:900px){
+  .message-split{grid-template-columns:1fr}
+}
+.message-main textarea{height:100%}
+.message-side{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.12);
+  border-radius: 16px;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:10px;
+}
+.side-contacts a{color: rgba(170,180,197,.92); text-decoration:none}
+.side-contacts a:hover{color: rgba(238,242,248,.95)}
 .form-foot{margin:0}
 
+/* Footer */
 .footer{padding:26px 0 18px;border-top:1px solid var(--line); margin-top: 30px}
 .footer-inner{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; flex-wrap:wrap}
 .footer-brand{display:flex; gap:12px; align-items:center}
