@@ -1,8 +1,10 @@
 (function () {
   const DATA_URL = "data/sessions.json";
 
+  function $(id) { return document.getElementById(id); }
+
   function wireFooterYear() {
-    const year = document.getElementById("year");
+    const year = $("year");
     if (year) year.textContent = String(new Date().getFullYear());
   }
 
@@ -29,6 +31,7 @@
   function computeHeatmap(sessions) {
     const grid = emptyGrid(0);
     let totalHours = 0;
+
     for (const s of sessions) {
       if (!s || !s.start || !s.end) continue;
       totalHours += addSessionToGrid(grid, s.start, s.end);
@@ -56,11 +59,15 @@
     return `${hour}${am ? "a" : "p"}`;
   }
 
-  function renderHeatmap(canvas, grid, hasData, useAMPM) {
-    const ctx = canvas.getContext("2d");
+  function hourRangeLabel(h, useAMPM) {
+    if (!useAMPM) return `${String(h).padStart(2, "0")}:00–${String(h).padStart(2, "0")}:59`;
+    return `${fmtHourAMPM(h)}–${fmtHourAMPM((h + 1) % 24)} (≈)`;
+  }
+
+  function renderHeatmap(ctx, canvas, grid, hasData, useAMPM) {
     const W = canvas.width, H = canvas.height;
 
-    const padL = 70, padT = 22, padR = 18, padB = 52;
+    const padL = 74, padT = 18, padR = 18, padB = 56;
     const plotW = W - padL - padR;
     const plotH = H - padT - padB;
 
@@ -73,7 +80,7 @@
     const maxVal = getMax(grid);
     const denom = (hasData && maxVal > 0) ? maxVal : 1;
 
-    // Y labels (centered in row, like you wanted)
+    // Y labels centered in each row
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     ctx.font = "12px Inter, ui-sans-serif, system-ui";
     ctx.fillStyle = "rgba(238,242,248,0.88)";
@@ -83,7 +90,7 @@
       ctx.fillText(days[r], padL - 10, padT + r * cellH + cellH / 2);
     }
 
-    // Cells
+    // cells
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const v = hasData ? (grid[r][c] / denom) : 0.35; // neutral baseline if no data
@@ -92,7 +99,7 @@
       }
     }
 
-    // Grid
+    // grid lines
     ctx.strokeStyle = "rgba(255,255,255,0.08)";
     ctx.lineWidth = 1;
     for (let c = 0; c <= cols; c++) {
@@ -104,22 +111,32 @@
       ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y); ctx.stroke();
     }
 
-    // X labels — centered INSIDE each hour block (fixes your confusion)
+    // X labels — centered under each HOUR BLOCK (not on grid lines)
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillStyle = "rgba(170,180,197,0.95)";
-    const step = 2; // label every 2 hours (cleaner)
+    const step = 2;
     for (let c = 0; c < cols; c += step) {
       const label = useAMPM ? fmtHourAMPM(c) : String(c).padStart(2, "0");
-      const x = padL + c * cellW + cellW / 2;
+      const x = padL + c * cellW + (cellW / 2);
       ctx.fillText(label, x, padT + plotH + 14);
     }
 
-    // Border
+    // border
     ctx.strokeStyle = "rgba(255,255,255,0.14)";
     ctx.strokeRect(padL, padT, plotW, plotH);
 
-    return { maxVal };
+    return { padL, padT, padR, padB, plotW, plotH, rows, cols, cellW, cellH };
+  }
+
+  function cellFromPointer(layout, x, y) {
+    const { padL, padT, plotW, plotH, cols, rows, cellW, cellH } = layout;
+    const px = x - padL;
+    const py = y - padT;
+    if (px < 0 || py < 0 || px > plotW || py > plotH) return null;
+    const c = Math.min(cols - 1, Math.max(0, Math.floor(px / cellW)));
+    const r = Math.min(rows - 1, Math.max(0, Math.floor(py / cellH)));
+    return { r, c };
   }
 
   async function loadSessions() {
@@ -132,10 +149,14 @@
   async function main() {
     wireFooterYear();
 
-    const canvas = document.getElementById("heatmapCanvas");
-    const stats = document.getElementById("heatmapStats");
-    const toggleBtn = document.getElementById("toggleTimeBtn");
-    if (!canvas) return;
+    const canvas = $("heatmapCanvas");
+    const wrap = $("heatmapWrap");
+    const tip = $("heatmapTip");
+    const stats = $("heatmapStats");
+    const toggleBtn = $("toggleTimeBtn");
+    if (!canvas || !wrap) return;
+
+    const ctx = canvas.getContext("2d");
 
     let useAMPM = false;
     let sessions = [];
@@ -143,14 +164,36 @@
     let hasData = false;
     let totalHours = 0;
     let sessionsCount = 0;
+    let layout = null;
+
+    function hideTip() {
+      if (!tip) return;
+      tip.hidden = true;
+      tip.textContent = "";
+    }
+
+    function showTip(text, clientX, clientY) {
+      if (!tip) return;
+      tip.textContent = text;
+      tip.hidden = false;
+
+      const rect = wrap.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      tip.style.left = `${Math.max(10, Math.min(rect.width - 10, x))}px`;
+      tip.style.top = `${Math.max(10, Math.min(rect.height - 10, y))}px`;
+    }
 
     function rerender() {
-      renderHeatmap(canvas, grid, hasData, useAMPM);
+      layout = renderHeatmap(ctx, canvas, grid, hasData, useAMPM);
+
+      // IMPORTANT: no “no sessions” message, no fallback message
       if (stats) {
-        // no “no sessions…” message — blank when empty
         stats.textContent = hasData ? `${sessionsCount} session(s) • ${totalHours.toFixed(1)} total hour(s)` : "";
       }
       if (toggleBtn) toggleBtn.textContent = useAMPM ? "24h" : "AM/PM";
+      hideTip();
     }
 
     try {
@@ -161,7 +204,7 @@
       totalHours = computed.totalHours;
       sessionsCount = computed.sessionsCount;
     } catch (e) {
-      // keep neutral baseline
+      // neutral baseline, no visible error text
       grid = emptyGrid(0);
       hasData = false;
     }
@@ -174,6 +217,40 @@
         rerender();
       });
     }
+
+    canvas.addEventListener("mousemove", (ev) => {
+      // optional: keep tooltip only on click; so do nothing here
+    });
+
+    canvas.addEventListener("mouseleave", () => hideTip());
+
+    canvas.addEventListener("click", (ev) => {
+      if (!layout) return;
+
+      const rect = canvas.getBoundingClientRect();
+      // convert client coords to canvas coords
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const cx = (ev.clientX - rect.left) * scaleX;
+      const cy = (ev.clientY - rect.top) * scaleY;
+
+      const cell = cellFromPointer(layout, cx, cy);
+      if (!cell) {
+        hideTip();
+        return;
+      }
+
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const day = days[cell.r];
+      const hour = cell.c;
+
+      const valueHours = hasData ? (grid[cell.r][cell.c] || 0) : 0;
+
+      const range = hourRangeLabel(hour, useAMPM);
+      const text = `${day} • ${range} • ${valueHours.toFixed(2)} hr`;
+
+      showTip(text, ev.clientX, ev.clientY);
+    });
   }
 
   main();
