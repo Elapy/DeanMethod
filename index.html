@@ -43,11 +43,9 @@
         <div class="hero-copy hero-copy--rebalanced">
           <h1>Science-first fitness coaching.</h1>
 
-          <!-- Quote replaces the old descriptive line -->
-          <p class="lead lead--quote">Adding the “why” to the “how”.</p>
-
-          <p class="muted hero-sub">
-            Evidence-based guidance for hypertrophy, fat loss, cardio, general health, and nutrition.
+          <p class="lead lead--soft">
+            Evidence-based guidance for hypertrophy, fat loss, cardio, general health, and nutrition —
+            taught with mechanisms and tradeoffs.
           </p>
 
           <div class="cta-row cta-row--spaced">
@@ -59,8 +57,8 @@
         <div class="hero-media">
           <figure class="media-card">
             <img
-              src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?auto=format&fit=crop&w=1900&q=80"
-              alt="Fitness equipment (no people)"
+              src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1900&q=80"
+              alt="Silhouette on rock at sunset"
               loading="lazy"
             />
           </figure>
@@ -140,7 +138,7 @@
       </div>
     </section>
 
-    <!-- METHOD (3 visual-heavy sections + more text + contact buttons) -->
+    <!-- METHOD -->
     <section id="method" class="section">
       <div class="container">
         <div class="section-head">
@@ -153,8 +151,8 @@
           <section class="alt-row">
             <figure class="visual-card">
               <img
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2000&q=80"
-                alt="Data and analytics visualization (abstract)"
+                src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=2000&q=80"
+                alt="Abstract analytics visual (no readable text)"
                 loading="lazy"
               />
             </figure>
@@ -164,12 +162,12 @@
               <div class="muted small">So you can apply the logic, not memorize rules.</div>
               <ul class="bullets">
                 <li><strong>Mechanism:</strong> what’s actually driving change</li>
-                <li><strong>Tradeoffs:</strong> what you gain, what you give up</li>
+                <li><strong>Tradeoffs:</strong> what improves — and what might worsen</li>
                 <li><strong>Constraints:</strong> time, recovery, stress, equipment, adherence</li>
-                <li><strong>Decision framework:</strong> how to choose when options compete</li>
+                <li><strong>Decision framework:</strong> what to prioritize when goals compete</li>
               </ul>
               <div class="card-actions">
-                <a class="btn primary" href="#contact-dean">Contact for scheduling</a>
+                <a class="btn cta-muted" href="#contact-dean">Contact for scheduling</a>
               </div>
             </div>
           </section>
@@ -186,7 +184,7 @@
                 <li><strong>Compliance:</strong> habits that prevent burnout and “reset cycles”</li>
               </ul>
               <div class="card-actions">
-                <a class="btn primary" href="#contact-dean">Contact for scheduling</a>
+                <a class="btn cta-muted" href="#contact-dean">Contact for scheduling</a>
               </div>
             </div>
 
@@ -214,12 +212,12 @@
               <div class="muted small">Flexible structure beats perfect rules.</div>
               <ul class="bullets">
                 <li><strong>Principles:</strong> protein, calories, fiber, micronutrients</li>
-                <li><strong>Flexibility:</strong> keep foods you enjoy; control portions and patterns</li>
-                <li><strong>Adherence:</strong> plans that survive weekends, stress, and real schedules</li>
+                <li><strong>Flexibility:</strong> keep foods you enjoy; guide portions and patterns</li>
+                <li><strong>Adherence:</strong> plans that survive weekends and real schedules</li>
                 <li><strong>Clarity:</strong> what matters most so you don’t overthink the rest</li>
               </ul>
               <div class="card-actions">
-                <a class="btn primary" href="#contact-dean">Contact for scheduling</a>
+                <a class="btn cta-muted" href="#contact-dean">Contact for scheduling</a>
               </div>
             </div>
           </section>
@@ -333,7 +331,7 @@
 
           <details class="faq">
             <summary>Is this in-person, online, or both?</summary>
-            <div class="muted">Depends on your goals and constraints — use the contact form below and specify what you want.</div>
+            <div class="muted">Depends on your goals and constraints — use the message form below and specify what you want.</div>
           </details>
 
           <details class="faq">
@@ -351,22 +349,15 @@
       </div>
     </section>
 
-    <!-- CONTACT (ONLY CONTACT NOW) -->
+    <!-- CONTACT -->
     <section id="contact-dean" class="section">
       <div class="container">
         <div class="section-head">
           <h2>Contact DeanMethod</h2>
-          <p class="muted contact-quote">Adding the “why” to the “how”.</p>
+          <p class="muted">Scheduling and coaching inquiries for DeanMethod.</p>
         </div>
 
-        <div class="contact-grid">
-          <div class="card">
-            <h3 class="contact-title">Direct</h3>
-            <p><strong>Email:</strong> <a href="mailto:method.dean@outlook.com">method.dean@outlook.com</a></p>
-            <p><strong>Text:</strong> <a href="sms:+18056653528">(805) 665-3528</a></p>
-            <p class="muted small">Texting preferred.</p>
-          </div>
-
+        <div class="contact-grid contact-grid--single">
           <div class="card">
             <h3 class="contact-title">Send a message</h3>
 
@@ -384,9 +375,8 @@
 
               <div class="form-row">
                 <label>
-                  <span>Goal</span>
-                  <select name="goal" required>
-                    <option value="" selected disabled>Select</option>
+                  <span>Goals (choose one or more)</span>
+                  <select name="goals" multiple size="6" required>
                     <option>Hypertrophy / strength</option>
                     <option>Fat loss</option>
                     <option>Cardio / conditioning</option>
@@ -394,6 +384,7 @@
                     <option>Nutrition guidance</option>
                     <option>Weight gain</option>
                   </select>
+                  <div class="muted small hint">Tip: hold Ctrl (Windows) or ⌘ (Mac) to select multiple.</div>
                 </label>
 
                 <label>
@@ -417,7 +408,7 @@
               </div>
 
               <p class="muted small form-foot">
-                Sending uses your device’s mail app to deliver the message.
+                Prefer direct contact? See email/text in the footer.
               </p>
             </form>
           </div>
@@ -451,6 +442,15 @@
           </div>
 
           <div class="footer-col">
+            <div class="footer-head">Direct</div>
+            <div class="muted small">Email</div>
+            <a href="mailto:method.dean@outlook.com">method.dean@outlook.com</a>
+            <div class="muted small" style="margin-top:10px;">Text</div>
+            <a href="sms:+18056653528">(805) 665-3528</a>
+            <div class="muted small" style="margin-top:10px;">Texting preferred.</div>
+          </div>
+
+          <div class="footer-col">
             <div class="footer-head">Company</div>
             <a href="privacy.html">Privacy</a>
             <a href="terms.html">Terms</a>
@@ -468,13 +468,11 @@
   <script src="src/app.js"></script>
 
   <script>
-    // Footer year
     (function(){
       var y = document.getElementById("year");
       if (y) y.textContent = String(new Date().getFullYear());
     })();
 
-    // Contact form -> mailto (static-site friendly)
     (function(){
       var form = document.getElementById("contactForm");
       if (!form) return;
@@ -485,15 +483,25 @@
         var data = new FormData(form);
         var name = (data.get("name") || "").toString().trim();
         var email = (data.get("email") || "").toString().trim();
-        var goal = (data.get("goal") || "").toString().trim();
         var preferred = (data.get("preferred") || "").toString().trim();
         var message = (data.get("message") || "").toString().trim();
 
-        var subject = "DeanMethod Inquiry — " + goal;
+        // multi-select goals
+        var goalsSelect = form.querySelector('select[name="goals"]');
+        var goals = [];
+        if (goalsSelect) {
+          for (var i=0; i<goalsSelect.options.length; i++){
+            var opt = goalsSelect.options[i];
+            if (opt.selected) goals.push(opt.value);
+          }
+        }
+        var goalsLine = goals.length ? goals.join(", ") : "(none)";
+
+        var subject = "DeanMethod Inquiry — " + goalsLine;
         var body =
           "Name: " + name + "\\n" +
           "Email: " + email + "\\n" +
-          "Goal: " + goal + "\\n" +
+          "Goals: " + goalsLine + "\\n" +
           "Preferred contact: " + preferred + "\\n\\n" +
           "Message:\\n" + message + "\\n";
 
