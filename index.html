@@ -373,42 +373,75 @@
                 </label>
               </div>
 
-              <div class="form-row">
-                <label>
-                  <span>Goals (choose one or more)</span>
-                  <select name="goals" multiple size="6" required>
-                    <option>Hypertrophy / strength</option>
-                    <option>Fat loss</option>
-                    <option>Cardio / conditioning</option>
-                    <option>General health</option>
-                    <option>Nutrition guidance</option>
-                    <option>Weight gain</option>
-                  </select>
-                  <div class="muted small hint">Tip: hold Ctrl (Windows) or ⌘ (Mac) to select multiple.</div>
-                </label>
+              <div class="form-row form-row--chips">
+                <div class="chip-field">
+                  <div class="label-row">
+                    <span class="label">Goals</span>
+                  </div>
 
-                <label>
-                  <span>Preferred contact</span>
-                  <select name="preferred" required>
-                    <option value="" selected disabled>Select</option>
-                    <option>Email</option>
-                    <option>Text</option>
-                  </select>
-                </label>
+                  <div class="chip-grid" role="group" aria-label="Goals">
+                    <label class="chip chip--square">
+                      <input type="checkbox" name="goals" value="Hypertrophy / strength">
+                      <span>Hypertrophy / strength</span>
+                    </label>
+                    <label class="chip chip--square">
+                      <input type="checkbox" name="goals" value="Fat loss">
+                      <span>Fat loss</span>
+                    </label>
+                    <label class="chip chip--square">
+                      <input type="checkbox" name="goals" value="Cardio / conditioning">
+                      <span>Cardio / conditioning</span>
+                    </label>
+                    <label class="chip chip--square">
+                      <input type="checkbox" name="goals" value="General health">
+                      <span>General health</span>
+                    </label>
+                    <label class="chip chip--square">
+                      <input type="checkbox" name="goals" value="Nutrition guidance">
+                      <span>Nutrition guidance</span>
+                    </label>
+                    <label class="chip chip--square">
+                      <input type="checkbox" name="goals" value="Weight gain">
+                      <span>Weight gain</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="chip-field">
+                  <div class="label-row">
+                    <span class="label">Preferred contact</span>
+                  </div>
+
+                  <div class="chip-grid chip-grid--tight" role="radiogroup" aria-label="Preferred contact">
+                    <label class="chip chip--round">
+                      <input type="radio" name="preferred" value="Email" required>
+                      <span>Email</span>
+                    </label>
+                    <label class="chip chip--round">
+                      <input type="radio" name="preferred" value="Text" required>
+                      <span>Text</span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
-              <label>
-                <span>Message</span>
-                <textarea name="message" rows="6" required placeholder="Tell me what you're aiming for and what your schedule looks like."></textarea>
-              </label>
+              <div class="message-split">
+                <label class="message-main">
+                  <span>Message</span>
+                  <textarea name="message" rows="7" required placeholder="Tell me what you're aiming for and what your schedule looks like."></textarea>
+                </label>
 
-              <div class="form-actions">
-                <button class="btn primary btn-lg" type="submit">Send</button>
-                <a class="btn btn-lg" href="mailto:method.dean@outlook.com?subject=DeanMethod%20Inquiry">Email instead</a>
+                <div class="message-side">
+                  <button class="btn primary btn-lg" type="submit">Send</button>
+                  <div class="muted small side-contacts">
+                    <div><a href="mailto:method.dean@outlook.com">method.dean@outlook.com</a></div>
+                    <div><a href="sms:+18056653528">(805) 665-3528</a></div>
+                  </div>
+                </div>
               </div>
 
               <p class="muted small form-foot">
-                Prefer direct contact? See email/text in the footer.
+                Sending uses your device’s mail app to deliver the message.
               </p>
             </form>
           </div>
@@ -442,12 +475,9 @@
           </div>
 
           <div class="footer-col">
-            <div class="footer-head">Direct</div>
-            <div class="muted small">Email</div>
+            <div class="footer-head">Contact</div>
             <a href="mailto:method.dean@outlook.com">method.dean@outlook.com</a>
-            <div class="muted small" style="margin-top:10px;">Text</div>
             <a href="sms:+18056653528">(805) 665-3528</a>
-            <div class="muted small" style="margin-top:10px;">Texting preferred.</div>
           </div>
 
           <div class="footer-col">
@@ -486,18 +516,10 @@
         var preferred = (data.get("preferred") || "").toString().trim();
         var message = (data.get("message") || "").toString().trim();
 
-        // multi-select goals
-        var goalsSelect = form.querySelector('select[name="goals"]');
-        var goals = [];
-        if (goalsSelect) {
-          for (var i=0; i<goalsSelect.options.length; i++){
-            var opt = goalsSelect.options[i];
-            if (opt.selected) goals.push(opt.value);
-          }
-        }
-        var goalsLine = goals.length ? goals.join(", ") : "(none)";
+        var goals = data.getAll("goals").map(function(v){ return String(v).trim(); }).filter(Boolean);
+        var goalsLine = goals.length ? goals.join(", ") : "(none selected)";
 
-        var subject = "DeanMethod Inquiry — " + goalsLine;
+        var subject = "DeanMethod Inquiry — " + (goals.length ? goals[0] : "General");
         var body =
           "Name: " + name + "\\n" +
           "Email: " + email + "\\n" +
