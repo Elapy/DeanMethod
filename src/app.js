@@ -192,7 +192,7 @@
       if (stats) {
         stats.textContent = hasData ? `${sessionsCount} session(s) • ${totalHours.toFixed(1)} total hour(s)` : "";
       }
-      if (toggleBtn) toggleBtn.textContent = useAMPM ? "24h" : "AM/PM";
+      if (toggleBtn) toggleBtn.textContent = useAMPM ? "24 hr" : "12 hr";
       hideTip();
     }
 
