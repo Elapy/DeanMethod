@@ -59,41 +59,28 @@ a{color:inherit}
 .btn.primary{background: var(--blue); border-color: rgba(47,111,235,.55)}
 .btn.primary:hover{background: var(--blue2)}
 .btn-sm{padding:10px 12px; border-radius:12px; font-size:.92rem}
+.btn-lg{padding:14px 18px; border-radius:16px; font-size:1.02rem}
 .btn-time{color:#ffffff !important}
 
-.hero{padding:76px 0 34px}
-.hero--tight{padding-top:62px}
-.hero-grid{display:grid; grid-template-columns: 1.05fr .95fr; gap:26px; align-items:start}
+.hero{padding:70px 0 34px}
+.hero--tight{padding-top:54px}
+.hero-grid{display:grid; grid-template-columns: 1.05fr .95fr; gap:26px; align-items:center}
 .hero-grid--singleMedia{align-items:center}
 @media (max-width:980px){ .hero-grid{grid-template-columns:1fr} }
 
-.quote{
-  color: rgba(238,242,248,.95);
-  font-weight:850;
-  letter-spacing:.2px;
-  border-left: 3px solid rgba(47,111,235,.55);
-  padding-left:12px;
-  margin: 0 0 16px;
-}
-.quote--hero{font-size:1.05rem}
-
-.hero-copy h1{margin:0 0 12px;font-size: clamp(2.3rem, 4vw, 3.35rem);line-height:1.05}
-.lead{margin:0 0 18px;color:var(--muted);font-size:1.08rem;max-width:74ch; line-height:1.6}
-.lead--soft{color: rgba(170,180,197,.78)}
+.hero-copy h1{margin:0 0 10px;font-size: clamp(2.4rem, 4vw, 3.35rem);line-height:1.05}
+.lead{margin:0 0 18px;color:var(--muted);font-size:1.08rem;max-width:72ch; line-height:1.6}
+.lead--soft{color: rgba(170,180,197,.72)}
+.hero-copy--rebalanced{padding-top:0}
 .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px}
-.hero-micro{margin-top:14px; line-height:1.6}
-
-.trust{
-  padding:16px;border-radius: var(--radius2);border:1px solid var(--line2);
-  background: rgba(255,255,255,.02); box-shadow: var(--shadow2)
-}
+.cta-row--spaced{margin-top:22px}
 
 .hero-media{display:flex; flex-direction:column; gap:12px}
 .media-card{
   margin:0;border-radius: var(--radius);overflow:hidden;border:1px solid var(--line);
   background: var(--panel); box-shadow: var(--shadow)
 }
-.media-card img{width:100%; height:380px; object-fit:cover; display:block}
+.media-card img{width:100%; height:400px; object-fit:cover; display:block}
 
 .brandband{padding:18px 0 6px}
 .brandband-inner{
@@ -146,43 +133,6 @@ a{color:inherit}
 .price-name{font-weight:850}
 .price-value{font-weight:900; font-size:2rem; letter-spacing:-.5px}
 
-.alt{display:flex; flex-direction:column; gap:16px}
-.alt-row{
-  display:grid;
-  grid-template-columns: 320px 1fr;
-  gap:16px;
-  align-items:center;
-}
-.alt-row--rev{grid-template-columns: 1fr 320px}
-.alt-row--rev .orb{grid-column:2}
-.alt-row--rev .alt-text{grid-column:1}
-@media (max-width:980px){
-  .alt-row, .alt-row--rev{grid-template-columns:1fr}
-  .alt-row--rev .orb, .alt-row--rev .alt-text{grid-column:auto}
-}
-.orb{
-  width:320px; height:320px;
-  border-radius: 999px;
-  overflow:hidden;
-  border:1px solid var(--line);
-  box-shadow: var(--shadow);
-  background: rgba(255,255,255,.02);
-}
-.orb img{width:100%; height:100%; object-fit:cover; display:block}
-.alt-text{padding:22px}
-.alt-text h3{margin:0 0 10px; font-size:1.35rem}
-.alt-text p{margin:0; line-height:1.7}
-
-.principles{
-  display:grid;
-  grid-template-columns: 1.2fr .9fr .9fr;
-  gap:14px;
-}
-@media (max-width:980px){ .principles{grid-template-columns:1fr} }
-.principle-kicker{color: rgba(170,180,197,.9); font-weight:800; letter-spacing:.2px; font-size:.9rem}
-.principle-quote{font-weight:900; font-size:1.35rem; margin:8px 0 6px}
-.principle-title{font-weight:900; font-size:1.15rem; margin:8px 0 6px}
-
 .panel{
   border:1px solid var(--line); border-radius: var(--radius);
   background: rgba(255,255,255,.02); box-shadow: var(--shadow2); padding:16px
@@ -222,6 +172,39 @@ canvas{display:block; max-width:100%}
 .s3{background:#2d4167}
 .s4{background:#355487}
 .s5{background:#2f6feb}
+
+/* Visual-heavy “O [ ]” rows */
+.alt{display:flex; flex-direction:column; gap:16px}
+.alt-row{
+  display:grid;
+  grid-template-columns: 520px 1fr;
+  gap:16px;
+  align-items:stretch;
+}
+.alt-row--rev{grid-template-columns: 1fr 520px}
+@media (max-width:980px){
+  .alt-row, .alt-row--rev{grid-template-columns:1fr}
+}
+
+.visual-card{
+  margin:0;
+  border-radius: 22px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.02);
+  box-shadow: var(--shadow);
+  min-height: 360px;
+}
+.visual-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.alt-text{padding:22px}
+.alt-text h3{margin:0 0 10px; font-size:1.35rem}
+.alt-text ul{margin-top:10px}
 
 .faq-grid{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
 @media (max-width:980px){ .faq-grid{grid-template-columns:1fr} }
