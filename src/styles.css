@@ -202,6 +202,13 @@ canvas{display:block; max-width:100%}
   display:block;
 }
 
+.visual-card {
+  aspect-ratio: 4 / 3;
+}
+.visual-card img {
+  object-fit: cover;
+}
+
 .alt-text{padding:22px}
 .alt-text h3{margin:0 0 10px; font-size:1.35rem}
 .alt-text ul{margin-top:10px}
