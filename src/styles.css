@@ -327,69 +327,64 @@ input:focus, textarea:focus{
   border-color: rgba(47,111,235,.75);
 }
 
+/* Message split: textarea left, send + small contacts right */
 .message-split{
+  --msgLabelHeight: 22px; /* label line */
+  --msgLabelGap: 6px;     /* gap before textarea */
   display:grid;
   grid-template-columns: 1fr 220px;
-  grid-template-rows: auto auto;
   gap:12px;
   align-items:start;
 }
 
-/* Label sits above textarea only */
-.message-label{
-  grid-column: 1 / 2;
-  grid-row: 1;
-  font-weight:750;
-  color: rgba(238,242,248,.92);
-}
-
-/* Textarea + side panel share the SAME row => perfect top/bottom alignment */
-.message-textarea{
-  grid-column: 1 / 2;
-  grid-row: 2;
-  width:100%;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.03);
-  color: var(--text);
-  padding:12px;
-  outline:none;
-  resize: vertical;
-  min-height: 200px;
+.message-side{
+  /* existing styles stay */
+  gap:24px; /* increase space between button and contacts */
 }
 
 .message-side{
-  grid-column: 2;
-  grid-row: 2;
-
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.12);
-  border-radius:16px;
-  padding:12px;
-
+  margin-top: calc(var(--msgLabelHeight) + var(--msgLabelGap));
+}
+.message-main label{
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
-  gap:18px; /* space between button and contacts */
+  height:100%;
 }
 
-.message-side{
-
-/* spacing between email and phone */
-.side-contacts > div + div{
-  margin-top: 10px;
+.message-main textarea{
+  margin-top:6px;
 }
-
 @media (max-width:900px){
-  .message-split{
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-  }
-  .message-label{ grid-column: 1; grid-row: 1; }
-  .message-textarea{ grid-column: 1; grid-row: 2; }
-  .message-side{ grid-column: 1; grid-row: 3; }
+  .message-split{grid-template-columns:1fr}
+}
+.message-main textarea{height:100%}
+.message-side{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.12);
+  border-radius: 16px;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between; /* 🔑 pushes contacts to bottom */
+  gap:10px;
+}
+/* Align the right "Send" panel with the textarea top (not the label) */
+.message-side{
+  margin-top: 28px; /* adjust: 24–34px depending on your font rendering */
 }
 
+.side-contacts > div + div {
+  margin-top: 8px;
+}
+
+.side-contacts a{color: rgba(170,180,197,.92); text-decoration:none}
+.side-contacts a:hover{color: rgba(238,242,248,.95)}
+.form-foot{margin:0}
+.side-contacts{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
 /* Footer */
 .footer{padding:26px 0 18px;border-top:1px solid var(--line); margin-top: 30px}
 .footer-inner{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; flex-wrap:wrap}
