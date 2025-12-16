@@ -329,10 +329,16 @@ input:focus, textarea:focus{
 
 /* Message split: textarea left, send + small contacts right */
 .message-split{
+  --msgLabelHeight: 22px; /* label line */
+  --msgLabelGap: 6px;     /* gap before textarea */
   display:grid;
   grid-template-columns: 1fr 220px;
   gap:12px;
-  align-items:start; /* align to textarea top, not label */
+  align-items:start;
+}
+
+.message-side{
+  margin-top: calc(var(--msgLabelHeight) + var(--msgLabelGap));
 }
 .message-main label{
   display:flex;
