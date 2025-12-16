@@ -368,6 +368,11 @@ input:focus, textarea:focus{
   margin-top: 28px; /* adjust: 24–34px depending on your font rendering */
 }
 
+.message-side{
+  /* existing styles stay */
+  gap:16px; /* increase space between button and contacts */
+}
+
 .side-contacts > div + div {
   margin-top: 8px;
 }
