@@ -370,7 +370,7 @@ input:focus, textarea:focus{
 
 .message-side{
   /* existing styles stay */
-  gap:16px; /* increase space between button and contacts */
+  gap:20px; /* increase space between button and contacts */
 }
 
 .side-contacts > div + div {
