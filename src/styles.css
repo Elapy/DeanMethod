@@ -331,47 +331,45 @@ input:focus, textarea:focus{
   min-height: 180px; /* pick the visual height you want */
 }
 
-/* Message split: textarea left, send + small contacts right */
+/* 2-row grid: label on top, textarea + send box aligned beneath */
 .message-split{
-  --msgLabelHeight: 22px; /* label line */
-  --msgLabelGap: 6px;     /* gap before textarea */
-  display: grid;
+  display:grid;
   grid-template-columns: 1fr 220px;
+  grid-template-rows: auto 1fr;
   gap: 12px;
-  align-items: stretch; /* this is the key */
+  align-items: stretch;
 }
 
-.message-side{
-  margin-top: calc(var(--msgLabelHeight) + var(--msgLabelGap));
-}
-.message-main label{
-  display:flex;
-  flex-direction:column;
-  height:100%;
+/* IMPORTANT: take the label out of the height calculation */
+.message-main{
+  display: contents; /* makes its children participate in the grid directly */
 }
 
-.message-main textarea{
-  margin-top:6px;
+/* Put the "Message" text on row 1, spanning both columns */
+.message-main > span{
+  grid-column: 1 / -1;
+  grid-row: 1;
 }
-@media (max-width:900px){
-  .message-split{grid-template-columns:1fr}
-}
-.message-main textarea{height:100%}
-.message-side{
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.12);
-  border-radius: 16px;
-  padding:12px;
+
+/* Put textarea on row 2, column 1 */
+.message-main > textarea{
+  grid-column: 1;
+  grid-row: 2;
   height: 100%;
+  min-height: 180px;  /* your baseline height */
+}
+
+/* Put send box on row 2, column 2 */
+.message-side{
+  grid-column: 2;
+  grid-row: 2;
+  height: 100%;
+  margin-top: 0 !important; /* kills any old offset rule */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* button at top, contacts at bottom */
-  gap:10px;
+  justify-content: space-between;
 }
-/* Align the right "Send" panel with the textarea top (not the label) */
-.message-side{
-  margin-top: 28px; /* adjust: 24–34px depending on your font rendering */
-}
+
 
 .side-contacts > div + div {
   margin-top: 8px;
