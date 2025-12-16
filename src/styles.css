@@ -327,46 +327,50 @@ input:focus, textarea:focus{
   border-color: rgba(47,111,235,.75);
 }
 
-.message-main textarea {
-  min-height: 180px; /* pick the visual height you want */
-}
-
-/* 2-row grid: label row + aligned content row */
+/* Message split: textarea left, send + small contacts right */
 .message-split{
+  --msgLabelHeight: 22px; /* label line */
+  --msgLabelGap: 6px;     /* gap before textarea */
   display:grid;
   grid-template-columns: 1fr 220px;
-  grid-template-rows: auto 1fr;
-  gap: 12px;
-  align-items: stretch;
+  gap:12px;
+  align-items:start;
 }
 
-/* Make the label itself not create extra height beyond its children */
-.message-main{ display: contents; }
-
-/* Put the label’s span (“Message”) on row 1 across both columns */
-.message-main label > span{
-  grid-column: 1 / -1;
-  grid-row: 1;
-}
-
-/* Put the textarea on row 2 col 1, and make it define the baseline height */
-.message-main label > textarea{
-  grid-column: 1;
-  grid-row: 2;
-  width: 100%;
-  height: 100%;
-  min-height: 180px; /* baseline — tweak if you want */
-}
-
-/* Put the send box on row 2 col 2, exactly matching the textarea height */
 .message-side{
-  grid-column: 2;
-  grid-row: 2;
-  height: 100%;
-  margin-top: 0 !important; /* remove any previous offset */
+  /* existing styles stay */
+  gap:24px; /* increase space between button and contacts */
+}
+
+.message-side{
+  margin-top: calc(var(--msgLabelHeight) + var(--msgLabelGap));
+}
+.message-main label{
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
+  height:100%;
+}
+
+.message-main textarea{
+  margin-top:6px;
+}
+@media (max-width:900px){
+  .message-split{grid-template-columns:1fr}
+}
+.message-main textarea{height:100%}
+.message-side{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.12);
+  border-radius: 16px;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:10px;
+}
+/* Align the right "Send" panel with the textarea top (not the label) */
+.message-side{
+  margin-top: 28px; /* adjust: 24–34px depending on your font rendering */
 }
 
 .side-contacts > div + div {
