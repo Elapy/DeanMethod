@@ -327,14 +327,18 @@ input:focus, textarea:focus{
   border-color: rgba(47,111,235,.75);
 }
 
+.message-main textarea {
+  min-height: 180px; /* pick the visual height you want */
+}
+
 /* Message split: textarea left, send + small contacts right */
 .message-split{
   --msgLabelHeight: 22px; /* label line */
   --msgLabelGap: 6px;     /* gap before textarea */
-  display:grid;
+  display: grid;
   grid-template-columns: 1fr 220px;
-  gap:12px;
-  align-items:start;
+  gap: 12px;
+  align-items: stretch; /* this is the key */
 }
 
 .message-side{
@@ -363,9 +367,10 @@ input:focus, textarea:focus{
   background: rgba(0,0,0,.12);
   border-radius: 16px;
   padding:12px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* button at top, contacts at bottom */
   gap:10px;
 }
 /* Align the right "Send" panel with the textarea top (not the label) */
