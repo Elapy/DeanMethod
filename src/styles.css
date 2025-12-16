@@ -493,3 +493,20 @@ body { overflow-x: clip; }
   position: relative;
   top: 2px;
 }
+
+/* --- Ultra-fine chip text tuning (final) --- */
+
+.chip span {
+  font-family: var(--font);
+  font-size: 0.85rem;       /* slightly smaller again */
+  font-weight: 400;
+  line-height: 1.2;
+  position: relative;
+  top: 3px;                 /* lower text a bit more */
+}
+
+/* Keep indicator aligned with text */
+.chip::before {
+  position: relative;
+  top: 3px;
+}
