@@ -532,3 +532,24 @@ body { overflow-x: clip; }
   position: relative;
   top: 3px;
 }
+
+/* --- Stagger vertical spacing inside Send box --- */
+
+.message-side{
+  padding-top: 18px; /* lowers everything slightly as a group */
+}
+
+/* Send button: lowest priority for lowering */
+.message-side button{
+  margin-top: 6px;
+}
+
+/* Email: a bit lower */
+.message-side .side-contacts > div:first-child{
+  margin-top: 12px;
+}
+
+/* Phone: lowest / most separated */
+.message-side .side-contacts > div:last-child{
+  margin-top: 18px;
+}
