@@ -342,11 +342,6 @@ input:focus, textarea:focus{
 }
 
 .message-side{
-  /* existing styles stay */
-  gap:24px; /* increase space between button and contacts */
-}
-
-.message-side{
   margin-top: calc(var(--msgLabelHeight) + var(--msgLabelGap));
 }
 .message-main label{
