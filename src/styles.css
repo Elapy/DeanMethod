@@ -551,5 +551,5 @@ body { overflow-x: clip; }
 
 /* Phone: lowest / most separated */
 .message-side .side-contacts > div:last-child{
-  margin-top: 16px;
+  margin-top: 12px;
 }
