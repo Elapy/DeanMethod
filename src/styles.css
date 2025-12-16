@@ -368,6 +368,10 @@ input:focus, textarea:focus{
   margin-top: 28px; /* adjust: 24–34px depending on your font rendering */
 }
 
+.side-contacts > div + div {
+  margin-top: 8px;
+}
+
 .side-contacts a{color: rgba(170,180,197,.92); text-decoration:none}
 .side-contacts a:hover{color: rgba(238,242,248,.95)}
 .form-foot{margin:0}
