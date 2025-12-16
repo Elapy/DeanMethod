@@ -431,6 +431,8 @@ input:focus, textarea:focus{
 #coverageMap,
 .map-box,
 .leaflet-container {
+  contain: strict;
+  position: relative;
   overflow: hidden;
 }
 
