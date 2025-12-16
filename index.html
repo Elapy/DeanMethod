@@ -608,7 +608,8 @@
       var map = L.map("coverageMap", {
         zoomControl: true,
         scrollWheelZoom: false,
-        dragging: true
+        dragging: true,
+        preferCanvas: true
       }).setView(center, 9);
 
       L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png", {
