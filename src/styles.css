@@ -427,17 +427,6 @@ input:focus, textarea:focus{
   display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap
 }
 
-/* Prevent Leaflet's zoom-animated layers from expanding page width in Firefox */
-#coverageMap,
-.map-box,
-.leaflet-container {
-  contain: strict;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Isolate map layout/paint so transforms don't affect the page overflow */
-#coverageMap {
-  contain: layout paint;
-  position: relative;
+html, body {
+  overflow-x: hidden;
 }
