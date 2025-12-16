@@ -330,9 +330,9 @@ input:focus, textarea:focus{
 .message-split{
   display:grid;
   grid-template-columns: 1fr 220px;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto;
   gap:12px;
-  align-items:stretch;
+  align-items:start; /* 🔑 critical change */
 }
 
 /* Label sits above textarea only */
