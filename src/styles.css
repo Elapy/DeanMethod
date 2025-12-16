@@ -388,6 +388,10 @@ input:focus, textarea:focus{
   .message-side{ grid-column: 1; grid-row: 3; }
 }
 
+.message-side .btn{
+  margin-top: 8px; /* try 6–12px */
+}
+
 /* Footer */
 .footer{padding:26px 0 18px;border-top:1px solid var(--line); margin-top: 30px}
 .footer-inner{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; flex-wrap:wrap}
