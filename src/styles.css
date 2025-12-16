@@ -510,3 +510,9 @@ body { overflow-x: clip; }
   position: relative;
   top: 3px;
 }
+
+/* --- Align Send box with textarea (not label) --- */
+
+.message-side {
+  margin-top: 22px; /* aligns with top of textarea */
+}
