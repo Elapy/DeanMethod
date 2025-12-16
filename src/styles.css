@@ -427,6 +427,6 @@ input:focus, textarea:focus{
   display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap
 }
 
-html, body {
-  overflow-x: hidden;
-}
+html { overflow-x: clip; }
+body { overflow-x: clip; }
+
