@@ -387,17 +387,33 @@ input:focus, textarea:focus{
   border-color: rgba(47,111,235,.75);
 }
 
-/* Message split */
+/* Message split: textarea left, send panel right */
 .message-split{
+  --msgOffset: 26px;               /* keep your tuned value */
   display:grid;
   grid-template-columns: 1fr 220px;
   gap:12px;
   align-items:stretch;
 }
+
 @media (max-width:900px){
   .message-split{grid-template-columns:1fr}
 }
-.message-main textarea{height:100%}
+
+/* Left column defines height immediately (prevents first-load mis-measure) */
+.message-main{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+
+.message-main textarea{
+  flex: 1 1 auto;
+  height: auto;                   /* IMPORTANT: remove height:100% */
+  min-height: 160px;
+}
+
+/* Right panel: align to textarea top without breaking grid sizing */
 .message-side{
   border:1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.12);
@@ -407,7 +423,13 @@ input:focus, textarea:focus{
   flex-direction:column;
   justify-content:flex-start;
   gap:10px;
+
+  margin-top: 0;                  /* IMPORTANT: no margin */
+  align-self: stretch;
+  height: calc(100% - var(--msgOffset));
+  transform: translateY(var(--msgOffset));
 }
+
 .side-contacts a{color: rgba(170,180,197,.92); text-decoration:none}
 .side-contacts a:hover{color: rgba(238,242,248,.95)}
 .form-foot{margin:0}
