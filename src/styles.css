@@ -338,6 +338,11 @@ input:focus, textarea:focus{
 }
 
 .message-side{
+  /* existing styles stay */
+  gap:24px; /* increase space between button and contacts */
+}
+
+.message-side{
   margin-top: calc(var(--msgLabelHeight) + var(--msgLabelGap));
 }
 .message-main label{
@@ -366,11 +371,6 @@ input:focus, textarea:focus{
 /* Align the right "Send" panel with the textarea top (not the label) */
 .message-side{
   margin-top: 28px; /* adjust: 24–34px depending on your font rendering */
-}
-
-.message-side{
-  /* existing styles stay */
-  gap:20px; /* increase space between button and contacts */
 }
 
 .side-contacts > div + div {
