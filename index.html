@@ -41,7 +41,6 @@
 
         <!-- Socials (placeholders; replace href later) -->
         <a class="nav-social" href="#" aria-label="TikTok" title="TikTok">
-          <!-- music note -->
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
             <path fill="currentColor" d="M16.6 5.2c.8 1.3 2.1 2.1 3.6 2.3v3.1c-1.6-.1-3-.7-4.2-1.7v6.5c0 3-2.4 5.4-5.4 5.4S5.2 18.4 5.2 15.4s2.4-5.4 5.4-5.4c.4 0 .9.1 1.3.2v3.2c-.4-.2-.8-.3-1.3-.3-1.3 0-2.3 1.1-2.3 2.3 0 1.3 1.1 2.3 2.3 2.3 1.4 0 2.4-1 2.4-2.6V2.8h3.1c.1.9.3 1.7.6 2.4z"/>
           </svg>
@@ -170,11 +169,6 @@
           <p class="muted">Three things you should expect from every recommendation.</p>
         </div>
 
-        <div class="callout">
-          <div class="callout-title">Goal</div>
-          <div class="callout-text">To make you smart enough to not need me.</div>
-        </div>
-
         <div class="alt alt--cards">
           <!-- 1 -->
           <section class="alt-row">
@@ -205,7 +199,7 @@
           <section class="alt-row alt-row--rev">
             <div class="alt-text card">
               <h3>A routine and habits you can trust</h3>
-              <div class="muted small">Built for consistency and measurable progression.</div>
+              <div class="muted small">To make you smart enough to not need me.</div>
               <ul class="bullets">
                 <li><strong>Structure:</strong> a weekly plan you can repeat confidently</li>
                 <li><strong>Progression:</strong> simple rules for load, reps, and volume</li>
@@ -324,6 +318,13 @@
               <p class="muted">
                 In-person coverage focuses on Ventura County. For online coaching, location isn’t a limitation.
               </p>
+
+              <ul class="bullets">
+                <li><strong>Training location:</strong> for privacy, I don’t host sessions at my personal home or personal gym.</li>
+                <li><strong>Equipment:</strong> clients are paying for coaching — not equipment access — so we’ll use a gym you already have access to.</li>
+                <li><strong>Calisthenics:</strong> if equipment is limited, bodyweight training is absolutely on the table.</li>
+              </ul>
+
               <div class="coverage-actions">
                 <a class="btn primary" href="#contact-dean">Ask about scheduling</a>
               </div>
@@ -394,7 +395,8 @@
           <details class="faq">
             <summary>What makes this “science-first”?</summary>
             <div class="muted">
-              Explanations include mechanisms, tradeoffs, and constraints so your plan stays correct when life changes.
+              I explain mechanisms, tradeoffs, and constraints so your plan stays correct when life changes —
+              adding the “why” to the “how”.
             </div>
           </details>
 
@@ -496,10 +498,6 @@
                   </div>
                 </div>
               </div>
-
-              <p class="muted small form-foot">
-                Sending uses your device’s mail app to deliver the message.
-              </p>
             </form>
           </div>
         </div>
@@ -605,7 +603,6 @@
       var el = document.getElementById("coverageMap");
       if (!el || !window.L) return;
 
-      // Ventura County center (approx)
       var center = [34.332906481499236, -119.117673076886];
 
       var map = L.map("coverageMap", {
@@ -614,16 +611,14 @@
         dragging: true
       }).setView(center, 9);
 
-      // CARTO Dark Matter tiles
       L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png", {
         subdomains: "abcd",
         maxZoom: 20,
         attribution: '&copy; OpenStreetMap &copy; CARTO'
       }).addTo(map);
 
-      // Coverage emphasis: subtle circle + label
       L.circle(center, {
-        radius: 42000, // ~42km visual radius (approx coverage emphasis)
+        radius: 42000,
         color: "#2f6feb",
         weight: 2,
         opacity: 0.65,
