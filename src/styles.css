@@ -374,7 +374,7 @@ input:focus, textarea:focus{
 .side-contacts{
   display:flex;
   flex-direction:column;
-  gap:6px; /* increase/decrease this */
+  gap:8px;
 }
 /* Footer */
 .footer{padding:26px 0 18px;border-top:1px solid var(--line); margin-top: 30px}
