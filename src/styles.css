@@ -513,12 +513,6 @@ body { overflow-x: clip; }
 
 /* --- Align Send box with textarea (not label) --- */
 
-/* Align Send panel with textarea top WITHOUT affecting grid sizing */
-.message-side{
-  --msgOffset: 26px;               /* your tuned value */
-  margin-top: 0;                   /* important: remove margin */
-  align-self: stretch;
-  height: calc(100% - var(--msgOffset));
-  transform: translateY(var(--msgOffset));
+.message-side {
+  margin-top: 26px; /* aligns with top of textarea */
 }
-
