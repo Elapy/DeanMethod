@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet (map) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
   <link rel="stylesheet" href="src/styles.css" />
 </head>
 
@@ -29,9 +34,28 @@
         <a href="#services">Services</a>
         <a href="#method">Method</a>
         <a href="#pricing">Pricing</a>
+        <a href="#coverage">Coverage</a>
         <a href="#training-hours">Training Hours</a>
         <a href="#faq">FAQ</a>
         <a class="nav-cta" href="#contact-dean">Contact</a>
+
+        <!-- Socials (placeholders; replace href later) -->
+        <a class="nav-social" href="#" aria-label="TikTok" title="TikTok">
+          <!-- music note -->
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="currentColor" d="M16.6 5.2c.8 1.3 2.1 2.1 3.6 2.3v3.1c-1.6-.1-3-.7-4.2-1.7v6.5c0 3-2.4 5.4-5.4 5.4S5.2 18.4 5.2 15.4s2.4-5.4 5.4-5.4c.4 0 .9.1 1.3.2v3.2c-.4-.2-.8-.3-1.3-.3-1.3 0-2.3 1.1-2.3 2.3 0 1.3 1.1 2.3 2.3 2.3 1.4 0 2.4-1 2.4-2.6V2.8h3.1c.1.9.3 1.7.6 2.4z"/>
+          </svg>
+        </a>
+        <a class="nav-social" href="#" aria-label="YouTube" title="YouTube">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="currentColor" d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.7 4.6 12 4.6 12 4.6s-5.7 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.8.5 7.5.5 7.5.5s5.7 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/>
+          </svg>
+        </a>
+        <a class="nav-social" href="#" aria-label="Instagram" title="Instagram">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 2A1.8 1.8 0 1 0 13.8 12 1.8 1.8 0 0 0 12 10.2zM17.6 6.4a.9.9 0 1 1-.9.9.9.9 0 0 1 .9-.9z"/>
+          </svg>
+        </a>
       </nav>
     </div>
   </header>
@@ -146,13 +170,18 @@
           <p class="muted">Three things you should expect from every recommendation.</p>
         </div>
 
+        <div class="callout">
+          <div class="callout-title">Goal</div>
+          <div class="callout-text">To make you smart enough to not need me.</div>
+        </div>
+
         <div class="alt alt--cards">
           <!-- 1 -->
           <section class="alt-row">
             <figure class="visual-card">
               <img
                 src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=2000&q=80"
-                alt="Abstract analytics visual (no readable text)"
+                alt="Abstract analytics visual"
                 loading="lazy"
               />
             </figure>
@@ -276,6 +305,34 @@
             </ul>
             <a class="btn primary" href="#contact-dean">Request</a>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- COVERAGE -->
+    <section id="coverage" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Coverage</h2>
+          <p class="muted">Ventura County.</p>
+        </div>
+
+        <div class="panel coverage-panel">
+          <div class="coverage-grid">
+            <div class="coverage-copy">
+              <h3>Local coverage</h3>
+              <p class="muted">
+                In-person coverage focuses on Ventura County. For online coaching, location isn’t a limitation.
+              </p>
+              <div class="coverage-actions">
+                <a class="btn primary" href="#contact-dean">Ask about scheduling</a>
+              </div>
+            </div>
+
+            <div class="coverage-map">
+              <div id="coverageMap" class="map-box" aria-label="Ventura County coverage map"></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -426,12 +483,10 @@
               </div>
 
               <div class="message-split">
-                <div class="message-main">
-                  <label>
-                    <span>Message</span>
-                    <textarea name="message" rows="7" required placeholder="Tell me what you're aiming for and what your schedule looks like."></textarea>
-                  </label>
-                </div>
+                <label class="message-main">
+                  <span>Message</span>
+                  <textarea name="message" rows="7" required placeholder="Tell me what you're aiming for and what your schedule looks like."></textarea>
+                </label>
 
                 <div class="message-side">
                   <button class="btn primary btn-lg" type="submit">Send</button>
@@ -442,6 +497,9 @@
                 </div>
               </div>
 
+              <p class="muted small form-foot">
+                Sending uses your device’s mail app to deliver the message.
+              </p>
             </form>
           </div>
         </div>
@@ -468,6 +526,7 @@
             <a href="#services">Services</a>
             <a href="#method">Method</a>
             <a href="#pricing">Pricing</a>
+            <a href="#coverage">Coverage</a>
             <a href="#training-hours">Training Hours</a>
             <a href="#faq">FAQ</a>
             <a href="#contact-dean">Contact</a>
@@ -477,6 +536,13 @@
             <div class="footer-head">Contact</div>
             <a href="mailto:method.dean@outlook.com">method.dean@outlook.com</a>
             <a href="sms:+18056653528">(805) 665-3528</a>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-head">Social</div>
+            <a href="#">TikTok</a>
+            <a href="#">YouTube</a>
+            <a href="#">Instagram</a>
           </div>
 
           <div class="footer-col">
@@ -532,6 +598,40 @@
 
         window.location.href = mailto;
       });
+    })();
+
+    // Coverage map (Ventura County)
+    (function(){
+      var el = document.getElementById("coverageMap");
+      if (!el || !window.L) return;
+
+      // Ventura County center (approx)
+      var center = [34.332906481499236, -119.117673076886];
+
+      var map = L.map("coverageMap", {
+        zoomControl: true,
+        scrollWheelZoom: false,
+        dragging: true
+      }).setView(center, 9);
+
+      // CARTO Dark Matter tiles
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png", {
+        subdomains: "abcd",
+        maxZoom: 20,
+        attribution: '&copy; OpenStreetMap &copy; CARTO'
+      }).addTo(map);
+
+      // Coverage emphasis: subtle circle + label
+      L.circle(center, {
+        radius: 42000, // ~42km visual radius (approx coverage emphasis)
+        color: "#2f6feb",
+        weight: 2,
+        opacity: 0.65,
+        fillColor: "#2f6feb",
+        fillOpacity: 0.10
+      }).addTo(map);
+
+      L.marker(center, {opacity: 0.9}).addTo(map).bindPopup("Ventura County coverage").openPopup();
     })();
   </script>
 </body>
