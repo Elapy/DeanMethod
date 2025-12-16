@@ -536,7 +536,7 @@ body { overflow-x: clip; }
 /* --- Stagger vertical spacing inside Send box --- */
 
 .message-side{
-  padding-top: 18px; /* lowers everything slightly as a group */
+  padding-top: 14px; /* lowers everything slightly as a group */
 }
 
 /* Send button: lowest priority for lowering */
