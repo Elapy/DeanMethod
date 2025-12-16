@@ -426,21 +426,27 @@
               </div>
 
               <div class="message-split">
-                <div class="message-main">
-                  <label>
-                    <span>Message</span>
-                    <textarea name="message" rows="7" required placeholder="Tell me what you're aiming for and what your schedule looks like."></textarea>
-                  </label>
-                </div>
-
+                <label class="message-label" for="msg">Message</label>
+              
+                <textarea
+                  id="msg"
+                  class="message-textarea"
+                  name="message"
+                  rows="7"
+                  required
+                  placeholder="Tell me what you're aiming for and what your schedule looks like."
+                ></textarea>
+              
                 <div class="message-side">
                   <button class="btn primary btn-lg" type="submit">Send</button>
+              
                   <div class="muted small side-contacts">
                     <div><a href="mailto:method.dean@outlook.com">method.dean@outlook.com</a></div>
                     <div><a href="sms:+18056653528">(805) 665-3528</a></div>
                   </div>
                 </div>
               </div>
+
 
             </form>
           </div>
