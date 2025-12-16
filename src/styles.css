@@ -399,3 +399,39 @@ input:focus, textarea:focus{
   margin-top:14px; padding-top:14px; border-top:1px solid var(--line2);
   display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap
 }
+
+/* --- Contact form chip refinements --- */
+
+/* Unbold chip text */
+.chip span {
+  font-weight: 500;          /* was effectively bold before */
+  line-height: 1.2;
+  transform: translateY(1px); /* subtle vertical centering */
+}
+
+/* Rounded rectangles instead of pill/boxy */
+.chip {
+  border-radius: 14px;       /* soft rectangle */
+  padding: 12px 14px;        /* slightly taller for balance */
+}
+
+/* Keep square indicator but soften it */
+.chip--square::before {
+  border-radius: 4px;
+}
+
+/* Keep round indicator for single-select */
+.chip--round::before {
+  border-radius: 999px;
+}
+
+/* Ensure checked state still feels deliberate, not loud */
+.chip--square:has(input:checked),
+.chip--round:has(input:checked) {
+  background: rgba(47,111,235,.08);
+}
+
+/* Slightly lower indicator alignment too */
+.chip::before {
+  transform: translateY(1px);
+}
