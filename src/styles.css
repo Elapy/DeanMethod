@@ -332,7 +332,7 @@ input:focus, textarea:focus{
   grid-template-columns: 1fr 220px;
   grid-template-rows: auto auto;
   gap:12px;
-  align-items:start; /* 🔑 critical change */
+  align-items:start;
 }
 
 /* Label sits above textarea only */
@@ -359,7 +359,7 @@ input:focus, textarea:focus{
 }
 
 .message-side{
-  grid-column: 2 / 3;
+  grid-column: 2;
   grid-row: 2;
 
   border:1px solid rgba(255,255,255,.10);
@@ -369,9 +369,11 @@ input:focus, textarea:focus{
 
   display:flex;
   flex-direction:column;
-  justify-content:space-between; /* button top, contacts bottom */
+  justify-content:space-between;
   gap:18px; /* space between button and contacts */
 }
+
+.message-side{
 
 /* spacing between email and phone */
 .side-contacts > div + div{
