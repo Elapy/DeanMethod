@@ -371,7 +371,11 @@ input:focus, textarea:focus{
 .side-contacts a{color: rgba(170,180,197,.92); text-decoration:none}
 .side-contacts a:hover{color: rgba(238,242,248,.95)}
 .form-foot{margin:0}
-
+.side-contacts{
+  display:flex;
+  flex-direction:column;
+  gap:6px; /* increase/decrease this */
+}
 /* Footer */
 .footer{padding:26px 0 18px;border-top:1px solid var(--line); margin-top: 30px}
 .footer-inner{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; flex-wrap:wrap}
