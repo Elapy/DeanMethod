@@ -56,9 +56,10 @@
 
         <div class="hero-media">
           <figure class="media-card">
+            <!-- Happy arms-raised silhouette at sunset/sunrise -->
             <img
-              src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1900&q=80"
-              alt="Silhouette on rock at sunset"
+              src="https://source.unsplash.com/TQyOLC-1Hmg/1900x1200"
+              alt="Person with arms raised at sunrise/sunset"
               loading="lazy"
             />
           </figure>
@@ -150,9 +151,10 @@
           <!-- 1 -->
           <section class="alt-row">
             <figure class="visual-card">
+              <!-- Clean line graph photo -->
               <img
-                src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=2000&q=80"
-                alt="Abstract analytics visual (no readable text)"
+                src="https://source.unsplash.com/tceN8e-eZ6c/2000x1500"
+                alt="Minimal line graph visual"
                 loading="lazy"
               />
             </figure>
@@ -373,76 +375,52 @@
                 </label>
               </div>
 
-              <div class="form-row form-row--chips">
-                <div class="chip-field">
-                  <div class="label-row">
-                    <span class="label">Goals</span>
-                  </div>
+              <div class="form-row">
+                <div class="field">
+                  <div class="field-label">Goals</div>
 
-                  <div class="chip-grid" role="group" aria-label="Goals">
-                    <label class="chip chip--square">
-                      <input type="checkbox" name="goals" value="Hypertrophy / strength">
-                      <span>Hypertrophy / strength</span>
-                    </label>
-                    <label class="chip chip--square">
-                      <input type="checkbox" name="goals" value="Fat loss">
-                      <span>Fat loss</span>
-                    </label>
-                    <label class="chip chip--square">
-                      <input type="checkbox" name="goals" value="Cardio / conditioning">
-                      <span>Cardio / conditioning</span>
-                    </label>
-                    <label class="chip chip--square">
-                      <input type="checkbox" name="goals" value="General health">
-                      <span>General health</span>
-                    </label>
-                    <label class="chip chip--square">
-                      <input type="checkbox" name="goals" value="Nutrition guidance">
-                      <span>Nutrition guidance</span>
-                    </label>
-                    <label class="chip chip--square">
-                      <input type="checkbox" name="goals" value="Weight gain">
-                      <span>Weight gain</span>
-                    </label>
+                  <div class="dd" id="goalsDD">
+                    <button type="button" class="dd-btn" aria-haspopup="listbox" aria-expanded="false">
+                      <span class="dd-btn-text" id="goalsDDText">Select goals</span>
+                      <span class="dd-caret" aria-hidden="true">▾</span>
+                    </button>
+
+                    <div class="dd-menu" role="listbox" aria-multiselectable="true">
+                      <label class="dd-item"><input type="checkbox" name="goals" value="Hypertrophy / strength"><span>Hypertrophy / strength</span></label>
+                      <label class="dd-item"><input type="checkbox" name="goals" value="Fat loss"><span>Fat loss</span></label>
+                      <label class="dd-item"><input type="checkbox" name="goals" value="Cardio / conditioning"><span>Cardio / conditioning</span></label>
+                      <label class="dd-item"><input type="checkbox" name="goals" value="General health"><span>General health</span></label>
+                      <label class="dd-item"><input type="checkbox" name="goals" value="Nutrition guidance"><span>Nutrition guidance</span></label>
+                      <label class="dd-item"><input type="checkbox" name="goals" value="Weight gain"><span>Weight gain</span></label>
+                    </div>
                   </div>
                 </div>
 
-                <div class="chip-field">
-                  <div class="label-row">
-                    <span class="label">Preferred contact</span>
-                  </div>
+                <div class="field">
+                  <div class="field-label">Preferred contact</div>
 
-                  <div class="chip-grid chip-grid--tight" role="radiogroup" aria-label="Preferred contact">
-                    <label class="chip chip--round">
-                      <input type="radio" name="preferred" value="Email" required>
-                      <span>Email</span>
-                    </label>
-                    <label class="chip chip--round">
-                      <input type="radio" name="preferred" value="Text" required>
-                      <span>Text</span>
-                    </label>
+                  <div class="dd" id="prefDD">
+                    <button type="button" class="dd-btn" aria-haspopup="listbox" aria-expanded="false">
+                      <span class="dd-btn-text" id="prefDDText">Select one</span>
+                      <span class="dd-caret" aria-hidden="true">▾</span>
+                    </button>
+
+                    <div class="dd-menu" role="listbox" aria-multiselectable="false">
+                      <label class="dd-item"><input type="radio" name="preferred" value="Email" required><span>Email</span></label>
+                      <label class="dd-item"><input type="radio" name="preferred" value="Text" required><span>Text</span></label>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div class="message-split">
-                <label class="message-main">
-                  <span>Message</span>
-                  <textarea name="message" rows="7" required placeholder="Tell me what you're aiming for and what your schedule looks like."></textarea>
-                </label>
+              <label>
+                <span>Message</span>
+                <textarea name="message" rows="7" required placeholder="Tell me what you're aiming for and what your schedule looks like."></textarea>
+              </label>
 
-                <div class="message-side">
-                  <button class="btn primary btn-lg" type="submit">Send</button>
-                  <div class="muted small side-contacts">
-                    <div><a href="mailto:method.dean@outlook.com">method.dean@outlook.com</a></div>
-                    <div><a href="sms:+18056653528">(805) 665-3528</a></div>
-                  </div>
-                </div>
+              <div class="form-actions">
+                <button class="btn primary btn-lg" type="submit">Send</button>
               </div>
-
-              <p class="muted small form-foot">
-                Sending uses your device’s mail app to deliver the message.
-              </p>
             </form>
           </div>
         </div>
@@ -503,7 +481,66 @@
       if (y) y.textContent = String(new Date().getFullYear());
     })();
 
+    // Dropdown behavior (themed, not system white)
     (function(){
+      function setupDD(ddEl, onChange){
+        var btn = ddEl.querySelector(".dd-btn");
+        var menu = ddEl.querySelector(".dd-menu");
+        if (!btn || !menu) return;
+
+        function open(){
+          ddEl.classList.add("open");
+          btn.setAttribute("aria-expanded","true");
+        }
+        function close(){
+          ddEl.classList.remove("open");
+          btn.setAttribute("aria-expanded","false");
+        }
+        btn.addEventListener("click", function(e){
+          e.preventDefault();
+          if (ddEl.classList.contains("open")) close(); else open();
+        });
+
+        menu.addEventListener("click", function(e){
+          // allow label clicks without closing for multi, but close for single-select radios
+          var input = e.target && e.target.tagName === "INPUT" ? e.target : null;
+          if (input && input.type === "radio") {
+            setTimeout(close, 0);
+          }
+          onChange && onChange();
+        });
+
+        document.addEventListener("click", function(e){
+          if (!ddEl.contains(e.target)) close();
+        });
+        document.addEventListener("keydown", function(e){
+          if (e.key === "Escape") close();
+        });
+      }
+
+      var goalsDD = document.getElementById("goalsDD");
+      var goalsText = document.getElementById("goalsDDText");
+      function updateGoalsText(){
+        if (!goalsDD || !goalsText) return;
+        var checked = goalsDD.querySelectorAll('input[type="checkbox"]:checked');
+        if (!checked.length) { goalsText.textContent = "Select goals"; return; }
+        if (checked.length === 1) { goalsText.textContent = checked[0].value; return; }
+        goalsText.textContent = checked.length + " goals selected";
+      }
+
+      var prefDD = document.getElementById("prefDD");
+      var prefText = document.getElementById("prefDDText");
+      function updatePrefText(){
+        if (!prefDD || !prefText) return;
+        var sel = prefDD.querySelector('input[type="radio"]:checked');
+        prefText.textContent = sel ? sel.value : "Select one";
+      }
+
+      if (goalsDD) setupDD(goalsDD, updateGoalsText);
+      if (prefDD) setupDD(prefDD, updatePrefText);
+      updateGoalsText(); updatePrefText();
+
+      // Submit -> mailto (static-site friendly)
       var form = document.getElementById("contactForm");
       if (!form) return;
 
@@ -516,14 +553,18 @@
         var preferred = (data.get("preferred") || "").toString().trim();
         var message = (data.get("message") || "").toString().trim();
 
-        var goals = data.getAll("goals").map(function(v){ return String(v).trim(); }).filter(Boolean);
-        var goalsLine = goals.length ? goals.join(", ") : "(none selected)";
+        var goals = data.getAll("goals").map(String).map(function(s){ return s.trim(); }).filter(Boolean);
+        if (!goals.length) {
+          // lightweight validation: open goals dropdown to hint the user
+          if (goalsDD) goalsDD.classList.add("open");
+          return;
+        }
 
-        var subject = "DeanMethod Inquiry — " + (goals.length ? goals[0] : "General");
+        var subject = "DeanMethod Inquiry — " + (goals[0] || "General");
         var body =
           "Name: " + name + "\\n" +
           "Email: " + email + "\\n" +
-          "Goals: " + goalsLine + "\\n" +
+          "Goals: " + goals.join(", ") + "\\n" +
           "Preferred contact: " + preferred + "\\n\\n" +
           "Message:\\n" + message + "\\n";
 
