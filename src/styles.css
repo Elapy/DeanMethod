@@ -61,6 +61,7 @@ a{color:inherit}
 .btn-lg{padding:14px 18px; border-radius:16px; font-size:1.02rem}
 .btn-time{color:#ffffff !important}
 
+/* Gray CTA used only in method cards */
 .cta-muted{
   background: rgba(255,255,255,.03);
   border-color: rgba(255,255,255,.14);
@@ -182,6 +183,7 @@ canvas{display:block; max-width:100%}
 .s4{background:#355487}
 .s5{background:#2f6feb}
 
+/* Visual-heavy rows */
 .alt{display:flex; flex-direction:column; gap:16px}
 .alt-row{
   display:grid;
@@ -255,71 +257,100 @@ input:focus, textarea:focus{
   box-shadow: 0 0 0 3px rgba(47,111,235,.15);
 }
 
-.field-label{
-  font-weight:750;
-  color: rgba(238,242,248,.92);
-  margin: 0 0 8px;
-}
-
-/* Themed dropdown */
-.dd{position:relative}
-.dd-btn{
-  width:100%;
+/* Chips */
+.form-row--chips{align-items:start}
+.chip-field .label-row{margin-bottom:8px}
+.chip-field .label{display:block; font-weight:750; color: rgba(238,242,248,.92)}
+.chip-grid{
   display:flex;
-  align-items:center;
-  justify-content:space-between;
+  flex-wrap:wrap;
   gap:10px;
-  padding:12px 12px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.03);
+}
+.chip-grid--tight{gap:10px}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.02);
   color: rgba(238,242,248,.92);
   cursor:pointer;
   user-select:none;
+  transition: background .15s ease, border-color .15s ease, transform .08s ease;
 }
-.dd-btn:hover{
-  border-color: rgba(47,111,235,.32);
+.chip:hover{
   background: rgba(255,255,255,.04);
+  border-color: rgba(47,111,235,.28);
+  transform: translateY(-1px);
 }
-.dd-btn-text{
-  font-weight:600;
-  font-size:.98rem;
-  color: rgba(238,242,248,.85);
-}
-.dd-caret{color: rgba(238,242,248,.65)}
 
-.dd-menu{
+.chip input{
   position:absolute;
-  top: calc(100% + 10px);
-  left:0;
-  right:0;
-  padding:10px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(15,18,22,.98);
-  box-shadow: 0 18px 60px rgba(0,0,0,.55);
-  display:none;
-  z-index:10;
+  opacity:0;
+  pointer-events:none;
 }
-.dd.open .dd-menu{display:block}
-.dd-item{
+
+/* square indicator = multi */
+.chip--square::before{
+  content:"";
+  width:14px;height:14px;
+  border-radius:4px;
+  border:1px solid rgba(255,255,255,.22);
+  background: rgba(0,0,0,.18);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.10);
+}
+.chip--square:has(input:checked){
+  border-color: rgba(47,111,235,.45);
+  background: rgba(47,111,235,.10);
+}
+.chip--square:has(input:checked)::before{
+  background: rgba(47,111,235,.75);
+  border-color: rgba(47,111,235,.75);
+}
+
+/* round indicator = single */
+.chip--round::before{
+  content:"";
+  width:14px;height:14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);
+  background: rgba(0,0,0,.18);
+}
+.chip--round:has(input:checked){
+  border-color: rgba(47,111,235,.45);
+  background: rgba(47,111,235,.10);
+}
+.chip--round:has(input:checked)::before{
+  background: rgba(47,111,235,.75);
+  border-color: rgba(47,111,235,.75);
+}
+
+/* Message split: textarea left, send + small contacts right */
+.message-split{
+  display:grid;
+  grid-template-columns: 1fr 220px;
+  gap:12px;
+  align-items:stretch;
+}
+@media (max-width:900px){
+  .message-split{grid-template-columns:1fr}
+}
+.message-main textarea{height:100%}
+.message-side{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.12);
+  border-radius: 16px;
+  padding:12px;
   display:flex;
-  align-items:center;
+  flex-direction:column;
+  justify-content:flex-start;
   gap:10px;
-  padding:10px 10px;
-  border-radius:12px;
-  color: rgba(238,242,248,.80);
-  cursor:pointer;
 }
-.dd-item:hover{
-  background: rgba(255,255,255,.05);
-}
-.dd-item input{accent-color: var(--blue)}
-.dd-item span{
-  font-weight:500;
-  font-size:.96rem;
-  color: rgba(238,242,248,.74);
-}
+.side-contacts a{color: rgba(170,180,197,.92); text-decoration:none}
+.side-contacts a:hover{color: rgba(238,242,248,.95)}
+.form-foot{margin:0}
 
 /* Footer */
 .footer{padding:26px 0 18px;border-top:1px solid var(--line); margin-top: 30px}
