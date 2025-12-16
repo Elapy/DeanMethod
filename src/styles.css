@@ -430,3 +430,23 @@ input:focus, textarea:focus{
 html { overflow-x: clip; }
 body { overflow-x: clip; }
 
+/* --- Chip text weight + vertical centering fix --- */
+
+/* Unbold chip text */
+.chip span {
+  font-weight: 400;          /* normal weight */
+  line-height: 1.2;
+  position: relative;
+  top: 1px;                  /* nudges text down slightly */
+}
+
+/* Ensure indicator + text are vertically centered together */
+.chip {
+  align-items: center;
+}
+
+/* Slightly lower the indicator too so both feel centered */
+.chip::before {
+  position: relative;
+  top: 1px;
+}
