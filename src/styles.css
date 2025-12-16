@@ -332,7 +332,16 @@ input:focus, textarea:focus{
   display:grid;
   grid-template-columns: 1fr 220px;
   gap:12px;
-  align-items:stretch;
+  align-items:start; /* align to textarea top, not label */
+}
+.message-main label{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+
+.message-main textarea{
+  margin-top:6px;
 }
 @media (max-width:900px){
   .message-split{grid-template-columns:1fr}
