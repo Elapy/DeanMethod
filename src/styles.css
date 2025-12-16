@@ -365,7 +365,7 @@ input:focus, textarea:focus{
   padding:12px;
   display:flex;
   flex-direction:column;
-  justify-content:flex-start;
+  justify-content:space-between; /* 🔑 pushes contacts to bottom */
   gap:10px;
 }
 /* Align the right "Send" panel with the textarea top (not the label) */
