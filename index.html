@@ -682,8 +682,12 @@
       const originalCount = originalCards.length;
       if (originalCount < 2) return;
   
-      // How many cards to clone on each side (2 feels best visually)
+      // Clone count on each side (2 makes the loop feel real)
       const CLONE_COUNT = Math.min(2, originalCount);
+  
+      // Prevent double-initialization
+      if (track.dataset.loopInit === "1") return;
+      track.dataset.loopInit = "1";
   
       // Clone last -> prepend
       const headClones = originalCards.slice(-CLONE_COUNT).map(card => {
@@ -702,32 +706,50 @@
       headClones.forEach(c => track.insertBefore(c, track.firstChild));
       tailClones.forEach(c => track.appendChild(c));
   
-      // Helper: get the "step" distance (card width + gap)
-      function getStep() {
-        const cards = track.querySelectorAll(".price-card");
-        if (cards.length < 2) return 360;
+      function cards() {
+        return Array.from(track.querySelectorAll(".price-card"));
+      }
   
-        const a = cards[0].getBoundingClientRect();
-        const b = cards[1].getBoundingClientRect();
+      function getStep() {
+        const cs = cards();
+        if (cs.length < 2) return 380;
+        const a = cs[0].getBoundingClientRect();
+        const b = cs[1].getBoundingClientRect();
         return Math.max(1, Math.round(b.left - a.left));
       }
   
-      // After cloning, jump to the "real" first card position
+      // Start at "real" first slide region
       function jumpToRealStart() {
         const step = getStep();
         track.scrollLeft = step * CLONE_COUNT;
       }
   
-      // Coverflow: mark center card + neighbors (wrap-aware)
+      // If we drift into clone region, jump back to equivalent real position
+      function handleLoop() {
+        const step = getStep();
+  
+        // Boundaries (slightly buffered)
+        const leftBoundary  = step * (CLONE_COUNT - 0.75);
+        const rightBoundary = step * (CLONE_COUNT + originalCount + 0.75);
+  
+        if (track.scrollLeft < leftBoundary) {
+          track.scrollLeft += step * originalCount;
+        } else if (track.scrollLeft > rightBoundary) {
+          track.scrollLeft -= step * originalCount;
+        }
+      }
+  
       function updateCoverflow() {
-        const cards = Array.from(track.querySelectorAll(".price-card"));
+        const cs = cards();
+        if (!cs.length) return;
+  
         const rect = track.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
   
         let closest = null;
         let closestDist = Infinity;
   
-        cards.forEach(card => {
+        for (const card of cs) {
           const r = card.getBoundingClientRect();
           const cardCenter = r.left + r.width / 2;
           const d = Math.abs(cardCenter - centerX);
@@ -735,42 +757,63 @@
             closestDist = d;
             closest = card;
           }
-        });
+        }
   
-        cards.forEach(c => c.classList.remove("is-active","is-left","is-right"));
+        // Clear
+        cs.forEach(c => c.classList.remove(
+          "is-active", "is-left", "is-right",
+          "is-far-left", "is-far-right"
+        ));
+  
         if (!closest) return;
   
         closest.classList.add("is-active");
+        const idx = cs.indexOf(closest);
   
-        const idx = cards.indexOf(closest);
-        if (idx > 0) cards[idx - 1].classList.add("is-left");
-        if (idx < cards.length - 1) cards[idx + 1].classList.add("is-right");
+        // 1-away
+        if (idx > 0) cs[idx - 1].classList.add("is-left");
+        if (idx < cs.length - 1) cs[idx + 1].classList.add("is-right");
+  
+        // 2-away (behind)
+        if (idx > 1) cs[idx - 2].classList.add("is-far-left");
+        if (idx < cs.length - 2) cs[idx + 2].classList.add("is-far-right");
       }
   
-      // Infinite looping: if you scroll into clone region, jump back
-      function handleLoop() {
-        const step = getStep();
-        const leftBoundary = step * (CLONE_COUNT - 0.5);
-        const rightBoundary = step * (CLONE_COUNT + originalCount + 0.5);
+      // Force true center alignment immediately (fixes “almost centered until scroll”)
+      function centerActiveCard() {
+        const active = track.querySelector(".price-card.is-active");
+        if (!active) return;
   
-        if (track.scrollLeft < leftBoundary) {
-          // jumped too far left into head clones -> move to equivalent real position
-          track.scrollLeft += step * originalCount;
-        } else if (track.scrollLeft > rightBoundary) {
-          // too far right into tail clones -> move back
-          track.scrollLeft -= step * originalCount;
+        const tr = track.getBoundingClientRect();
+        const ar = active.getBoundingClientRect();
+  
+        const trackCenter = tr.left + tr.width / 2;
+        const cardCenter  = ar.left + ar.width / 2;
+  
+        const delta = cardCenter - trackCenter;
+        if (Math.abs(delta) > 0.5) {
+          track.scrollLeft += delta;
         }
       }
   
-      // Arrow controls
+      // One frame update
+      function tick() {
+        handleLoop();
+        updateCoverflow();
+        centerActiveCard();
+      }
+  
+      // Arrow controls (NO smooth scroll — fixes “double click at loop seam”)
       btnLeft.addEventListener("click", () => {
         const step = getStep();
-        track.scrollBy({ left: -step, behavior: "smooth" });
+        track.scrollLeft -= step;
+        tick();
       });
   
       btnRight.addEventListener("click", () => {
         const step = getStep();
-        track.scrollBy({ left: step, behavior: "smooth" });
+        track.scrollLeft += step;
+        tick();
       });
   
       // Scroll handler (throttled)
@@ -779,85 +822,32 @@
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
-          handleLoop();
-          updateCoverflow();
+          tick();
           ticking = false;
         });
       }, { passive: true });
   
-      window.addEventListener("resize", () => {
-        // keep it stable after resize
+      // Init: do one pass after layout settles
+      function initPass() {
         jumpToRealStart();
-        updateCoverflow();
-      });
+        tick();
+      }
   
-      // Init (after layout)
-      requestAnimationFrame(() => {
-        jumpToRealStart();
-        updateCoverflow();
+      // Do multiple init passes to avoid first-paint layout drift:
+      // - once immediately
+      // - once after images load
+      // - once after fonts settle (best effort)
+      requestAnimationFrame(initPass);
+      window.addEventListener("load", initPass, { once: true });
+  
+      // Resize = recalc step and center
+      window.addEventListener("resize", () => {
+        initPass();
       });
     }
   
     document.querySelectorAll(".pricing-carousel").forEach(initInfiniteCarousel);
   })();
-  </script>
-
-  <script>
-    (function () {
-      function updateCoverflow(track) {
-        var cards = Array.from(track.querySelectorAll(".price-card"));
-        if (!cards.length) return;
-  
-        var rect = track.getBoundingClientRect();
-        var centerX = rect.left + rect.width / 2;
-  
-        // Find closest card to center
-        var closest = null;
-        var closestDist = Infinity;
-  
-        cards.forEach(function (card) {
-          var r = card.getBoundingClientRect();
-          var cardCenter = r.left + r.width / 2;
-          var d = Math.abs(cardCenter - centerX);
-          if (d < closestDist) {
-            closestDist = d;
-            closest = card;
-          }
-        });
-  
-        // Clear classes
-        cards.forEach(function (c) {
-          c.classList.remove("is-active", "is-left", "is-right");
-        });
-  
-        if (!closest) return;
-  
-        closest.classList.add("is-active");
-  
-        // Mark immediate neighbors (left/right)
-        var idx = cards.indexOf(closest);
-        if (idx > 0) cards[idx - 1].classList.add("is-left");
-        if (idx < cards.length - 1) cards[idx + 1].classList.add("is-right");
-      }
-  
-      document.querySelectorAll(".pricing-track").forEach(function (track) {
-        var ticking = false;
-  
-        function onScroll() {
-          if (ticking) return;
-          ticking = true;
-          requestAnimationFrame(function () {
-            updateCoverflow(track);
-            ticking = false;
-          });
-        }
-  
-        // Update once on load and on resize
-        updateCoverflow(track);
-        track.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("resize", function () { updateCoverflow(track); });
-      });
-    })();
   </script>
 
 </body>
