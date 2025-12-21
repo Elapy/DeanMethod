@@ -553,3 +553,83 @@ body { overflow-x: clip; }
 .message-side .side-contacts > div:last-child{
   margin-top: 12px;
 }
+
+/* =========================
+   Pricing carousel
+   ========================= */
+
+.pricing-carousel{
+  position: relative;
+}
+
+/* Horizontal scroll track */
+.pricing-track{
+  display:flex;
+  gap:20px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding: 6px 2px 12px;
+  scrollbar-width:none;            /* Firefox */
+}
+
+.pricing-track::-webkit-scrollbar{
+  display:none;                    /* Chrome/Safari/Edge */
+}
+
+/* Each pricing card becomes a slide */
+.pricing-track .price-card{
+  scroll-snap-align:center;
+  flex: 0 0 auto;
+  min-width: 320px;
+  max-width: 360px;
+}
+
+/* Arrow buttons */
+.carousel-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:36px;
+  height:36px;
+  border-radius:999px;
+  cursor:pointer;
+  z-index:3;
+
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(238,242,248,.95);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+}
+
+.carousel-btn:hover{
+  background: rgba(255,255,255,.14);
+}
+
+.carousel-btn.left{ left:-18px; }
+.carousel-btn.right{ right:-18px; }
+
+/* On small screens, keep arrows inside the container */
+@media (max-width: 640px){
+  .carousel-btn.left{ left: 6px; }
+  .carousel-btn.right{ right: 6px; }
+}
+
+/* =========================
+   Fix "Most popular" badge overlap
+   ========================= */
+
+/* Give the card a little headroom for the badge */
+.price-card{
+  position: relative;
+  padding-top: 34px;
+}
+
+/* Put the badge in the top-left, inside the card */
+.price-card .badge{
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
