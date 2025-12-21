@@ -669,5 +669,28 @@
       L.marker(center, {opacity: 0.9}).addTo(map).bindPopup("Ventura County coverage").openPopup();
     })();
   </script>
+
+  <script>
+    (function () {
+      document.querySelectorAll(".pricing-carousel").forEach(function (carousel) {
+        var track = carousel.querySelector(".pricing-track");
+        var btnLeft = carousel.querySelector(".carousel-btn.left");
+        var btnRight = carousel.querySelector(".carousel-btn.right");
+  
+        if (!track || !btnLeft || !btnRight) return;
+  
+        var step = 380; // how far to move each click
+  
+        btnLeft.addEventListener("click", function () {
+          track.scrollBy({ left: -step, behavior: "smooth" });
+        });
+  
+        btnRight.addEventListener("click", function () {
+          track.scrollBy({ left: step, behavior: "smooth" });
+        });
+      });
+    })();
+  </script>
+  
 </body>
 </html>
