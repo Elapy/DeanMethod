@@ -691,6 +691,64 @@
       });
     })();
   </script>
+
+  <script>
+    (function () {
+      function updateCoverflow(track) {
+        var cards = Array.from(track.querySelectorAll(".price-card"));
+        if (!cards.length) return;
   
+        var rect = track.getBoundingClientRect();
+        var centerX = rect.left + rect.width / 2;
+  
+        // Find closest card to center
+        var closest = null;
+        var closestDist = Infinity;
+  
+        cards.forEach(function (card) {
+          var r = card.getBoundingClientRect();
+          var cardCenter = r.left + r.width / 2;
+          var d = Math.abs(cardCenter - centerX);
+          if (d < closestDist) {
+            closestDist = d;
+            closest = card;
+          }
+        });
+  
+        // Clear classes
+        cards.forEach(function (c) {
+          c.classList.remove("is-active", "is-left", "is-right");
+        });
+  
+        if (!closest) return;
+  
+        closest.classList.add("is-active");
+  
+        // Mark immediate neighbors (left/right)
+        var idx = cards.indexOf(closest);
+        if (idx > 0) cards[idx - 1].classList.add("is-left");
+        if (idx < cards.length - 1) cards[idx + 1].classList.add("is-right");
+      }
+  
+      document.querySelectorAll(".pricing-track").forEach(function (track) {
+        var ticking = false;
+  
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            updateCoverflow(track);
+            ticking = false;
+          });
+        }
+  
+        // Update once on load and on resize
+        updateCoverflow(track);
+        track.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", function () { updateCoverflow(track); });
+      });
+    })();
+  </script>
+
 </body>
 </html>
