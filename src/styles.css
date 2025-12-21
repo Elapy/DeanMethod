@@ -666,3 +666,13 @@ body { overflow-x: clip; }
   opacity: 0.65;
   transform: scale(0.93) rotateY(-10deg);
 }
+
+/* Pricing buttons: only featured gets primary */
+#pricing .price-card .btn.primary{ /* keep as-is */ }
+
+#pricing .price-card:not(.price-card--featured) .btn.primary{
+  /* force non-featured to look neutral if you accidentally used primary */
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(238,242,248,.95);
+}
