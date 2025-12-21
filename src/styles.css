@@ -633,3 +633,36 @@ body { overflow-x: clip; }
   top: 12px;
   left: 12px;
 }
+
+/* =========================
+   Coverflow-style pricing
+   ========================= */
+
+.pricing-track{
+  perspective: 900px;
+}
+
+.pricing-track .price-card{
+  transform-origin: center;
+  transition: transform 220ms ease, opacity 220ms ease, filter 220ms ease;
+  opacity: 0.55;
+  filter: saturate(0.85);
+  transform: scale(0.92);
+}
+
+.pricing-track .price-card.is-active{
+  opacity: 1;
+  filter: none;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.pricing-track .price-card.is-left{
+  opacity: 0.65;
+  transform: scale(0.93) rotateY(10deg);
+}
+
+.pricing-track .price-card.is-right{
+  opacity: 0.65;
+  transform: scale(0.93) rotateY(-10deg);
+}
