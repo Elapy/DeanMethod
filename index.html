@@ -671,25 +671,135 @@
   </script>
 
   <script>
-    (function () {
-      document.querySelectorAll(".pricing-carousel").forEach(function (carousel) {
-        var track = carousel.querySelector(".pricing-track");
-        var btnLeft = carousel.querySelector(".carousel-btn.left");
-        var btnRight = carousel.querySelector(".carousel-btn.right");
+  (function () {
+    function initInfiniteCarousel(carousel) {
+      const track = carousel.querySelector(".pricing-track");
+      const btnLeft = carousel.querySelector(".carousel-btn.left");
+      const btnRight = carousel.querySelector(".carousel-btn.right");
+      if (!track || !btnLeft || !btnRight) return;
   
-        if (!track || !btnLeft || !btnRight) return;
+      const originalCards = Array.from(track.querySelectorAll(".price-card"));
+      const originalCount = originalCards.length;
+      if (originalCount < 2) return;
   
-        var step = 380; // how far to move each click
+      // How many cards to clone on each side (2 feels best visually)
+      const CLONE_COUNT = Math.min(2, originalCount);
   
-        btnLeft.addEventListener("click", function () {
-          track.scrollBy({ left: -step, behavior: "smooth" });
-        });
-  
-        btnRight.addEventListener("click", function () {
-          track.scrollBy({ left: step, behavior: "smooth" });
-        });
+      // Clone last -> prepend
+      const headClones = originalCards.slice(-CLONE_COUNT).map(card => {
+        const c = card.cloneNode(true);
+        c.classList.add("is-clone");
+        return c;
       });
-    })();
+  
+      // Clone first -> append
+      const tailClones = originalCards.slice(0, CLONE_COUNT).map(card => {
+        const c = card.cloneNode(true);
+        c.classList.add("is-clone");
+        return c;
+      });
+  
+      headClones.forEach(c => track.insertBefore(c, track.firstChild));
+      tailClones.forEach(c => track.appendChild(c));
+  
+      // Helper: get the "step" distance (card width + gap)
+      function getStep() {
+        const cards = track.querySelectorAll(".price-card");
+        if (cards.length < 2) return 360;
+  
+        const a = cards[0].getBoundingClientRect();
+        const b = cards[1].getBoundingClientRect();
+        return Math.max(1, Math.round(b.left - a.left));
+      }
+  
+      // After cloning, jump to the "real" first card position
+      function jumpToRealStart() {
+        const step = getStep();
+        track.scrollLeft = step * CLONE_COUNT;
+      }
+  
+      // Coverflow: mark center card + neighbors (wrap-aware)
+      function updateCoverflow() {
+        const cards = Array.from(track.querySelectorAll(".price-card"));
+        const rect = track.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+  
+        let closest = null;
+        let closestDist = Infinity;
+  
+        cards.forEach(card => {
+          const r = card.getBoundingClientRect();
+          const cardCenter = r.left + r.width / 2;
+          const d = Math.abs(cardCenter - centerX);
+          if (d < closestDist) {
+            closestDist = d;
+            closest = card;
+          }
+        });
+  
+        cards.forEach(c => c.classList.remove("is-active","is-left","is-right"));
+        if (!closest) return;
+  
+        closest.classList.add("is-active");
+  
+        const idx = cards.indexOf(closest);
+        if (idx > 0) cards[idx - 1].classList.add("is-left");
+        if (idx < cards.length - 1) cards[idx + 1].classList.add("is-right");
+      }
+  
+      // Infinite looping: if you scroll into clone region, jump back
+      function handleLoop() {
+        const step = getStep();
+        const leftBoundary = step * (CLONE_COUNT - 0.5);
+        const rightBoundary = step * (CLONE_COUNT + originalCount + 0.5);
+  
+        if (track.scrollLeft < leftBoundary) {
+          // jumped too far left into head clones -> move to equivalent real position
+          track.scrollLeft += step * originalCount;
+        } else if (track.scrollLeft > rightBoundary) {
+          // too far right into tail clones -> move back
+          track.scrollLeft -= step * originalCount;
+        }
+      }
+  
+      // Arrow controls
+      btnLeft.addEventListener("click", () => {
+        const step = getStep();
+        track.scrollBy({ left: -step, behavior: "smooth" });
+      });
+  
+      btnRight.addEventListener("click", () => {
+        const step = getStep();
+        track.scrollBy({ left: step, behavior: "smooth" });
+      });
+  
+      // Scroll handler (throttled)
+      let ticking = false;
+      track.addEventListener("scroll", () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          handleLoop();
+          updateCoverflow();
+          ticking = false;
+        });
+      }, { passive: true });
+  
+      window.addEventListener("resize", () => {
+        // keep it stable after resize
+        jumpToRealStart();
+        updateCoverflow();
+      });
+  
+      // Init (after layout)
+      requestAnimationFrame(() => {
+        jumpToRealStart();
+        updateCoverflow();
+      });
+    }
+  
+    document.querySelectorAll(".pricing-carousel").forEach(initInfiniteCarousel);
+  })();
   </script>
 
   <script>
