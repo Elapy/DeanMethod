@@ -624,7 +624,7 @@ body { overflow-x: clip; }
 /* Give the card a little headroom for the badge */
 .price-card{
   position: relative;
-  padding-top: 34px;
+  padding-top: 50px;
 }
 
 /* Put the badge in the top-left, inside the card */
