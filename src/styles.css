@@ -554,37 +554,115 @@ body { overflow-x: clip; }
   margin-top: 12px;
 }
 
-/* =========================
-   Pricing carousel
-   ========================= */
+/* =========================================================
+   PRICING — Infinite carousel + 3D wheel (single source)
+   ========================================================= */
 
 .pricing-carousel{
   position: relative;
 }
 
-/* Horizontal scroll track */
+/* Track */
 .pricing-track{
   display:flex;
   gap:20px;
   overflow-x:auto;
+  scrollbar-width:none;
   scroll-snap-type:x mandatory;
-  padding: 6px 2px 12px;
-  scrollbar-width:none;            /* Firefox */
+  scroll-padding-inline: 48px;
+  padding: 10px 48px 14px;     /* edge-less feel + true centering */
+  overscroll-behavior-x: contain;
+
+  /* 3D */
+  perspective: 1100px;
+  transform-style: preserve-3d;
 }
 
-.pricing-track::-webkit-scrollbar{
-  display:none;                    /* Chrome/Safari/Edge */
-}
+.pricing-track::-webkit-scrollbar{ display:none; }
 
-/* Each pricing card becomes a slide */
+/* Slides */
 .pricing-track .price-card{
-  scroll-snap-align:center;
   flex: 0 0 auto;
   min-width: 320px;
   max-width: 360px;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+
+  position: relative;
+  border:1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.02);
+  box-shadow: var(--shadow2);
+
+  /* room for badge */
+  padding: 50px 18px 18px;
+
+  /* Wheel animation */
+  transform-origin: center;
+  transition:
+    transform 220ms ease,
+    opacity 220ms ease,
+    filter 220ms ease;
+  opacity: 0.50;
+  filter: saturate(0.85);
+  transform: translateZ(-40px) scale(0.90);
 }
 
-/* Arrow buttons */
+/* Featured plan frame */
+.price-card--featured{
+  border-color: rgba(47,111,235,.45);
+  box-shadow: 0 22px 65px rgba(47,111,235,.10), var(--shadow2);
+}
+
+/* Badge: top-left, safe from title */
+.price-card .badge{
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: auto;
+  font-size: .85rem;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(47,111,235,.45);
+  color: rgba(238,242,248,.92);
+  background: rgba(47,111,235,.18);
+  z-index: 3;
+}
+
+/* Depth layering */
+.pricing-track .price-card.is-active{
+  opacity: 1;
+  filter: none;
+  transform: translateZ(0px) scale(1);
+  z-index: 4;
+}
+
+.pricing-track .price-card.is-left{
+  opacity: 0.68;
+  transform: translateZ(-20px) scale(0.93) rotateY(10deg);
+  z-index: 3;
+}
+
+.pricing-track .price-card.is-right{
+  opacity: 0.68;
+  transform: translateZ(-20px) scale(0.93) rotateY(-10deg);
+  z-index: 3;
+}
+
+/* 2-away cards sit behind the 1-away cards */
+.pricing-track .price-card.is-far-left{
+  opacity: 0.35;
+  transform: translateZ(-60px) scale(0.86) rotateY(18deg);
+  z-index: 2;
+}
+
+.pricing-track .price-card.is-far-right{
+  opacity: 0.35;
+  transform: translateZ(-60px) scale(0.86) rotateY(-18deg);
+  z-index: 2;
+}
+
+/* Buttons */
 .carousel-btn{
   position:absolute;
   top:50%;
@@ -593,7 +671,7 @@ body { overflow-x: clip; }
   height:36px;
   border-radius:999px;
   cursor:pointer;
-  z-index:3;
+  z-index:10;
 
   background: rgba(255,255,255,.08);
   border: 1px solid rgba(255,255,255,.15);
@@ -606,93 +684,29 @@ body { overflow-x: clip; }
 
 .carousel-btn:hover{
   background: rgba(255,255,255,.14);
+  border-color: rgba(47,111,235,.35);
 }
 
 .carousel-btn.left{ left:-18px; }
 .carousel-btn.right{ right:-18px; }
 
-/* On small screens, keep arrows inside the container */
 @media (max-width: 640px){
+  .pricing-track{ padding-inline: 16px; scroll-padding-inline: 16px; }
   .carousel-btn.left{ left: 6px; }
   .carousel-btn.right{ right: 6px; }
 }
 
-/* =========================
-   Fix "Most popular" badge overlap
-   ========================= */
-
-/* Give the card a little headroom for the badge */
-.price-card{
-  position: relative;
-  padding-top: 50px;
+/* Make "Discuss fit" buttons consistent (neutral),
+   keep primary only where explicitly set. */
+#pricing .price-card .btn{
+  border-color: rgba(255,255,255,.14);
+  background: rgba(255,255,255,.02);
+}
+#pricing .price-card .btn.primary{
+  background: var(--blue);
+  border-color: rgba(47,111,235,.55);
+}
+#pricing .price-card .btn.primary:hover{
+  background: var(--blue2);
 }
 
-/* Put the badge in the top-left, inside the card */
-.price-card .badge{
-  position: absolute;
-  top: 12px;
-  left: 12px;
-}
-
-/* =========================
-   Coverflow-style pricing
-   ========================= */
-
-.pricing-track{
-  perspective: 900px;
-}
-
-.pricing-track .price-card{
-  transform-origin: center;
-  transition: transform 220ms ease, opacity 220ms ease, filter 220ms ease;
-  opacity: 0.55;
-  filter: saturate(0.85);
-  transform: scale(0.92);
-}
-
-.pricing-track .price-card.is-active{
-  opacity: 1;
-  filter: none;
-  transform: scale(1);
-  z-index: 2;
-}
-
-.pricing-track .price-card.is-left{
-  opacity: 0.65;
-  transform: scale(0.93) rotateY(10deg);
-}
-
-.pricing-track .price-card.is-right{
-  opacity: 0.65;
-  transform: scale(0.93) rotateY(-10deg);
-}
-
-/* Pricing buttons: only featured gets primary */
-#pricing .price-card .btn.primary{ /* keep as-is */ }
-
-#pricing .price-card:not(.price-card--featured) .btn.primary{
-  /* force non-featured to look neutral if you accidentally used primary */
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.15);
-  color: rgba(238,242,248,.95);
-}
-
-/* =========================
-   Pricing carousel: edge-less + loop-friendly
-   ========================= */
-
-.pricing-track{
-  /* lets the centered card sit in the true center even at edges */
-  padding-inline: 40px;
-
-  /* optional: makes snapping feel more deliberate */
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 40px;
-  overscroll-behavior-x: contain;
-}
-
-/* Keep slides consistent (you already have min/max widths set) */
-.pricing-track .price-card{
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-}
