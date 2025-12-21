@@ -676,3 +676,23 @@ body { overflow-x: clip; }
   border: 1px solid rgba(255,255,255,.15);
   color: rgba(238,242,248,.95);
 }
+
+/* =========================
+   Pricing carousel: edge-less + loop-friendly
+   ========================= */
+
+.pricing-track{
+  /* lets the centered card sit in the true center even at edges */
+  padding-inline: 40px;
+
+  /* optional: makes snapping feel more deliberate */
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 40px;
+  overscroll-behavior-x: contain;
+}
+
+/* Keep slides consistent (you already have min/max widths set) */
+.pricing-track .price-card{
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
