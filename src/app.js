@@ -419,6 +419,247 @@
   
     document.querySelectorAll(".pricing-carousel").forEach(initPricingCarousel);
   })();
+
+  <script>
+  /* ============================
+     Pricing coverflow + loop
+     - Adds is-active/is-left/is-right classes
+     - Makes arrow buttons work
+     - Creates an "infinite" loop illusion using clones + jump
+     ============================ */
+  (function () {
+    const carousel = document.querySelector("#pricing .pricing-carousel");
+    if (!carousel) return;
+  
+    const track = carousel.querySelector(".pricing-track");
+    const btnPrev = carousel.querySelector(".carousel-btn.left");
+    const btnNext = carousel.querySelector(".carousel-btn.right");
+    if (!track) return;
+  
+    const prefersReducedMotion =
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  
+    // ---- Config ----
+    const CLONES_PER_SIDE = 1;        // 1 is enough for 4 cards. Use 2 if you add many.
+    const ACTIVE_CLASS = "is-active";
+    const LEFT_CLASS = "is-left";
+    const RIGHT_CLASS = "is-right";
+    const CLONE_CLASS = "is-clone";
+  
+    let baseCards = [];
+    let allCards = [];
+    let isJumping = false;
+    let rafId = 0;
+  
+    function getCards() {
+      return Array.from(track.querySelectorAll(".price-card"));
+    }
+  
+    function cardCenterX(card) {
+      const r = card.getBoundingClientRect();
+      return r.left + r.width / 2;
+    }
+  
+    function trackCenterX() {
+      const r = track.getBoundingClientRect();
+      return r.left + r.width / 2;
+    }
+  
+    function clearClasses() {
+      allCards.forEach((c) => {
+        c.classList.remove(ACTIVE_CLASS, LEFT_CLASS, RIGHT_CLASS);
+      });
+    }
+  
+    function setCoverflowByNearestCard() {
+      if (!allCards.length) return;
+  
+      const center = trackCenterX();
+      let bestIdx = 0;
+      let bestDist = Infinity;
+  
+      for (let i = 0; i < allCards.length; i++) {
+        const d = Math.abs(cardCenterX(allCards[i]) - center);
+        if (d < bestDist) {
+          bestDist = d;
+          bestIdx = i;
+        }
+      }
+  
+      clearClasses();
+  
+      const active = allCards[bestIdx];
+      if (active) active.classList.add(ACTIVE_CLASS);
+  
+      const left = allCards[bestIdx - 1];
+      const right = allCards[bestIdx + 1];
+      if (left) left.classList.add(LEFT_CLASS);
+      if (right) right.classList.add(RIGHT_CLASS);
+    }
+  
+    function snapToCard(card, behavior) {
+      if (!card) return;
+  
+      const trackRect = track.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+  
+      // desired scrollLeft so card center aligns with track center
+      const currentScroll = track.scrollLeft;
+      const deltaToCenter =
+        (cardRect.left + cardRect.width / 2) - (trackRect.left + trackRect.width / 2);
+  
+      const nextScrollLeft = currentScroll + deltaToCenter;
+  
+      track.scrollTo({
+        left: nextScrollLeft,
+        behavior: prefersReducedMotion ? "auto" : (behavior || "smooth"),
+      });
+    }
+  
+    function nearestCard() {
+      const center = trackCenterX();
+      let best = null;
+      let bestDist = Infinity;
+  
+      allCards.forEach((c) => {
+        const d = Math.abs(cardCenterX(c) - center);
+        if (d < bestDist) {
+          bestDist = d;
+          best = c;
+        }
+      });
+  
+      return best;
+    }
+  
+    function nextCard(direction) {
+      // direction: +1 next, -1 prev
+      const active = track.querySelector(".price-card." + ACTIVE_CLASS) || nearestCard();
+      if (!active) return;
+  
+      const idx = allCards.indexOf(active);
+      const target = allCards[idx + direction];
+      if (target) snapToCard(target, "smooth");
+    }
+  
+    function measureCardStep() {
+      // Distance between centers of adjacent cards (assumes consistent layout)
+      if (allCards.length < 2) return 360;
+      const c0 = allCards[0].getBoundingClientRect();
+      const c1 = allCards[1].getBoundingClientRect();
+      return (c1.left + c1.width / 2) - (c0.left + c0.width / 2);
+    }
+  
+    function buildClones() {
+      // Remove any existing clones (so refresh works)
+      track.querySelectorAll("." + CLONE_CLASS).forEach((n) => n.remove());
+  
+      baseCards = getCards().filter((c) => !c.classList.contains(CLONE_CLASS));
+      if (baseCards.length < 2) {
+        // Not enough to loop / coverflow meaningfully
+        allCards = getCards();
+        return;
+      }
+  
+      // Clone first N and last N
+      const head = baseCards.slice(0, CLONES_PER_SIDE).map((c) => {
+        const clone = c.cloneNode(true);
+        clone.classList.add(CLONE_CLASS);
+        clone.setAttribute("aria-hidden", "true");
+        return clone;
+      });
+  
+      const tail = baseCards.slice(-CLONES_PER_SIDE).map((c) => {
+        const clone = c.cloneNode(true);
+        clone.classList.add(CLONE_CLASS);
+        clone.setAttribute("aria-hidden", "true");
+        return clone;
+      });
+  
+      // Prepend tail clones
+      tail.forEach((clone) => track.insertBefore(clone, track.firstChild));
+      // Append head clones
+      head.forEach((clone) => track.appendChild(clone));
+  
+      allCards = getCards();
+    }
+  
+    function jumpIfInCloneZone() {
+      if (isJumping) return;
+      if (baseCards.length < 2) return;
+  
+      // Identify the active-ish card (nearest)
+      const active = nearestCard();
+      if (!active) return;
+  
+      const idx = allCards.indexOf(active);
+      if (idx < 0) return;
+  
+      // If we're in the leading clones, jump forward by baseCards.length
+      // If we're in the trailing clones, jump backward by baseCards.length
+      const total = baseCards.length;
+      const inLeadingClones = idx < CLONES_PER_SIDE;
+      const inTrailingClones = idx >= (CLONES_PER_SIDE + total);
+  
+      if (!inLeadingClones && !inTrailingClones) return;
+  
+      // Compute equivalent real card index in the middle section
+      let targetIdx = idx;
+      if (inLeadingClones) targetIdx = idx + total;
+      if (inTrailingClones) targetIdx = idx - total;
+  
+      const target = allCards[targetIdx];
+      if (!target) return;
+  
+      // Do an instant scroll jump so the user doesn't "hit the edge"
+      isJumping = true;
+      snapToCard(target, "auto");
+      // Allow layout to settle before enabling another jump
+      window.setTimeout(() => {
+        isJumping = false;
+        setCoverflowByNearestCard();
+      }, 0);
+    }
+  
+    function onScroll() {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setCoverflowByNearestCard();
+        jumpIfInCloneZone();
+      });
+    }
+  
+    function initPosition() {
+      // After clones exist, put the view on the first real card (not a clone)
+      if (!baseCards.length) return;
+      const firstReal = allCards[CLONES_PER_SIDE]; // first real card in the middle region
+      snapToCard(firstReal, "auto");
+      setCoverflowByNearestCard();
+    }
+  
+    // ---- Wire up ----
+    buildClones();
+    // Wait one frame so DOM/layout is stable before centering
+    requestAnimationFrame(initPosition);
+  
+    track.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", () => {
+      // Rebuild to keep things sane on layout changes
+      buildClones();
+      requestAnimationFrame(initPosition);
+    });
+  
+    if (btnPrev) btnPrev.addEventListener("click", () => nextCard(-1));
+    if (btnNext) btnNext.addEventListener("click", () => nextCard(+1));
+  
+    // Keyboard support (optional but nice)
+    track.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") { e.preventDefault(); nextCard(-1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); nextCard(+1); }
+    });
+  })();
+  </script>
   
   main();
 })();
