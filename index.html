@@ -253,20 +253,20 @@
       <div class="container">
         <div class="section-head">
           <h2>Pricing</h2>
-          <p class="muted">Simple packages. Confirm scheduling below.</p>
+          <p class="muted">Monthly coaching tiers. Session availability scales with your plan.</p>
         </div>
 
         <div class="pricing-grid">
           <article class="price-card">
             <div class="price-top">
-              <div class="price-name">Single session</div>
-              <div class="price-value">$95</div>
+              <div class="price-name">Foundation</div>
+              <div class="price-value">$179<span class="muted">/mo</span></div>
             </div>
-            <div class="muted">Focused session for technique or plan structure.</div>
+            <div class="muted">Best for consistency, accountability, and clean progression.</div>
             <ul class="bullets">
-              <li>1:1 session</li>
-              <li>Action plan</li>
-              <li>Follow-up summary</li>
+              <li><strong>Up to 2 sessions/month</strong></li>
+              <li>Programming fundamentals + execution coaching</li>
+              <li>Simple progress rules you can sustain</li>
             </ul>
             <a class="btn primary" href="#contact-dean">Request</a>
           </article>
@@ -274,31 +274,41 @@
           <article class="price-card price-card--featured">
             <div class="badge">Most popular</div>
             <div class="price-top">
-              <div class="price-name">Starter pack</div>
-              <div class="price-value">$360</div>
+              <div class="price-name">Progress</div>
+              <div class="price-value">$299<span class="muted">/mo</span></div>
             </div>
-            <div class="muted">Momentum + measurable progression.</div>
+            <div class="muted">More touchpoints for faster iteration and fewer plateaus.</div>
             <ul class="bullets">
-              <li>4 sessions</li>
-              <li>Progression structure</li>
-              <li>Priority scheduling</li>
+              <li><strong>Up to 4 sessions/month</strong></li>
+              <li>Technique + plan tuning (volume, effort, exercise selection)</li>
+              <li>Adjustments as life/schedule changes</li>
             </ul>
             <a class="btn primary" href="#contact-dean">Request</a>
           </article>
 
           <article class="price-card">
             <div class="price-top">
-              <div class="price-name">Online coaching</div>
-              <div class="price-value">$149<span class="muted">/mo</span></div>
+              <div class="price-name">Elite</div>
+              <div class="price-value">$449<span class="muted">/mo</span></div>
             </div>
-            <div class="muted">Programming + feedback loop.</div>
+            <div class="muted">Highest support for aggressive goals or tighter constraints.</div>
             <ul class="bullets">
-              <li>Monthly programming</li>
-              <li>Check-ins</li>
-              <li>Adjustments</li>
+              <li><strong>Up to 8 sessions/month</strong></li>
+              <li>High-frequency feedback + strategy refinement</li>
+              <li>Priority scheduling where possible</li>
             </ul>
             <a class="btn primary" href="#contact-dean">Request</a>
           </article>
+        </div>
+
+        <div class="callout" style="margin-top:18px">
+          <div class="callout-title">Session policy notes</div>
+          <div class="callout-text">
+            <ul class="bullets" style="margin-top:10px">
+              <li><strong>Rollover:</strong> Unused sessions may roll over for up to one (1) additional month, then expire.</li>
+              <li><strong>Session length:</strong> Sessions are typically designed to stay within 120 minutes. A strict maximum of 180 minutes may apply when needed. The first session may run longer due to intake, assessment, and planning.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -584,11 +594,11 @@
 
         var subject = "DeanMethod Inquiry — " + (goals.length ? goals[0] : "General");
         var body =
-          "Name: " + name + "\\n" +
-          "Email: " + email + "\\n" +
-          "Goals: " + goalsLine + "\\n" +
-          "Preferred contact: " + preferred + "\\n\\n" +
-          "Message:\\n" + message + "\\n";
+          "Name: " + name + "\n" +
+          "Email: " + email + "\n" +
+          "Goals: " + goalsLine + "\n" +
+          "Preferred contact: " + preferred + "\n\n" +
+          "Message:\n" + message + "\n";
 
         var mailto = "mailto:method.dean@outlook.com"
           + "?subject=" + encodeURIComponent(subject)
