@@ -253,5 +253,172 @@
     });
   }
 
+  /* src/app.js
+     Pricing: infinite looping carousel + 3D wheel coverflow
+     (No dependencies)
+  */
+
+  (function () {
+    function initPricingCarousel(carousel) {
+      const track = carousel.querySelector(".pricing-track");
+      const btnLeft = carousel.querySelector(".carousel-btn.left");
+      const btnRight = carousel.querySelector(".carousel-btn.right");
+      if (!track || !btnLeft || !btnRight) return;
+  
+      // Prevent double-init (important on hot reload / GitHub pages caching oddities)
+      if (track.dataset.pricingInit === "1") return;
+      track.dataset.pricingInit = "1";
+  
+      const originals = Array.from(track.querySelectorAll(".price-card"));
+      const originalCount = originals.length;
+      if (originalCount < 2) return;
+  
+      // Clone count: 2 gives the nicest "wheel" illusion (center + neighbors + far neighbors)
+      const CLONE_COUNT = Math.min(2, originalCount);
+  
+      // Helper: clone cards without duplicating IDs (you don't have IDs, but safe anyway)
+      function cloneCard(card) {
+        const c = card.cloneNode(true);
+        c.classList.add("is-clone");
+        return c;
+      }
+  
+      // Build clones
+      const headClones = originals.slice(-CLONE_COUNT).map(cloneCard);
+      const tailClones = originals.slice(0, CLONE_COUNT).map(cloneCard);
+  
+      headClones.forEach((c) => track.insertBefore(c, track.firstChild));
+      tailClones.forEach((c) => track.appendChild(c));
+  
+      // Compute "step" as distance between card centers (robust vs CSS gap changes)
+      function getStep() {
+        const cards = track.querySelectorAll(".price-card");
+        if (cards.length < 2) return 360;
+  
+        const a = cards[0].getBoundingClientRect();
+        const b = cards[1].getBoundingClientRect();
+        const step = Math.round(b.left - a.left);
+        return Math.max(1, step);
+      }
+  
+      // Jump to first real card position
+      function jumpToRealStart() {
+        const step = getStep();
+        track.scrollLeft = step * CLONE_COUNT;
+      }
+  
+      // Find card closest to center of track viewport
+      function getClosestToCenter() {
+        const cards = Array.from(track.querySelectorAll(".price-card"));
+        const rect = track.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+  
+        let closest = null;
+        let closestDist = Infinity;
+  
+        for (const card of cards) {
+          const r = card.getBoundingClientRect();
+          const cardCenter = r.left + r.width / 2;
+          const d = Math.abs(cardCenter - centerX);
+          if (d < closestDist) {
+            closestDist = d;
+            closest = card;
+          }
+        }
+        return { cards, closest };
+      }
+  
+      function updateWheelClasses() {
+        const { cards, closest } = getClosestToCenter();
+        if (!closest) return;
+  
+        // Clear
+        for (const c of cards) {
+          c.classList.remove("is-active", "is-left", "is-right", "is-far-left", "is-far-right");
+        }
+  
+        const i = cards.indexOf(closest);
+        closest.classList.add("is-active");
+  
+        // Immediate neighbors
+        if (i - 1 >= 0) cards[i - 1].classList.add("is-left");
+        if (i + 1 < cards.length) cards[i + 1].classList.add("is-right");
+  
+        // Far neighbors (2 away) — behind the immediate neighbors
+        if (i - 2 >= 0) cards[i - 2].classList.add("is-far-left");
+        if (i + 2 < cards.length) cards[i + 2].classList.add("is-far-right");
+      }
+  
+      // Infinite loop: when you scroll into clone region, jump by originalCount steps
+      function handleLoopIfNeeded() {
+        const step = getStep();
+  
+        // Boundaries are intentionally "soft" so we don't jitter during smooth scroll
+        const leftBoundary = step * (CLONE_COUNT - 0.5);
+        const rightBoundary = step * (CLONE_COUNT + originalCount + 0.5);
+  
+        if (track.scrollLeft < leftBoundary) {
+          track.scrollLeft += step * originalCount;
+        } else if (track.scrollLeft > rightBoundary) {
+          track.scrollLeft -= step * originalCount;
+        }
+      }
+  
+      // Arrow scroll — align with step
+      function scrollByOne(dir) {
+        const step = getStep();
+        track.scrollBy({ left: dir * step, behavior: "smooth" });
+      }
+  
+      btnLeft.addEventListener("click", () => scrollByOne(-1));
+      btnRight.addEventListener("click", () => scrollByOne(1));
+  
+      // Keyboard: left/right when focused
+      track.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          scrollByOne(-1);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          scrollByOne(1);
+        }
+      });
+  
+      // Scroll handler (throttled)
+      let ticking = false;
+      track.addEventListener(
+        "scroll",
+        () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            handleLoopIfNeeded();
+            updateWheelClasses();
+            ticking = false;
+          });
+        },
+        { passive: true }
+      );
+  
+      // Resize: keep stable
+      window.addEventListener("resize", () => {
+        jumpToRealStart();
+        updateWheelClasses();
+      });
+  
+      // Init after layout
+      // Use two RAFs + small timeout to avoid "not centered until scroll" on first paint
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          jumpToRealStart();
+          updateWheelClasses();
+          setTimeout(updateWheelClasses, 50);
+        });
+      });
+    }
+  
+    document.querySelectorAll(".pricing-carousel").forEach(initPricingCarousel);
+  })();
+  
   main();
 })();
