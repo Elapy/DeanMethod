@@ -144,18 +144,43 @@ a{color:inherit}
 .wide-media--short img{height:300px}
 .wide-media img{width:100%; height:340px; object-fit:cover; display:block}
 
-.pricing-grid{display:grid; grid-template-columns: 1fr 1fr 1fr; gap:14px}
+/* PRICING */
+.pricing-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap:18px; /* more breathing room between cards */
+  align-items:stretch;
+}
 @media (max-width:980px){ .pricing-grid{grid-template-columns:1fr} }
+
 .price-card{
-  border:1px solid var(--line); border-radius: var(--radius);
-  background: rgba(255,255,255,.02); box-shadow: var(--shadow2);
-  padding:18px; position:relative
+  border:1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.02);
+  box-shadow: var(--shadow2);
+  padding: 34px 18px 18px; /* extra top padding for badge clearance */
+  position:relative;
+  overflow: visible; /* allow badge to sit above without clipping */
 }
-.price-card--featured{border-color: rgba(47,111,235,.45); box-shadow: 0 22px 65px rgba(47,111,235,.10), var(--shadow2)}
+
+.price-card--featured{
+  border-color: rgba(47,111,235,.45);
+  box-shadow: 0 22px 65px rgba(47,111,235,.10), var(--shadow2)
+}
+
 .badge{
-  position:absolute; top:14px; right:14px; font-size:.85rem; padding:7px 10px; border-radius:999px;
-  border:1px solid rgba(47,111,235,.45); color: rgba(238,242,248,.92); background: rgba(47,111,235,.18)
+  position:absolute;
+  top: -14px;             /* lift above card content */
+  right: 14px;
+  font-size:.85rem;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(47,111,235,.45);
+  color: rgba(238,242,248,.92);
+  background: rgba(47,111,235,.18);
+  backdrop-filter: blur(6px);
 }
+
 .price-top{display:flex; justify-content:space-between; align-items:flex-end; gap:12px}
 .price-name{font-weight:850}
 .price-value{font-weight:900; font-size:2rem; letter-spacing:-.5px}
