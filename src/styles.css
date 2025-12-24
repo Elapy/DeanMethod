@@ -148,10 +148,7 @@ a{color:inherit}
 @media (max-width:980px){ .pricing-grid{grid-template-columns:1fr} }
 .price-card{
   position:relative;
-
-  /* reserve a dedicated badge zone so it can’t collide */
   padding: 56px 18px 28px;
-
   border:1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(255,255,255,.02);
@@ -171,7 +168,13 @@ a{color:inherit}
   color: rgba(238,242,248,.92);
   background: rgba(47,111,235,.18);
 }
-.price-top{display:flex; justify-content:space-between; align-items:flex-end; gap:12px}
+.price-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+  margin-top: 6px; /* adds breathing room below the badge zone */
+}
 .price-name{font-weight:850}
 .price-value{font-weight:900; font-size:2rem; letter-spacing:-.5px}
 
