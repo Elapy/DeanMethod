@@ -1,3 +1,4 @@
+// src/app.js
 (function () {
   const DATA_URL = "data/sessions.json";
 
@@ -7,6 +8,180 @@
     const year = $("year");
     if (year) year.textContent = String(new Date().getFullYear());
   }
+
+  // -----------------------------
+  // A001: Pricing + seasonal sales
+  // Date override: YYYY-MM-DD (empty = real date)
+  // -----------------------------
+
+  function pad2(n){ return String(n).padStart(2, "0"); }
+
+  function parsePreviewDate(inputValue){
+    const s = String(inputValue || "").trim();
+    if (!s) return null;
+
+    // Expected format: YYYY-MM-DD
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) return null;
+
+    const y = Number(m[1]);
+    const mo = Number(m[2]);
+    const d = Number(m[3]);
+
+    if (!Number.isFinite(y) || !Number.isFinite(mo) || !Number.isFinite(d)) return null;
+    if (mo < 1 || mo > 12) return null;
+    if (d < 1 || d > 31) return null;
+
+    // Local date at noon to avoid DST edge weirdness
+    const dt = new Date(y, mo - 1, d, 12, 0, 0, 0);
+    // Validate it round-trips (e.g., 2025-02-31 shouldn't pass)
+    if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== mo || dt.getDate() !== d) return null;
+
+    return dt;
+  }
+
+  function mdKey(month, day){
+    // month: 1-12, day: 1-31
+    return month * 100 + day; // e.g. 12/25 -> 1225
+  }
+
+  function dateToMdKey(dt){
+    return mdKey(dt.getMonth() + 1, dt.getDate());
+  }
+
+  function inWindowAnnual(dt, start, end){
+    // Inclusive range. Handles cross-year windows like Dec 25 -> Jan 7.
+    const k = dateToMdKey(dt);
+    const ks = mdKey(start.month, start.day);
+    const ke = mdKey(end.month, end.day);
+
+    if (ks <= ke){
+      return k >= ks && k <= ke;
+    }
+    // Cross-year: match if >= start OR <= end
+    return (k >= ks) || (k <= ke);
+  }
+
+  function money(n){
+    return "$" + String(Math.round(Number(n)));
+  }
+
+  function getPricingConfig(){
+    const cfg = (window.DEANMETHOD_CONFIG && window.DEANMETHOD_CONFIG.pricing) ? window.DEANMETHOD_CONFIG.pricing : null;
+    if (!cfg) {
+      return {
+        base: { foundation: 99, progress: 179, elite: 339 },
+        sales: []
+      };
+    }
+    return cfg;
+  }
+
+  function pickSaleForDate(dt, pricingCfg){
+    const sales = Array.isArray(pricingCfg.sales) ? pricingCfg.sales : [];
+    for (const sale of sales){
+      if (!sale || !sale.start || !sale.end || !sale.prices) continue;
+      if (inWindowAnnual(dt, sale.start, sale.end)){
+        return sale;
+      }
+    }
+    return null;
+  }
+
+  function applyPricingForDate(dt){
+    const pricingCfg = getPricingConfig();
+    const base = pricingCfg.base || { foundation: 99, progress: 179, elite: 339 };
+    const sale = pickSaleForDate(dt, pricingCfg);
+
+    // Expect markup:
+    // <article class="price-card" data-plan="foundation|progress|elite">
+    //   <div class="price-value">
+    //     <span class="price-old" hidden></span>
+    //     <span class="price-new"></span>
+    //     <span class="muted">/mo</span>
+    //   </div>
+    // </article>
+
+    const cards = document.querySelectorAll(".price-card[data-plan]");
+    for (const card of cards){
+      const plan = String(card.getAttribute("data-plan") || "").trim();
+      if (!plan) continue;
+
+      const basePrice = base[plan];
+      const salePrice = sale && sale.prices ? sale.prices[plan] : null;
+
+      const oldEl = card.querySelector(".price-old");
+      const newEl = card.querySelector(".price-new");
+      const valueWrap = card.querySelector(".price-value");
+
+      if (!newEl || !valueWrap) continue;
+
+      // Clear tooltip state
+      valueWrap.classList.remove("has-sale-tooltip");
+      valueWrap.removeAttribute("data-tooltip");
+
+      if (sale && Number.isFinite(Number(salePrice)) && Number.isFinite(Number(basePrice)) && Number(salePrice) !== Number(basePrice)){
+        // Sale active
+        if (oldEl){
+          oldEl.textContent = money(basePrice);
+          oldEl.hidden = false;
+        }
+        newEl.textContent = money(salePrice);
+
+        // Hover card reason
+        valueWrap.classList.add("has-sale-tooltip");
+        valueWrap.setAttribute("data-tooltip", sale.reason || sale.label || "Sale");
+      } else {
+        // No sale
+        if (oldEl) {
+          oldEl.textContent = "";
+          oldEl.hidden = true;
+        }
+        newEl.textContent = money(basePrice);
+      }
+    }
+
+    // Optional: show status in preview UI if present
+    const status = $("pricingPreviewStatus");
+    if (status){
+      const y = dt.getFullYear();
+      const shown = `${y}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`;
+      if (sale){
+        status.textContent = `Preview date: ${shown} • Sale: ${sale.reason || sale.label || sale.id}`;
+      } else {
+        status.textContent = `Preview date: ${shown} • No sale`;
+      }
+    }
+  }
+
+  function wirePricingPreview(){
+    const input = $("pricePreviewDate");
+    const btn = $("applyPricePreviewBtn");
+    if (!input || !btn) return;
+
+    function run(){
+      const parsed = parsePreviewDate(input.value);
+      const dt = parsed || new Date();
+      applyPricingForDate(dt);
+    }
+
+    btn.addEventListener("click", run);
+
+    // Enter key convenience
+    input.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter"){
+        ev.preventDefault();
+        run();
+      }
+    });
+
+    // Initial apply based on real date
+    applyPricingForDate(new Date());
+  }
+
+  // -----------------------------
+  // Heatmap logic (existing)
+  // -----------------------------
 
   function emptyGrid(value = 0) {
     return Array.from({ length: 7 }, () => Array.from({ length: 24 }, () => value));
@@ -93,7 +268,7 @@
     // cells
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        const v = hasData ? (grid[r][c] / denom) : 0.35; // neutral baseline if no data
+        const v = hasData ? (grid[r][c] / denom) : 0.35;
         ctx.fillStyle = colorFor(v);
         ctx.fillRect(padL + c * cellW, padT + r * cellH, cellW, cellH);
       }
@@ -111,7 +286,7 @@
       ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y); ctx.stroke();
     }
 
-    // X labels — centered under each HOUR BLOCK (not on grid lines)
+    // X labels — centered under each hour block
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillStyle = "rgba(170,180,197,0.95)";
@@ -148,6 +323,7 @@
 
   async function main() {
     wireFooterYear();
+    wirePricingPreview();
 
     const canvas = $("heatmapCanvas");
     const wrap = $("heatmapWrap");
@@ -188,7 +364,6 @@
     function rerender() {
       layout = renderHeatmap(ctx, canvas, grid, hasData, useAMPM);
 
-      // IMPORTANT: no “no sessions” message, no fallback message
       if (stats) {
         stats.textContent = hasData ? `${sessionsCount} session(s) • ${totalHours.toFixed(1)} total hour(s)` : "";
       }
@@ -204,7 +379,6 @@
       totalHours = computed.totalHours;
       sessionsCount = computed.sessionsCount;
     } catch (e) {
-      // neutral baseline, no visible error text
       grid = emptyGrid(0);
       hasData = false;
     }
@@ -218,17 +392,12 @@
       });
     }
 
-    canvas.addEventListener("mousemove", (ev) => {
-      // optional: keep tooltip only on click; so do nothing here
-    });
-
     canvas.addEventListener("mouseleave", () => hideTip());
 
     canvas.addEventListener("click", (ev) => {
       if (!layout) return;
 
       const rect = canvas.getBoundingClientRect();
-      // convert client coords to canvas coords
       const scaleX = canvas.width / rect.width;
       const scaleY = canvas.height / rect.height;
       const cx = (ev.clientX - rect.left) * scaleX;
