@@ -192,6 +192,15 @@ a{color:inherit}
   position: static;          /* disables absolute positioning */
 }
 
+/* Pricing: elevate plan names */
+.price-name{
+  font-weight: 900;
+  font-size: 1.05rem;     /* slightly larger */
+  margin-top: -10px;     /* pull upward into empty space */
+  margin-bottom: 4px;
+  letter-spacing: -0.2px;
+}
+
 .panel{
   border:1px solid var(--line); border-radius: var(--radius);
   background: rgba(255,255,255,.02); box-shadow: var(--shadow2); padding:16px
