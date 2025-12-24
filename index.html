@@ -268,7 +268,11 @@
               <li>Programming fundamentals + execution coaching</li>
               <li>Simple progress rules you can sustain</li>
             </ul>
-            <a class="btn primary" href="#contact-dean">Request</a>
+
+            <div class="price-actions">
+              <a class="btn primary" href="#contact-dean">Request</a>
+              <button class="btn" id="openTrialBtn" type="button" aria-haspopup="dialog">Try 1</button>
+            </div>
           </article>
 
           <article class="price-card price-card--featured">
@@ -289,7 +293,7 @@
           <article class="price-card">
             <div class="price-top">
               <div class="price-name">Elite</div>
-              <div class="price-value">$329<span class="muted">/mo</span></div>
+              <div class="price-value">$319<span class="muted">/mo</span></div>
             </div>
             <div class="muted">Highest support for aggressive goals or tighter constraints.</div>
             <ul class="bullets">
@@ -313,6 +317,41 @@
           The first session may run longer due to intake, assessment, and planning.
         </div>
       </div>
+
+      <!-- Try 1 Modal -->
+      <dialog id="trialDialog" class="modal" aria-label="One-time session offer">
+        <div class="modal-card card">
+          <div class="modal-head">
+            <div>
+              <div class="modal-title">One-time session — $45</div>
+              <div class="muted small">A simple way to see if this style of coaching fits you.</div>
+            </div>
+            <button class="btn btn-sm modal-close" type="button" aria-label="Close">Close</button>
+          </div>
+
+          <div class="muted" style="line-height:1.75;">
+            This is a one-time introductory session designed to:
+            <ul class="bullets" style="margin-top:10px;">
+              <li>clarify your goal, constraints, and training history</li>
+              <li>spot the highest-leverage fixes in your current routine</li>
+              <li>give you a clear next-step plan you can execute immediately</li>
+            </ul>
+          </div>
+
+          <div class="callout" style="margin-top:14px;">
+            <div class="callout-title">How to book</div>
+            <div class="callout-text">
+              Use the contact form and mention “Try 1”. I’ll reply to coordinate scheduling. This offer is intended as
+              a one-time entry session.
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <a class="btn primary" href="#contact-dean" id="trialCtaLink">Contact to schedule</a>
+            <button class="btn" type="button" id="trialDismissBtn">Not now</button>
+          </div>
+        </div>
+      </dialog>
     </section>
 
     <!-- COVERAGE -->
@@ -639,6 +678,45 @@
       }).addTo(map);
 
       L.marker(center, {opacity: 0.9}).addTo(map).bindPopup("Ventura County coverage").openPopup();
+    })();
+
+    // Try 1 modal
+    (function(){
+      var openBtn = document.getElementById("openTrialBtn");
+      var dlg = document.getElementById("trialDialog");
+      if (!openBtn || !dlg) return;
+
+      function closeDialog(){
+        if (dlg.open) dlg.close();
+      }
+
+      openBtn.addEventListener("click", function(){
+        if (typeof dlg.showModal === "function") dlg.showModal();
+        else dlg.setAttribute("open", "open");
+      });
+
+      var closeBtn = dlg.querySelector(".modal-close");
+      if (closeBtn) closeBtn.addEventListener("click", closeDialog);
+
+      var dismissBtn = document.getElementById("trialDismissBtn");
+      if (dismissBtn) dismissBtn.addEventListener("click", closeDialog);
+
+      var cta = document.getElementById("trialCtaLink");
+      if (cta) cta.addEventListener("click", closeDialog);
+
+      // Click outside card closes (backdrop click)
+      dlg.addEventListener("click", function(ev){
+        var card = dlg.querySelector(".modal-card");
+        if (!card) return;
+        var r = card.getBoundingClientRect();
+        var inCard =
+          ev.clientX >= r.left && ev.clientX <= r.right &&
+          ev.clientY >= r.top  && ev.clientY <= r.bottom;
+        if (!inCard) closeDialog();
+      });
+
+      // Esc closes automatically for <dialog>, but keep safe anyway
+      dlg.addEventListener("cancel", function(){ closeDialog(); });
     })();
   </script>
 </body>
