@@ -199,9 +199,9 @@ a{color:inherit}
 /* Pricing: elevate plan names */
 .price-name{
   font-weight: 900;
-  font-size: 1.30rem;   /* visibly larger */
-  margin-top: -10px;     /* moves into freed space */
-  margin-bottom: 20px;
+  font-size: 1.20rem;   /* visibly larger */
+  margin-top: -5px;     /* moves into freed space */
+  margin-bottom: 5px;
   letter-spacing: -0.2px;
 }
 
