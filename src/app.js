@@ -32,7 +32,7 @@
     if (mo < 1 || mo > 12) return null;
     if (d < 1 || d > 31) return null;
 
-    // Local date at noon to avoid DST edges
+    // Local date at noon to avoid DST edge weirdness
     const dt = new Date(y, mo - 1, d, 12, 0, 0, 0);
     if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== mo || dt.getDate() !== d) return null;
 
@@ -48,7 +48,7 @@
   }
 
   function inWindowAnnual(dt, start, end){
-    // Inclusive. Handles cross-year windows like Dec 25 -> Jan 7.
+    // Inclusive, supports cross-year windows like Dec 25 -> Jan 7
     const k = dateToMdKey(dt);
     const ks = mdKey(start.month, start.day);
     const ke = mdKey(end.month, end.day);
@@ -56,7 +56,6 @@
     if (ks <= ke){
       return k >= ks && k <= ke;
     }
-    // Cross-year
     return (k >= ks) || (k <= ke);
   }
 
@@ -65,7 +64,13 @@
   }
 
   function getPricingConfig(){
-    const cfg = (window.DEANMETHOD_CONFIG && window.DEANMETHOD_CONFIG.pricing) ? window.DEANMETHOD_CONFIG.pricing : null;
+    const cfg =
+      (window.DEANMETHOD_CONFIG &&
+       window.DEANMETHOD_CONFIG.pricing)
+        ? window.DEANMETHOD_CONFIG.pricing
+        : null;
+
+    // Safe fallback (still your new defaults)
     if (!cfg) {
       return {
         base: { foundation: 99, progress: 179, elite: 339 },
@@ -109,29 +114,34 @@
       valueWrap.classList.remove("has-sale-tooltip");
       valueWrap.removeAttribute("data-tooltip");
 
-      if (
-        sale &&
-        Number.isFinite(Number(salePrice)) &&
-        Number.isFinite(Number(basePrice)) &&
-        Number(salePrice) !== Number(basePrice)
-      ){
-        // Sale active
+      const baseOk = Number.isFinite(Number(basePrice));
+      const saleOk = Number.isFinite(Number(salePrice));
+
+      if (sale && baseOk && saleOk && Number(salePrice) !== Number(basePrice)) {
+        // Sale active: show old price + new price + tooltip card
         if (oldEl){
           oldEl.textContent = money(basePrice);
           oldEl.hidden = false;
         }
         newEl.textContent = money(salePrice);
 
-        // Hover tooltip reason
+        // Hover card content:
+        // - Line 1: sale reason
+        // - Line 2: 1-year rate lock
+        const reason = String(sale.reason || sale.label || "Sale").trim();
+        const tooltipText =
+          reason + "\n" +
+          "1-year rate lock (enroll during sale)";
+
         valueWrap.classList.add("has-sale-tooltip");
-        valueWrap.setAttribute("data-tooltip", sale.reason || sale.label || "Sale");
+        valueWrap.setAttribute("data-tooltip", tooltipText);
       } else {
-        // No sale
+        // No sale: show base price only
         if (oldEl) {
           oldEl.textContent = "";
           oldEl.hidden = true;
         }
-        newEl.textContent = money(basePrice);
+        if (baseOk) newEl.textContent = money(basePrice);
       }
     }
   }
@@ -145,7 +155,6 @@
   // -----------------------------
   // Heatmap logic (existing)
   // -----------------------------
-
   function emptyGrid(value = 0) {
     return Array.from({ length: 7 }, () => Array.from({ length: 24 }, () => value));
   }
