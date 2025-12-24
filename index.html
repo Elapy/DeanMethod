@@ -39,7 +39,6 @@
         <a href="#faq">FAQ</a>
         <a class="nav-cta" href="#contact-dean">Contact</a>
 
-        <!-- Socials (placeholders; replace href later) -->
         <a class="nav-social" href="https://www.tiktok.com/@deanmethod" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
             <path fill="currentColor" d="M16.6 5.2c.8 1.3 2.1 2.1 3.6 2.3v3.1c-1.6-.1-3-.7-4.2-1.7v6.5c0 3-2.4 5.4-5.4 5.4S5.2 18.4 5.2 15.4s2.4-5.4 5.4-5.4c.4 0 .9.1 1.3.2v3.2c-.4-.2-.8-.3-1.3-.3-1.3 0-2.3 1.1-2.3 2.3 0 1.3 1.1 2.3 2.3 2.3 1.4 0 2.4-1 2.4-2.6V2.8h3.1c.1.9.3 1.7.6 2.4z"/>
@@ -170,7 +169,6 @@
         </div>
 
         <div class="alt alt--cards">
-          <!-- 1 -->
           <section class="alt-row">
             <figure class="visual-card">
               <img
@@ -195,7 +193,6 @@
             </div>
           </section>
 
-          <!-- 2 -->
           <section class="alt-row alt-row--rev">
             <div class="alt-text card">
               <h3>A routine and habits you can trust</h3>
@@ -220,7 +217,6 @@
             </figure>
           </section>
 
-          <!-- 3 -->
           <section class="alt-row">
             <figure class="visual-card">
               <img
@@ -254,13 +250,33 @@
         <div class="section-head">
           <h2>Pricing</h2>
           <p class="muted">Monthly coaching tiers. Session availability scales with your plan.</p>
+
+          <!-- A001: Date preview control (empty = real date). Format below. -->
+          <div class="panel" style="margin-top:14px;">
+            <div class="muted small" style="margin-bottom:10px;">
+              Pricing preview (optional). Leave empty to use the real date.
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+              <input id="pricePreviewDate" type="text" placeholder="YYYY-MM-DD" style="max-width:220px;">
+              <button id="applyPricePreviewBtn" class="btn btn-sm" type="button">Apply preview date</button>
+              <div id="pricingPreviewStatus" class="muted small"></div>
+            </div>
+            <div class="muted small" style="margin-top:10px; line-height:1.6;">
+              Format: <strong>YYYY-MM-DD</strong> (example: 2026-01-03)
+              <br>
+              Search marker: <strong>A001</strong>
+            </div>
+          </div>
         </div>
 
         <div class="pricing-grid">
-          <article class="price-card">
+          <article class="price-card" data-plan="foundation">
             <div class="price-top">
               <div class="price-name">Foundation</div>
-              <div class="price-value">$79<span class="muted">/mo</span></div>
+              <div class="price-value">
+                <span class="price-old" hidden></span>
+                <span class="price-new">$99</span><span class="muted">/mo</span>
+              </div>
             </div>
             <div class="muted">Best for consistency, accountability, and clean progression.</div>
             <ul class="bullets">
@@ -275,29 +291,35 @@
             </div>
           </article>
 
-          <article class="price-card price-card--featured">
+          <article class="price-card price-card--featured" data-plan="progress">
             <div class="badge">Most popular</div>
-          
+
             <div class="price-top">
               <div class="price-name">Progress</div>
-              <div class="price-value">$159<span class="muted">/mo</span></div>
+              <div class="price-value">
+                <span class="price-old" hidden></span>
+                <span class="price-new">$179</span><span class="muted">/mo</span>
+              </div>
             </div>
-          
+
             <div class="muted">More touchpoints for faster iteration and fewer plateaus.</div>
-          
+
             <ul class="bullets">
               <li><strong>Up to 4 sessions/month</strong></li>
               <li>Technique + plan tuning (volume, effort, exercise selection)</li>
               <li>Adjustments as life/schedule changes</li>
             </ul>
-          
+
             <a class="btn primary" href="#contact-dean">Request</a>
           </article>
 
-          <article class="price-card">
+          <article class="price-card" data-plan="elite">
             <div class="price-top">
               <div class="price-name">Elite</div>
-              <div class="price-value">$319<span class="muted">/mo</span></div>
+              <div class="price-value">
+                <span class="price-old" hidden></span>
+                <span class="price-new">$339</span><span class="muted">/mo</span>
+              </div>
             </div>
             <div class="muted">Highest support for aggressive goals or tighter constraints.</div>
             <ul class="bullets">
@@ -309,7 +331,6 @@
           </article>
         </div>
 
-        <!-- Low-attention notes (no callout boxes) -->
         <div class="muted small" style="margin-top:16px; line-height:1.7;">
           After you reach out, we’ll confirm fit and scheduling. If you want to move forward, you’ll receive a secure
           subscription link to enroll before the first session.
@@ -593,24 +614,9 @@
 
           <div class="footer-col">
             <div class="footer-head">Social</div>
-          
-            <a href="https://www.tiktok.com/@deanmethod"
-               target="_blank"
-               rel="noopener noreferrer">
-               TikTok
-            </a>
-          
-            <a href="https://www.youtube.com/@deanmethod"
-               target="_blank"
-               rel="noopener noreferrer">
-               YouTube
-            </a>
-          
-            <a href="https://www.instagram.com/deanmethod"
-               target="_blank"
-               rel="noopener noreferrer">
-               Instagram
-            </a>
+            <a href="https://www.tiktok.com/@deanmethod" target="_blank" rel="noopener noreferrer">TikTok</a>
+            <a href="https://www.youtube.com/@deanmethod" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a href="https://www.instagram.com/deanmethod" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
 
           <div class="footer-col">
@@ -631,11 +637,6 @@
   <script src="src/app.js"></script>
 
   <script>
-    (function(){
-      var y = document.getElementById("year");
-      if (y) y.textContent = String(new Date().getFullYear());
-    })();
-
     (function(){
       var form = document.getElementById("contactForm");
       if (!form) return;
@@ -723,7 +724,6 @@
       var cta = document.getElementById("trialCtaLink");
       if (cta) cta.addEventListener("click", closeDialog);
 
-      // Click outside card closes (backdrop click)
       dlg.addEventListener("click", function(ev){
         var card = dlg.querySelector(".modal-card");
         if (!card) return;
@@ -734,7 +734,6 @@
         if (!inCard) closeDialog();
       });
 
-      // Esc closes automatically for <dialog>, but keep safe anyway
       dlg.addEventListener("cancel", function(){ closeDialog(); });
     })();
   </script>
