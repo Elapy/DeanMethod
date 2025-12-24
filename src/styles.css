@@ -171,9 +171,8 @@ a{color:inherit}
 .price-top{
   display:flex;
   justify-content:space-between;
-  align-items:flex-end;
+  align-items:flex-start;   /* ← key change */
   gap:12px;
-  margin-top: 6px; /* adds breathing room below the badge zone */
 }
 .price-name{font-weight:850}
 .price-value{font-weight:900; font-size:2rem; letter-spacing:-.5px}
