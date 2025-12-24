@@ -564,21 +564,50 @@ body { overflow-x: clip; }
 .price-actions .btn{
   flex: 0 0 auto;
 }
+/* Push Try 1 to the far right on tier 1 */
+.price-actions #openTrialBtn{
+  margin-left: auto;
+}
 
+/* On narrow screens, don’t force it to the edge */
+@media (max-width:520px){
+  .price-actions #openTrialBtn{
+    margin-left: 0;
+  }
+}
 /* --- Modal (Try 1) --- */
 .modal{
+  /* kill native dialog sheet/border */
   border: none;
+  outline: none;
   padding: 0;
+  margin: auto;
   background: transparent;
+
+  /* keep it sized like a real modal */
+  width: min(720px, calc(100% - 32px));
   max-width: min(720px, calc(100% - 32px));
 }
+
+.modal:focus{
+  outline: none;
+}
+
 .modal::backdrop{
   background: rgba(0,0,0,.65);
   backdrop-filter: blur(8px);
 }
+
+/* The visible “card” uses your site theme */
 .modal-card{
   padding: 18px;
+  background: rgba(255,255,255,.02);          /* matches .card */
+  border: 1px solid var(--line);              /* matches .card */
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
+
+/* Header + actions */
 .modal-head{
   display:flex;
   align-items:flex-start;
@@ -586,17 +615,21 @@ body { overflow-x: clip; }
   gap:12px;
   margin-bottom: 12px;
 }
+
 .modal-title{
   font-weight: 900;
   font-size: 1.15rem;
   margin-bottom: 4px;
 }
+
 .modal-actions{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
   margin-top: 14px;
 }
+
 .modal-close{
   white-space: nowrap;
 }
+
