@@ -182,18 +182,23 @@ a{color:inherit}
   margin-top: 10px;   /* pushes price down */
 }
 
-/* Dedicated top row so badge never overlaps price */
-.price-badge-row{
-  height: 28px;              /* reserves space */
-  margin-bottom: 10px;       /* separates badge from price */
-  display:flex;
-  justify-content:flex-end;
-  align-items:flex-start;
+/* Badge stays absolute like before */
+.badge{
+  position:absolute;
+  top:16px;
+  right:14px;
+  z-index:2;
+  font-size:.85rem;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(47,111,235,.45);
+  color: rgba(238,242,248,.92);
+  background: rgba(47,111,235,.18);
 }
 
-/* Badge becomes normal flow inside the reserved row */
-.price-badge-row .badge{
-  position: static;          /* disables absolute positioning */
+/* Only the featured card needs spacing so the badge never overlaps */
+.price-card--featured .price-top{
+  margin-top: 28px; /* pushes name/price down just in this card */
 }
 
 /* Pricing: elevate plan names */
