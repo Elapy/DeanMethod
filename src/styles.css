@@ -159,15 +159,17 @@ a{color:inherit}
 }
 .price-card--featured{border-color: rgba(47,111,235,.45); box-shadow: 0 22px 65px rgba(47,111,235,.10), var(--shadow2)}
 .badge{
-  position:absolute; 
-  top:12px; 
+  position:absolute;
+  top:16px;
   right:14px;
-  font-size:.85rem; 
-  padding:7px 10px; 
+  z-index: 2;
+
+  font-size:.85rem;
+  padding:7px 10px;
   border-radius:999px;
-  border:1px solid rgba(47,111,235,.45); 
-  color: rgba(238,242,248,.92); 
-  background: rgba(47,111,235,.18)
+  border:1px solid rgba(47,111,235,.45);
+  color: rgba(238,242,248,.92);
+  background: rgba(47,111,235,.18);
 }
 .price-top{display:flex; justify-content:space-between; align-items:flex-end; gap:12px}
 .price-name{font-weight:850}
