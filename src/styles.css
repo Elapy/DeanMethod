@@ -620,6 +620,7 @@ body { overflow-x: clip; }
   font-weight: 900;
   font-size: 1.15rem;
   margin-bottom: 4px;
+  color: var(--text);
 }
 
 .modal-actions{
