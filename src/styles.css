@@ -196,9 +196,10 @@ a{color:inherit}
   background: rgba(47,111,235,.18);
 }
 
-/* Only the featured card needs spacing so the badge never overlaps */
-.price-card--featured .price-top{
-  margin-top: 28px; /* pushes name/price down just in this card */
+/* Featured badge sits above the content without pushing layout down */
+.price-card--featured .badge{
+  top: -12px;                /* lifts badge into the empty space above the card */
+  right: 14px;
 }
 
 /* Pricing: elevate plan names */
