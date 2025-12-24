@@ -11,17 +11,17 @@
 
   // -----------------------------
   // A001: Pricing + seasonal sales
-  // Date override: YYYY-MM-DD (empty = real date)
+  // Date override (DEV ONLY):
+  // Format: YYYY-MM-DD (example: "2026-01-03")
+  // Leave empty "" to use the real date.
   // -----------------------------
+  const PRICE_PREVIEW_DATE = ""; // A001
 
-  function pad2(n){ return String(n).padStart(2, "0"); }
+  function parsePreviewDate(s){
+    const raw = String(s || "").trim();
+    if (!raw) return null;
 
-  function parsePreviewDate(inputValue){
-    const s = String(inputValue || "").trim();
-    if (!s) return null;
-
-    // Expected format: YYYY-MM-DD
-    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
     if (!m) return null;
 
     const y = Number(m[1]);
@@ -32,16 +32,14 @@
     if (mo < 1 || mo > 12) return null;
     if (d < 1 || d > 31) return null;
 
-    // Local date at noon to avoid DST edge weirdness
+    // Local date at noon to avoid DST edges
     const dt = new Date(y, mo - 1, d, 12, 0, 0, 0);
-    // Validate it round-trips (e.g., 2025-02-31 shouldn't pass)
     if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== mo || dt.getDate() !== d) return null;
 
     return dt;
   }
 
   function mdKey(month, day){
-    // month: 1-12, day: 1-31
     return month * 100 + day; // e.g. 12/25 -> 1225
   }
 
@@ -50,7 +48,7 @@
   }
 
   function inWindowAnnual(dt, start, end){
-    // Inclusive range. Handles cross-year windows like Dec 25 -> Jan 7.
+    // Inclusive. Handles cross-year windows like Dec 25 -> Jan 7.
     const k = dateToMdKey(dt);
     const ks = mdKey(start.month, start.day);
     const ke = mdKey(end.month, end.day);
@@ -58,7 +56,7 @@
     if (ks <= ke){
       return k >= ks && k <= ke;
     }
-    // Cross-year: match if >= start OR <= end
+    // Cross-year
     return (k >= ks) || (k <= ke);
   }
 
@@ -93,15 +91,6 @@
     const base = pricingCfg.base || { foundation: 99, progress: 179, elite: 339 };
     const sale = pickSaleForDate(dt, pricingCfg);
 
-    // Expect markup:
-    // <article class="price-card" data-plan="foundation|progress|elite">
-    //   <div class="price-value">
-    //     <span class="price-old" hidden></span>
-    //     <span class="price-new"></span>
-    //     <span class="muted">/mo</span>
-    //   </div>
-    // </article>
-
     const cards = document.querySelectorAll(".price-card[data-plan]");
     for (const card of cards){
       const plan = String(card.getAttribute("data-plan") || "").trim();
@@ -116,11 +105,16 @@
 
       if (!newEl || !valueWrap) continue;
 
-      // Clear tooltip state
+      // Reset tooltip state
       valueWrap.classList.remove("has-sale-tooltip");
       valueWrap.removeAttribute("data-tooltip");
 
-      if (sale && Number.isFinite(Number(salePrice)) && Number.isFinite(Number(basePrice)) && Number(salePrice) !== Number(basePrice)){
+      if (
+        sale &&
+        Number.isFinite(Number(salePrice)) &&
+        Number.isFinite(Number(basePrice)) &&
+        Number(salePrice) !== Number(basePrice)
+      ){
         // Sale active
         if (oldEl){
           oldEl.textContent = money(basePrice);
@@ -128,7 +122,7 @@
         }
         newEl.textContent = money(salePrice);
 
-        // Hover card reason
+        // Hover tooltip reason
         valueWrap.classList.add("has-sale-tooltip");
         valueWrap.setAttribute("data-tooltip", sale.reason || sale.label || "Sale");
       } else {
@@ -140,43 +134,12 @@
         newEl.textContent = money(basePrice);
       }
     }
-
-    // Optional: show status in preview UI if present
-    const status = $("pricingPreviewStatus");
-    if (status){
-      const y = dt.getFullYear();
-      const shown = `${y}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`;
-      if (sale){
-        status.textContent = `Preview date: ${shown} • Sale: ${sale.reason || sale.label || sale.id}`;
-      } else {
-        status.textContent = `Preview date: ${shown} • No sale`;
-      }
-    }
   }
 
-  function wirePricingPreview(){
-    const input = $("pricePreviewDate");
-    const btn = $("applyPricePreviewBtn");
-    if (!input || !btn) return;
-
-    function run(){
-      const parsed = parsePreviewDate(input.value);
-      const dt = parsed || new Date();
-      applyPricingForDate(dt);
-    }
-
-    btn.addEventListener("click", run);
-
-    // Enter key convenience
-    input.addEventListener("keydown", (ev) => {
-      if (ev.key === "Enter"){
-        ev.preventDefault();
-        run();
-      }
-    });
-
-    // Initial apply based on real date
-    applyPricingForDate(new Date());
+  function initPricing(){
+    const preview = parsePreviewDate(PRICE_PREVIEW_DATE);
+    const dt = preview || new Date();
+    applyPricingForDate(dt);
   }
 
   // -----------------------------
@@ -255,7 +218,6 @@
     const maxVal = getMax(grid);
     const denom = (hasData && maxVal > 0) ? maxVal : 1;
 
-    // Y labels centered in each row
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     ctx.font = "12px Inter, ui-sans-serif, system-ui";
     ctx.fillStyle = "rgba(238,242,248,0.88)";
@@ -265,7 +227,6 @@
       ctx.fillText(days[r], padL - 10, padT + r * cellH + cellH / 2);
     }
 
-    // cells
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const v = hasData ? (grid[r][c] / denom) : 0.35;
@@ -274,7 +235,6 @@
       }
     }
 
-    // grid lines
     ctx.strokeStyle = "rgba(255,255,255,0.08)";
     ctx.lineWidth = 1;
     for (let c = 0; c <= cols; c++) {
@@ -286,7 +246,6 @@
       ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y); ctx.stroke();
     }
 
-    // X labels — centered under each hour block
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillStyle = "rgba(170,180,197,0.95)";
@@ -297,7 +256,6 @@
       ctx.fillText(label, x, padT + plotH + 14);
     }
 
-    // border
     ctx.strokeStyle = "rgba(255,255,255,0.14)";
     ctx.strokeRect(padL, padT, plotW, plotH);
 
@@ -323,7 +281,7 @@
 
   async function main() {
     wireFooterYear();
-    wirePricingPreview();
+    initPricing();
 
     const canvas = $("heatmapCanvas");
     const wrap = $("heatmapWrap");
@@ -335,7 +293,6 @@
     const ctx = canvas.getContext("2d");
 
     let useAMPM = false;
-    let sessions = [];
     let grid = emptyGrid(0);
     let hasData = false;
     let totalHours = 0;
@@ -363,16 +320,13 @@
 
     function rerender() {
       layout = renderHeatmap(ctx, canvas, grid, hasData, useAMPM);
-
-      if (stats) {
-        stats.textContent = hasData ? `${sessionsCount} session(s) • ${totalHours.toFixed(1)} total hour(s)` : "";
-      }
+      if (stats) stats.textContent = hasData ? `${sessionsCount} session(s) • ${totalHours.toFixed(1)} total hour(s)` : "";
       if (toggleBtn) toggleBtn.textContent = useAMPM ? "24 hr" : "12 hr";
       hideTip();
     }
 
     try {
-      sessions = await loadSessions();
+      const sessions = await loadSessions();
       hasData = sessions.length > 0;
       const computed = computeHeatmap(sessions);
       grid = computed.grid;
@@ -404,17 +358,13 @@
       const cy = (ev.clientY - rect.top) * scaleY;
 
       const cell = cellFromPointer(layout, cx, cy);
-      if (!cell) {
-        hideTip();
-        return;
-      }
+      if (!cell) { hideTip(); return; }
 
       const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       const day = days[cell.r];
       const hour = cell.c;
 
       const valueHours = hasData ? (grid[cell.r][cell.c] || 0) : 0;
-
       const range = hourRangeLabel(hour, useAMPM);
       const text = `${day} • ${range} • ${valueHours.toFixed(2)} hr`;
 
