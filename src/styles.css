@@ -175,7 +175,12 @@ a{color:inherit}
   gap:12px;
 }
 .price-name{font-weight:850}
-.price-value{font-weight:900; font-size:2rem; letter-spacing:-.5px}
+.price-value{
+  font-weight:900;
+  font-size:2rem;
+  letter-spacing:-.5px;
+  margin-top: 10px;   /* pushes price down */
+}
 
 /* Dedicated top row so badge never overlaps price */
 .price-badge-row{
@@ -194,9 +199,8 @@ a{color:inherit}
 /* Pricing: elevate plan names */
 .price-name{
   font-weight: 900;
-  font-size: 1.05rem;     /* slightly larger */
-  margin-top: -10px;     /* pull upward into empty space */
-  margin-bottom: 4px;
+  font-size: 1.15rem;   /* visibly larger */
+  margin-top: -6px;     /* moves into freed space */
   letter-spacing: -0.2px;
 }
 
