@@ -160,7 +160,6 @@ a{color:inherit}
   box-shadow: 0 22px 65px rgba(47,111,235,.10), var(--shadow2);
 }
 
-/* Single badge definition (no duplicates) */
 .badge{
   position: absolute;
   top: 10px;
@@ -194,38 +193,45 @@ a{color:inherit}
   letter-spacing: -0.5px;
   margin-top: 10px;
 
-  /* A001: pricing swap layout */
+  /* Required for tooltip positioning */
+  position: relative;
   display: inline-flex;
   align-items: baseline;
   gap: 10px;
-  justify-content: flex-end;
 }
 
-/* A001: old price (small, gray, strikethrough, left) */
+/* Old price: small, gray, strikethrough, left of new price */
 .price-old{
-  font-weight: 700;
   font-size: 0.95rem;
-  letter-spacing: 0;
+  font-weight: 700;
   color: rgba(170,180,197,.75);
   text-decoration: line-through;
   text-decoration-thickness: 2px;
   text-decoration-color: rgba(170,180,197,.55);
+  letter-spacing: -0.2px;
 }
 
-/* A001: hover “card” tooltip for sale reason */
-.has-sale-tooltip{
-  position: relative;
+/* New price span just holds the number */
+.price-new{
+  display:inline-block;
+}
+
+/* Hover card tooltip for sale reason + rate lock */
+.price-value.has-sale-tooltip{
   cursor: help;
 }
-.has-sale-tooltip::after{
+
+.price-value.has-sale-tooltip::after{
   content: attr(data-tooltip);
   position: absolute;
-  left: 50%;
-  top: -12px;
-  transform: translate(-50%, -100%);
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
+  right: 0;
+  top: -10px;
+  transform: translateY(-100%);
+  width: max-content;
+  max-width: 260px;
+
+  white-space: pre-line;
+  line-height: 1.35;
 
   padding: 10px 12px;
   border-radius: 12px;
@@ -233,10 +239,36 @@ a{color:inherit}
   background: rgba(15,18,22,.96);
   color: rgba(238,242,248,.95);
   box-shadow: 0 18px 60px rgba(0,0,0,.55);
-  font-size: .92rem;
-  z-index: 20;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
 }
-.has-sale-tooltip:hover::after{
+
+.price-value.has-sale-tooltip::before{
+  content:"";
+  position:absolute;
+  right: 18px;
+  top: -14px;
+  transform: translateY(-100%);
+  width: 10px;
+  height: 10px;
+  background: rgba(15,18,22,.96);
+  border-left: 1px solid rgba(255,255,255,.14);
+  border-bottom: 1px solid rgba(255,255,255,.14);
+  transform: translateY(-100%) rotate(45deg);
+
+  opacity: 0;
+  pointer-events:none;
+  transition: opacity .12s ease;
+}
+
+.price-value.has-sale-tooltip:hover::after{
+  opacity: 1;
+  transform: translateY(-100%) translateY(-6px);
+}
+
+.price-value.has-sale-tooltip:hover::before{
   opacity: 1;
 }
 
@@ -475,7 +507,7 @@ input:focus, textarea:focus{
   border-color: rgba(47,111,235,.75);
 }
 
-/* Message split */
+/* Message split: textarea left, send panel right */
 .message-split{
   --msgOffset: 26px;
   display:grid;
@@ -538,7 +570,7 @@ input:focus, textarea:focus{
 html { overflow-x: clip; }
 body { overflow-x: clip; }
 
-/* Chip text tuning */
+/* --- Chip text tuning --- */
 .chip span {
   font-family: var(--font);
   font-size: 0.85rem;
@@ -550,13 +582,13 @@ body { overflow-x: clip; }
 .chip { align-items: center; }
 .chip::before { position: relative; top: 3px; }
 
-/* Stagger vertical spacing inside Send box */
+/* --- Stagger vertical spacing inside Send box --- */
 .message-side{ padding-top: 16px; }
 .message-side button{ margin-top: 6px; }
 .message-side .side-contacts > div:first-child{ margin-top: 12px; }
 .message-side .side-contacts > div:last-child{ margin-top: 12px; }
 
-/* Pricing: dual-button row for tier 1 */
+/* --- Pricing: dual-button row for tier 1 --- */
 .price-actions{
   display: flex;
   align-items: center;
@@ -564,12 +596,11 @@ body { overflow-x: clip; }
   flex-wrap: wrap;
 }
 .price-actions .btn{ flex: 0 0 auto; }
-
 @media (max-width:520px){
   .price-actions #openTrialBtn{ margin-left: 0; }
 }
 
-/* Modal */
+/* --- Modal --- */
 .modal{
   border: none;
   outline: none;
