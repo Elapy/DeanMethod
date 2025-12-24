@@ -163,7 +163,7 @@ a{color:inherit}
 /* Single badge definition (no duplicates) */
 .badge{
   position: absolute;
-  top: 52px;               /* floats above content */
+  top: 32px;               /* floats above content */
   right: 14px;
   z-index: 2;
   font-size: .85rem;
