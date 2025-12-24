@@ -201,7 +201,6 @@ a{color:inherit}
   font-weight: 900;
   font-size: 1.20rem;   /* visibly larger */
   margin-top: -5px;     /* moves into freed space */
-  margin-bottom: 5px;
   letter-spacing: -0.2px;
 }
 
