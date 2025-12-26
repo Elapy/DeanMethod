@@ -118,16 +118,12 @@
       const saleOk = Number.isFinite(Number(salePrice));
 
       if (sale && baseOk && saleOk && Number(salePrice) !== Number(basePrice)) {
-        // Sale active: show old price + new price + tooltip card
         if (oldEl){
           oldEl.textContent = money(basePrice);
           oldEl.hidden = false;
         }
         newEl.textContent = money(salePrice);
 
-        // Hover card content:
-        // - Line 1: sale reason
-        // - Line 2: 1-year rate lock
         const reason = String(sale.reason || sale.label || "Sale").trim();
         const tooltipText =
           reason + "\n" +
@@ -136,7 +132,6 @@
         valueWrap.classList.add("has-sale-tooltip");
         valueWrap.setAttribute("data-tooltip", tooltipText);
       } else {
-        // No sale: show base price only
         if (oldEl) {
           oldEl.textContent = "";
           oldEl.hidden = true;
@@ -288,9 +283,117 @@
     return Array.isArray(data.sessions) ? data.sessions : [];
   }
 
+  // -----------------------------
+  // Contact form: submit without leaving site (FormSubmit AJAX)
+  // -----------------------------
+  function initContactFormAjax(){
+    const form = document.getElementById("contactForm");
+    if (!form) return;
+
+    const sendBtn = form.querySelector('button[type="submit"]');
+    const statusEl = document.getElementById("contactStatus");
+
+    function setStatus(msg, kind){
+      if (!statusEl) return;
+      statusEl.textContent = msg || "";
+      statusEl.style.color = kind === "ok" ? "rgba(170, 255, 198, .92)"
+                        : kind === "err" ? "rgba(255, 170, 170, .92)"
+                        : "rgba(170,180,197,.92)";
+    }
+
+    function setBusy(b){
+      if (!sendBtn) return;
+      sendBtn.disabled = !!b;
+      sendBtn.textContent = b ? "Sending..." : "Send";
+    }
+
+    function getConfigEmail(){
+      const cfg = window.DEANMETHOD_CONFIG || {};
+      const email = String(cfg.formsubmitEmail || cfg.businessEmail || "").trim();
+      return email;
+    }
+
+    form.addEventListener("submit", async function(ev){
+      ev.preventDefault();
+
+      // Honeypot (bots)
+      const hp = form.querySelector('input[name="website"]');
+      if (hp && String(hp.value || "").trim()) {
+        // silently pretend success
+        setStatus("Sent.", "ok");
+        form.reset();
+        return;
+      }
+
+      const toEmail = getConfigEmail();
+      if (!toEmail) {
+        setStatus("Missing form endpoint email in site-config.js.", "err");
+        return;
+      }
+
+      const data = new FormData(form);
+
+      // Build consistent email content
+      const name = String(data.get("name") || "").trim();
+      const email = String(data.get("email") || "").trim();
+      const preferred = String(data.get("preferred") || "").trim();
+      const message = String(data.get("message") || "").trim();
+      const goals = data.getAll("goals").map(v => String(v).trim()).filter(Boolean);
+      const goalsLine = goals.length ? goals.join(", ") : "(none selected)";
+
+      const subject = "DeanMethod Inquiry — " + (goals.length ? goals[0] : "General");
+      const fullMessage =
+        "Name: " + name + "\n" +
+        "Email: " + email + "\n" +
+        "Goals: " + goalsLine + "\n" +
+        "Preferred contact: " + preferred + "\n\n" +
+        "Message:\n" + message + "\n";
+
+      setBusy(true);
+      setStatus("Sending…", "info");
+
+      try {
+        // FormSubmit supports an AJAX endpoint: /ajax/you@email.com :contentReference[oaicite:1]{index=1}
+        const res = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(toEmail), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            preferred: preferred,
+            goals: goalsLine,
+            message: fullMessage,
+
+            // FormSubmit options (safe defaults):
+            _subject: subject,
+            _captcha: "true" // you can set "false" if you want to disable it in FormSubmit settings
+          })
+        });
+
+        const json = await res.json().catch(() => null);
+
+        if (!res.ok || !json || json.success === false) {
+          throw new Error((json && json.message) ? json.message : "Submission failed.");
+        }
+
+        setStatus("Message sent. You’ll get a reply soon.", "ok");
+        form.reset();
+      } catch (e) {
+        // Common failure case: running from file:// (FormSubmit requires a web server)
+        setStatus("Couldn’t send from this page. Make sure the site is served over https (not opened as a local file), then try again.", "err");
+      } finally {
+        setBusy(false);
+      }
+    });
+  }
+
   async function main() {
     wireFooterYear();
     initPricing();
+    initContactFormAjax();
 
     const canvas = $("heatmapCanvas");
     const wrap = $("heatmapWrap");
