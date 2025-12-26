@@ -193,12 +193,14 @@ a{color:inherit}
   letter-spacing: -0.5px;
   margin-top: 10px;
 
+  /* Required for tooltip positioning */
   position: relative;
   display: inline-flex;
   align-items: baseline;
   gap: 10px;
 }
 
+/* Old price: small, gray, strikethrough, left of new price */
 .price-old{
   font-size: 0.95rem;
   font-weight: 700;
@@ -209,9 +211,15 @@ a{color:inherit}
   letter-spacing: -0.2px;
 }
 
-.price-new{display:inline-block}
+/* New price span just holds the number */
+.price-new{
+  display:inline-block;
+}
 
-.price-value.has-sale-tooltip{cursor: help}
+/* Hover card tooltip for sale reason + rate lock */
+.price-value.has-sale-tooltip{
+  cursor: help;
+}
 
 .price-value.has-sale-tooltip::after{
   content: attr(data-tooltip);
@@ -260,8 +268,11 @@ a{color:inherit}
   transform: translateY(-100%) translateY(-6px);
 }
 
-.price-value.has-sale-tooltip:hover::before{opacity: 1}
+.price-value.has-sale-tooltip:hover::before{
+  opacity: 1;
+}
 
+/* Pricing: elevate plan names */
 .price-name{
   font-weight: 900;
   font-size: 1.20rem;
@@ -334,7 +345,6 @@ a{color:inherit}
   color: rgba(238,242,248,.88);
   line-height: 1.65;
 }
-.callout-mt{ margin-top: 14px; }
 
 /* Heatmap */
 .panel-top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px}
@@ -633,50 +643,62 @@ body { overflow-x: clip; }
 }
 .modal-close{ white-space: nowrap; }
 
-/* --- New classes (replacing inline style attributes) --- */
-.pricing-note{
-  margin-top:16px;
-  line-height:1.7;
-  color: var(--muted);
-  font-size: .92rem;
-}
-.pricing-note--tight{ margin-top:10px; }
+/* =========================================================
+   MOBILE-ONLY IMPROVEMENTS (desktop unchanged)
+   ========================================================= */
 
-.modal-body{
-  line-height:1.75;
-}
-.bullets-tight{ margin-top:10px; }
+/* Make the header/nav behave nicely on smaller screens */
+@media (max-width: 860px){
+  .topbar-inner{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 0;
+  }
 
-/* =========================
-   TASK 1: Mobile-only polish
-   Desktop stays unchanged
-   ========================= */
-@media (max-width: 720px){
-  .container{ padding: 0 16px; }
+  .brand{
+    justify-content: center;
+  }
 
-  /* Topbar: prevent cramped nav */
-  .topbar-inner{ align-items:flex-start; }
+  /* Turn the nav into a single-line scroll row (prevents ugly wrapping) */
   .nav{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     gap: 8px;
-    justify-content: flex-end;
+    padding-bottom: 6px;
   }
   .nav a{
-    padding: 9px 10px;
-    border-radius: 12px;
-    font-size: .95rem;
+    white-space: nowrap;
+    flex: 0 0 auto;
   }
-  .nav-social{
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
-  }
+}
 
-  /* Hero: reduce vertical bulk + image height */
-  .hero{ padding: 46px 0 22px; }
+/* Tighten spacing and media sizing for phones */
+@media (max-width: 600px){
+  .container{ padding: 0 16px; }
+
+  .section{ padding: 56px 0; }
+  .hero{ padding: 52px 0 24px; }
   .hero--tight{ padding-top: 44px; }
-  .media-card img{ height: 280px; }
 
-  /* Brand band: stack cleanly */
+  .hero-copy h1{
+    font-size: clamp(2.05rem, 7vw, 2.55rem);
+    line-height: 1.08;
+  }
+
+  .lead{
+    font-size: 1.0rem;
+    line-height: 1.65;
+  }
+
+  .cta-row{ gap: 10px; }
+  .btn-lg{ padding: 13px 16px; border-radius: 16px; }
+
+  .media-card img{
+    height: 260px;
+  }
+
   .brandband-inner{
     flex-direction: column;
     align-items: flex-start;
@@ -686,25 +708,15 @@ body { overflow-x: clip; }
     align-items: flex-start;
   }
 
-  /* Alt rows: give breathing room */
-  .alt-text{ padding: 18px; }
-  .visual-card{ border-radius: 18px; }
+  .wide-media img{ height: 260px; }
+  .wide-media--short img{ height: 240px; }
 
-  /* Coverage map: reduce height on small screens */
-  .map-box{ height: 300px; }
+  .price-card{ padding: 30px 16px 22px; }
+  .price-value{ font-size: 1.8rem; gap: 8px; }
+  .badge{ top: 10px; right: 12px; }
 
-  /* Heatmap: make the panel feel less wide-heavy */
-  .panel{ padding: 14px; }
-  #heatmapCanvas{ width: 100%; height: auto; }
+  .map-box{ height: 320px; }
 
-  /* Contact: message-side should not “drop down” oddly */
-  .message-split{ gap: 12px; }
-  .message-side{
-    transform: none;
-    height: auto;
-  }
-
-  /* Footer: stack */
-  .footer-inner{ gap: 16px; }
   .footer-cols{ gap: 18px; }
+  .footer-col{ min-width: 140px; }
 }
