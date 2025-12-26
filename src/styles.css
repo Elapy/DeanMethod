@@ -209,9 +209,9 @@ a{color:inherit}
   letter-spacing: -0.2px;
 }
 
-.price-new{display:inline-block}
+.price-new{ display:inline-block; }
 
-.price-value.has-sale-tooltip{cursor: help}
+.price-value.has-sale-tooltip{ cursor: help; }
 
 .price-value.has-sale-tooltip::after{
   content: attr(data-tooltip);
@@ -221,17 +221,14 @@ a{color:inherit}
   transform: translateY(-100%);
   width: max-content;
   max-width: 260px;
-
   white-space: pre-line;
   line-height: 1.35;
-
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,.14);
   background: rgba(15,18,22,.96);
   color: rgba(238,242,248,.95);
   box-shadow: 0 18px 60px rgba(0,0,0,.55);
-
   opacity: 0;
   pointer-events: none;
   transition: opacity .12s ease, transform .12s ease;
@@ -249,7 +246,6 @@ a{color:inherit}
   border-left: 1px solid rgba(255,255,255,.14);
   border-bottom: 1px solid rgba(255,255,255,.14);
   transform: translateY(-100%) rotate(45deg);
-
   opacity: 0;
   pointer-events:none;
   transition: opacity .12s ease;
@@ -259,8 +255,7 @@ a{color:inherit}
   opacity: 1;
   transform: translateY(-100%) translateY(-6px);
 }
-
-.price-value.has-sale-tooltip:hover::before{opacity: 1}
+.price-value.has-sale-tooltip:hover::before{ opacity: 1; }
 
 .price-name{
   font-weight: 900;
@@ -334,7 +329,6 @@ a{color:inherit}
   color: rgba(238,242,248,.88);
   line-height: 1.65;
 }
-.callout-mt{ margin-top: 14px; }
 
 /* Heatmap */
 .panel-top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px}
@@ -505,23 +499,19 @@ input:focus, textarea:focus{
   gap:12px;
   align-items:stretch;
 }
-
 @media (max-width:900px){
   .message-split{grid-template-columns:1fr}
 }
-
 .message-main{
   display:flex;
   flex-direction:column;
   min-width:0;
 }
-
 .message-main textarea{
   flex: 1 1 auto;
   height: auto;
   min-height: 160px;
 }
-
 .message-side{
   border:1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.12);
@@ -537,7 +527,6 @@ input:focus, textarea:focus{
   height: calc(100% - var(--msgOffset));
   transform: translateY(var(--msgOffset));
 }
-
 .side-contacts a{color: rgba(170,180,197,.92); text-decoration:none}
 .side-contacts a:hover{color: rgba(238,242,248,.95)}
 .form-foot{margin:0}
@@ -633,35 +622,29 @@ body { overflow-x: clip; }
 }
 .modal-close{ white-space: nowrap; }
 
-/* --- New classes (replacing inline style attributes) --- */
-.pricing-note{
-  margin-top:16px;
-  line-height:1.7;
-  color: var(--muted);
-  font-size: .92rem;
-}
-.pricing-note--tight{ margin-top:10px; }
+/* =========================================================
+   MOBILE-ONLY TUNING (desktop untouched by design)
+   ========================================================= */
 
-.modal-body{
-  line-height:1.75;
-}
-.bullets-tight{ margin-top:10px; }
-
-/* =========================
-   TASK 1: Mobile-only polish
-   Desktop stays unchanged
-   ========================= */
-@media (max-width: 720px){
+/* Small tablets / big phones */
+@media (max-width: 820px){
   .container{ padding: 0 16px; }
 
-  /* Topbar: prevent cramped nav */
-  .topbar-inner{ align-items:flex-start; }
+  .topbar-inner{
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .brand-logo--lg{ width:40px; height:40px; border-radius:14px; }
+  .brand-name{ font-size: 1.02rem; }
+  .brand-sub{ font-size: .88rem; }
+
+  /* Keep nav usable without redesigning desktop */
   .nav{
     gap: 8px;
-    justify-content: flex-end;
   }
   .nav a{
-    padding: 9px 10px;
+    padding: 8px 10px;
     border-radius: 12px;
     font-size: .95rem;
   }
@@ -671,40 +654,107 @@ body { overflow-x: clip; }
     border-radius: 12px;
   }
 
-  /* Hero: reduce vertical bulk + image height */
   .hero{ padding: 46px 0 22px; }
-  .hero--tight{ padding-top: 44px; }
-  .media-card img{ height: 280px; }
+  .hero-copy h1{ font-size: clamp(2.0rem, 6vw, 2.6rem); }
+  .lead{ font-size: 1.02rem; }
 
-  /* Brand band: stack cleanly */
+  .media-card img{ height: 320px; }
+
+  .section{ padding: 54px 0; }
+}
+
+/* Phones */
+@media (max-width: 560px){
+  /* Make sticky header less crowded */
+  .topbar-inner{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .brand{
+    justify-content: center;
+  }
+
+  .nav{
+    justify-content: center;
+  }
+  .nav a{
+    font-size: .92rem;
+    padding: 8px 10px;
+  }
+
+  .hero-grid{ gap: 16px; }
+  .cta-row{
+    gap: 10px;
+  }
+  .btn-lg{
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-size: .98rem;
+  }
+
+  .media-card img{
+    height: 240px;
+  }
+
   .brandband-inner{
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
   .brandband-left{
-    flex-direction: column;
     align-items: flex-start;
   }
+  .brandband-sub{
+    max-width: 100%;
+  }
 
-  /* Alt rows: give breathing room */
-  .alt-text{ padding: 18px; }
-  .visual-card{ border-radius: 18px; }
+  .alt-row{
+    gap: 12px;
+  }
+  .alt-text{
+    padding: 18px;
+  }
 
-  /* Coverage map: reduce height on small screens */
-  .map-box{ height: 300px; }
+  /* Pricing: reduce top padding so badge doesn't steal space */
+  .price-card{
+    padding: 30px 16px 22px;
+  }
+  .price-value{
+    font-size: 1.8rem;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .price-old{
+    font-size: .92rem;
+  }
 
-  /* Heatmap: make the panel feel less wide-heavy */
-  .panel{ padding: 14px; }
-  #heatmapCanvas{ width: 100%; height: auto; }
-
-  /* Contact: message-side should not “drop down” oddly */
-  .message-split{ gap: 12px; }
+  /* Contact: make send panel feel like part of the form */
+  .message-split{
+    grid-template-columns: 1fr;
+  }
   .message-side{
     transform: none;
     height: auto;
+    padding: 14px;
   }
 
-  /* Footer: stack */
-  .footer-inner{ gap: 16px; }
-  .footer-cols{ gap: 18px; }
+  /* Heatmap: allow horizontal scroll without feeling broken */
+  .heatmap-wrap{
+    border-radius: 14px;
+  }
+
+  /* Footer columns: stack nicely */
+  .footer-cols{
+    gap: 18px;
+  }
+  .footer-col{
+    min-width: 140px;
+  }
+}
+
+/* Tiny phones */
+@media (max-width: 380px){
+  .brand-logos{ gap: 8px; }
+  .brand-logo--lg{ width:36px; height:36px; }
+  .nav-social{ width:34px; height:34px; }
+  .hero-copy h1{ font-size: 2.05rem; }
 }
