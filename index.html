@@ -13,8 +13,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Leaflet (map) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
 
   <link rel="stylesheet" href="src/styles.css" />
 </head>
@@ -317,12 +326,12 @@
           </article>
         </div>
 
-        <div class="muted small" style="margin-top:16px; line-height:1.7;">
+        <div class="pricing-note">
           After you reach out, we’ll confirm fit and scheduling. If you want to move forward, you’ll receive a secure
           subscription link to enroll before the first session.
         </div>
 
-        <div class="muted small" style="margin-top:10px; line-height:1.7;">
+        <div class="pricing-note pricing-note--tight">
           Unused sessions may roll over into the next month (up to one month).
           Sessions are typically designed to fit within a normal training window (often 60–120 minutes).
           The first session may run longer due to intake, assessment, and planning.
@@ -340,16 +349,16 @@
             <button class="btn btn-sm modal-close" type="button" aria-label="Close">Close</button>
           </div>
 
-          <div class="muted" style="line-height:1.75;">
+          <div class="muted modal-body">
             This is a one-time introductory session designed to:
-            <ul class="bullets" style="margin-top:10px;">
+            <ul class="bullets bullets-tight">
               <li>clarify your goal, constraints, and training history</li>
               <li>spot the highest-leverage fixes in your current routine</li>
               <li>give you a clear next-step plan you can execute immediately</li>
             </ul>
           </div>
 
-          <div class="callout" style="margin-top:14px;">
+          <div class="callout callout-mt">
             <div class="callout-title">How to book</div>
             <div class="callout-text">
               Use the contact form and mention “Try 1”. I’ll reply to coordinate scheduling. This offer is intended as
@@ -619,109 +628,8 @@
     </footer>
   </main>
 
-  <script src="src/site-config.js"></script>
-  <script src="src/app.js"></script>
-
-  <script>
-    (function(){
-      var form = document.getElementById("contactForm");
-      if (!form) return;
-
-      form.addEventListener("submit", function(ev){
-        ev.preventDefault();
-
-        var data = new FormData(form);
-        var name = (data.get("name") || "").toString().trim();
-        var email = (data.get("email") || "").toString().trim();
-        var preferred = (data.get("preferred") || "").toString().trim();
-        var message = (data.get("message") || "").toString().trim();
-
-        var goals = data.getAll("goals").map(function(v){ return String(v).trim(); }).filter(Boolean);
-        var goalsLine = goals.length ? goals.join(", ") : "(none selected)";
-
-        var subject = "DeanMethod Inquiry — " + (goals.length ? goals[0] : "General");
-        var body =
-          "Name: " + name + "\n" +
-          "Email: " + email + "\n" +
-          "Goals: " + goalsLine + "\n" +
-          "Preferred contact: " + preferred + "\n\n" +
-          "Message:\n" + message + "\n";
-
-        var mailto = "mailto:method.dean@outlook.com"
-          + "?subject=" + encodeURIComponent(subject)
-          + "&body=" + encodeURIComponent(body);
-
-        window.location.href = mailto;
-      });
-    })();
-
-    // Coverage map (Ventura County)
-    (function(){
-      var el = document.getElementById("coverageMap");
-      if (!el || !window.L) return;
-
-      var center = [34.332906481499236, -119.117673076886];
-
-      var map = L.map("coverageMap", {
-        zoomControl: true,
-        scrollWheelZoom: false,
-        dragging: true
-      }).setView(center, 9);
-
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png", {
-        subdomains: "abcd",
-        maxZoom: 20,
-        attribution: '&copy; OpenStreetMap &copy; CARTO'
-      }).addTo(map);
-
-      L.circle(center, {
-        radius: 42000,
-        color: "#2f6feb",
-        weight: 2,
-        opacity: 0.65,
-        fillColor: "#2f6feb",
-        fillOpacity: 0.10
-      }).addTo(map);
-
-      L.marker(center, {opacity: 0.9}).addTo(map).bindPopup("Ventura County coverage").openPopup();
-    })();
-
-    // Try 1 modal
-    (function(){
-      var openBtn = document.getElementById("openTrialBtn");
-      var dlg = document.getElementById("trialDialog");
-      if (!openBtn || !dlg) return;
-
-      function closeDialog(){
-        if (dlg.open) dlg.close();
-      }
-
-      openBtn.addEventListener("click", function(){
-        if (typeof dlg.showModal === "function") dlg.showModal();
-        else dlg.setAttribute("open", "open");
-      });
-
-      var closeBtn = dlg.querySelector(".modal-close");
-      if (closeBtn) closeBtn.addEventListener("click", closeDialog);
-
-      var dismissBtn = document.getElementById("trialDismissBtn");
-      if (dismissBtn) dismissBtn.addEventListener("click", closeDialog);
-
-      var cta = document.getElementById("trialCtaLink");
-      if (cta) cta.addEventListener("click", closeDialog);
-
-      dlg.addEventListener("click", function(ev){
-        var card = dlg.querySelector(".modal-card");
-        if (!card) return;
-        var r = card.getBoundingClientRect();
-        var inCard =
-          ev.clientX >= r.left && ev.clientX <= r.right &&
-          ev.clientY >= r.top  && ev.clientY <= r.bottom;
-        if (!inCard) closeDialog();
-      });
-
-      dlg.addEventListener("cancel", function(){ closeDialog(); });
-    })();
-  </script>
+  <script src="src/site-config.js" defer></script>
+  <script src="src/app.js" defer></script>
+  <script src="src/inline.js" defer></script>
 </body>
 </html>
