@@ -4,8 +4,8 @@ window.DEANMETHOD_CONFIG = {
   brandName: "DeanMethod",
 
   businessEmail: "method.dean@outlook.com",
-  businessPhoneDisplay: "(805) 665-3528",
-  businessPhoneE164: "+18056653528",
+  businessPhoneDisplay: "(820) 386-8204",
+  businessPhoneE164: "+18203868204",
 
   // Form endpoint (FormSubmit) — visitor does not need access to their email account.
   // FormSubmit supports CAPTCHA/honeypot controls.
