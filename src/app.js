@@ -346,6 +346,14 @@
       hasData = false;
     }
 
+    const emptyNote = $("heatmapEmpty");
+    if (emptyNote) emptyNote.hidden = hasData;
+
+    // Polish pass: with no data, present the designed empty state alone —
+    // the legend, toggle, and empty grid would only add noise.
+    const panel = document.querySelector(".heatmap-panel");
+    if (panel) panel.classList.toggle("is-empty", !hasData);
+
     rerender();
 
     if (toggleBtn) {
@@ -382,4 +390,135 @@
   }
 
   main();
+})();
+
+// -----------------------------
+// Contact form (FormSubmit AJAX) — moved out of index.html
+// -----------------------------
+(function () {
+  const form = document.getElementById("contactForm");
+  const statusEl = document.getElementById("formStatus");
+  if (!form) return;
+
+  function showStatus(kind, text) {
+    if (!statusEl) return;
+    statusEl.className = "form-status form-status--" + kind;
+    statusEl.textContent = text;
+    statusEl.hidden = false;
+  }
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+
+    const cfg = window.DEANMETHOD_CONFIG || {};
+    const endpoint = "https://formsubmit.co/ajax/" + (cfg.formsubmitEmail || "method.dean@outlook.com");
+
+    const data = new FormData(form);
+    const name = (data.get("name") || "").toString().trim();
+    const email = (data.get("email") || "").toString().trim();
+    const preferred = (data.get("preferred") || "").toString().trim();
+    const message = (data.get("message") || "").toString().trim();
+    const goals = data.getAll("goals").map(function (v) { return String(v).trim(); }).filter(Boolean);
+    const goalsLine = goals.length ? goals.join(", ") : "(none selected)";
+    const subject = "DeanMethod Inquiry \u2014 " + (goals.length ? goals[0] : "General");
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Sending\u2026"; }
+    if (statusEl) statusEl.hidden = true;
+
+    fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        goals: goalsLine,
+        preferred: preferred,
+        message: message,
+        _subject: subject,
+        _captcha: "false",
+        _template: "table"
+      })
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (result) {
+        if (!result.success) throw new Error("fail");
+        showStatus("success", "Message sent! We\u2019ll get back to you soon.");
+        form.reset();
+      })
+      .catch(function () {
+        showStatus("error", "Something went wrong. Please try again or email directly.");
+      })
+      .finally(function () {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Send"; }
+      });
+  });
+})();
+
+// -----------------------------
+// Coverage map (Ventura County) — moved out of index.html
+// -----------------------------
+(function () {
+  const el = document.getElementById("coverageMap");
+  if (!el || !window.L) return;
+
+  const center = [34.332906481499236, -119.117673076886];
+
+  const map = L.map("coverageMap", {
+    zoomControl: true,
+    scrollWheelZoom: false,
+    dragging: true
+  }).setView(center, 9);
+
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png", {
+    subdomains: "abcd",
+    maxZoom: 20,
+    attribution: "&copy; OpenStreetMap &copy; CARTO"
+  }).addTo(map);
+
+  L.circle(center, {
+    radius: 42000,
+    color: "#2f6feb",
+    weight: 2,
+    opacity: 0.65,
+    fillColor: "#2f6feb",
+    fillOpacity: 0.10
+  }).addTo(map);
+
+  L.marker(center, { opacity: 0.9 }).addTo(map).bindPopup("Ventura County coverage").openPopup();
+})();
+
+// -----------------------------
+// Try 1 modal — moved out of index.html
+// -----------------------------
+(function () {
+  const openBtn = document.getElementById("openTrialBtn");
+  const dlg = document.getElementById("trialDialog");
+  if (!openBtn || !dlg) return;
+
+  function closeDialog() { if (dlg.open) dlg.close(); }
+
+  openBtn.addEventListener("click", function () {
+    if (typeof dlg.showModal === "function") dlg.showModal();
+    else dlg.setAttribute("open", "open");
+  });
+
+  const closeBtn = dlg.querySelector(".modal-close");
+  if (closeBtn) closeBtn.addEventListener("click", closeDialog);
+
+  const dismissBtn = document.getElementById("trialDismissBtn");
+  if (dismissBtn) dismissBtn.addEventListener("click", closeDialog);
+
+  const cta = document.getElementById("trialCtaLink");
+  if (cta) cta.addEventListener("click", closeDialog);
+
+  dlg.addEventListener("click", function (ev) {
+    const card = dlg.querySelector(".modal-card");
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    const inCard =
+      ev.clientX >= r.left && ev.clientX <= r.right &&
+      ev.clientY >= r.top && ev.clientY <= r.bottom;
+    if (!inCard) closeDialog();
+  });
 })();
