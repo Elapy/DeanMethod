@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <!-- Favicon -->
-  <link rel="icon" href="assets/favicon.jpg" type="image/jpeg">
   <link rel="icon" href="assets/favicon.png" type="image/png">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0f1216">
   <title>DeanMethod — Method</title>
   <meta name="description" content="DeanMethod under Method — science-first coaching for hypertrophy, fat loss, cardio, general health, and nutrition." />
   <meta name="robots" content="index, follow">
@@ -27,7 +27,7 @@
     img-src 'self' data: https://images.unsplash.com https://*.basemaps.cartocdn.com https://unpkg.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com;
     font-src 'self' data: https://fonts.gstatic.com;
-    script-src 'self' 'unsafe-inline' https://unpkg.com;
+    script-src 'self' https://unpkg.com;
     connect-src 'self' https://formsubmit.co;
   ">
 
@@ -57,7 +57,7 @@
       <a class="brand" href="#top" aria-label="DeanMethod home">
         <div class="brand-logos">
           <img class="brand-logo brand-logo--lg" src="assets/logo.svg" alt="Method logo">
-          <img class="brand-logo brand-logo--lg" src="assets/dean-photo.jpg" alt="DeanMethod logo">
+          <img class="brand-logo brand-logo--lg" src="assets/dean-photo.jpg" alt="Photo of Dean">
         </div>
         <div class="brand-text">
           <div class="brand-name">DeanMethod</div>
@@ -98,16 +98,25 @@
     <section class="hero hero--tight">
       <div class="container hero-grid hero-grid--singleMedia">
         <div class="hero-copy hero-copy--rebalanced">
+          <div class="eyebrow">In-person in Ventura County · Online anywhere</div>
           <h1>Science-first fitness coaching.</h1>
 
           <p class="lead lead--soft">
-            Evidence-based guidance for hypertrophy, fat loss, cardio, general health, and nutrition —
-            taught with mechanisms and tradeoffs.
+            Coaching for hypertrophy, fat loss, cardio, health, and nutrition — every recommendation
+            explained down to the mechanism, tradeoffs included.
           </p>
 
           <div class="cta-row cta-row--spaced">
             <a class="btn primary btn-lg" href="#contact-dean">Request scheduling</a>
             <a class="btn btn-lg" href="#method">How this works</a>
+          </div>
+
+          <div class="pill-row" aria-label="Coaching areas">
+            <span class="pill">Hypertrophy</span>
+            <span class="pill">Fat loss</span>
+            <span class="pill">Cardio</span>
+            <span class="pill">General health</span>
+            <span class="pill">Nutrition</span>
           </div>
         </div>
 
@@ -129,7 +138,7 @@
         <div class="brandband-left">
           <div class="brand-logos">
             <img class="brand-logo brand-logo--xl" src="assets/logo.svg" alt="Method logo">
-            <img class="brand-logo brand-logo--xl" src="assets/dean-photo.jpg" alt="DeanMethod logo">
+            <img class="brand-logo brand-logo--xl" src="assets/dean-photo.jpg" alt="Photo of Dean">
           </div>
           <div>
             <div class="brandband-title">Method × DeanMethod</div>
@@ -146,13 +155,16 @@
     <section id="services" class="section">
       <div class="container">
         <div class="section-head">
+          <div class="eyebrow">What I coach</div>
           <h2>Services</h2>
-          <p class="muted">Versatile goals, one consistent standard: clarity, rigor, outcomes.</p>
+          <p class="muted">Different goals. One standard: clarity, rigor, outcomes.</p>
         </div>
 
         <div class="card-grid">
           <article class="card">
-            <div class="card-icon">🧠</div>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg>
+            </div>
             <h3>Hypertrophy & strength</h3>
             <p class="muted">Programming and execution built for stimulus and progression.</p>
             <ul class="bullets">
@@ -163,7 +175,9 @@
           </article>
 
           <article class="card">
-            <div class="card-icon">⚖️</div>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h5M15 7h5M4 12h1M11 12h9M4 17h9M19 17h1"/><circle cx="12" cy="7" r="2.2"/><circle cx="8" cy="12" r="2.2"/><circle cx="16" cy="17" r="2.2"/></svg>
+            </div>
             <h3>Body composition</h3>
             <p class="muted">Fat loss, maintenance, or weight gain — approached with the same rigor.</p>
             <ul class="bullets">
@@ -174,7 +188,9 @@
           </article>
 
           <article class="card">
-            <div class="card-icon">❤️</div>
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2C6.9 16.4 3.4 13.2 3.4 9.6A4.7 4.7 0 0 1 12 6.6a4.7 4.7 0 0 1 8.6 3c0 3.6-3.5 6.8-8.6 10.6Z"/><path d="M6.2 12h2.9l1.2-2.4 2.1 4.1 1.2-1.7h4"/></svg>
+            </div>
             <h3>Cardio, health, nutrition</h3>
             <p class="muted">Conditioning and nutrition guidance that fits your goals and recovery.</p>
             <ul class="bullets">
@@ -196,9 +212,10 @@
     </section>
 
     <!-- METHOD -->
-    <section id="method" class="section">
+    <section id="method" class="section section--alt">
       <div class="container">
         <div class="section-head">
+          <div class="eyebrow">How I coach</div>
           <h2>Science-first, not vibes-first</h2>
           <p class="muted">Three things you should expect from every recommendation.</p>
         </div>
@@ -283,8 +300,9 @@
     <section id="pricing" class="section">
       <div class="container">
         <div class="section-head">
+          <div class="eyebrow">Coaching plans</div>
           <h2>Pricing</h2>
-          <p class="muted">Monthly coaching tiers. Session availability scales with your plan.</p>
+          <p class="muted">Three monthly tiers — pick the session frequency that matches your pace.</p>
         </div>
 
         <div class="pricing-grid">
@@ -349,12 +367,12 @@
           </article>
         </div>
 
-        <div class="muted small" style="margin-top:16px; line-height:1.7;">
+        <div class="muted small fine-print">
           After you reach out, we’ll confirm fit and scheduling. If you want to move forward, you’ll receive a secure
           subscription link to enroll before the first session.
         </div>
 
-        <div class="muted small" style="margin-top:10px; line-height:1.7;">
+        <div class="muted small fine-print fine-print--tight">
           Unused sessions may roll over into the next month (up to one month).
           Sessions are typically designed to fit within a normal training window (often 60–120 minutes).
           The first session may run longer due to intake, assessment, and planning.
@@ -372,16 +390,16 @@
             <button class="btn btn-sm modal-close" type="button" aria-label="Close">Close</button>
           </div>
 
-          <div class="muted" style="line-height:1.75;">
+          <div class="muted modal-body-text">
             This is a one-time introductory session designed to:
-            <ul class="bullets" style="margin-top:10px;">
+            <ul class="bullets bullets--spaced">
               <li>clarify your goal, constraints, and training history</li>
               <li>spot the highest-leverage fixes in your current routine</li>
               <li>give you a clear next-step plan you can execute immediately</li>
             </ul>
           </div>
 
-          <div class="callout" style="margin-top:14px;">
+          <div class="callout callout--spaced">
             <div class="callout-title">How to book</div>
             <div class="callout-text">
               Use the contact form and mention “Try 1”. I’ll reply to coordinate scheduling. This offer is intended as
@@ -398,11 +416,12 @@
     </section>
 
     <!-- COVERAGE -->
-    <section id="coverage" class="section">
+    <section id="coverage" class="section section--alt">
       <div class="container">
         <div class="section-head">
+          <div class="eyebrow">Where I coach</div>
           <h2>Coverage</h2>
-          <p class="muted">Ventura County.</p>
+          <p class="muted">In-person across Ventura County. Online, location isn't a limitation.</p>
         </div>
 
         <div class="panel coverage-panel">
@@ -415,7 +434,7 @@
 
               <ul class="bullets">
                 <li><strong>Training location:</strong> for privacy, I don’t host sessions at my personal home or personal gym.</li>
-                <li><strong>Equipment:</strong> clients are paying for coaching — not equipment access — so we’ll use a gym you already have access to.</li>
+                <li><strong>Equipment:</strong> you’re paying for coaching, not equipment access — we’ll use a gym you already have access to.</li>
                 <li><strong>Calisthenics:</strong> if equipment is limited, bodyweight training is absolutely on the table.</li>
               </ul>
 
@@ -436,8 +455,9 @@
     <section id="training-hours" class="section">
       <div class="container">
         <div class="section-head">
+          <div class="eyebrow">The data</div>
           <h2>Average training hours</h2>
-          <p class="muted">Click any block to see the day/hour range and value.</p>
+          <p class="muted">A live view of when training actually happens, built from logged sessions.</p>
         </div>
 
         <div class="panel heatmap-panel">
@@ -456,6 +476,10 @@
             </div>
           </div>
 
+          <div class="heatmap-empty" id="heatmapEmpty" hidden>
+            <div class="heatmap-empty-title">No sessions logged yet</div>
+            <p class="muted">This chart is drawn from real training data only — no placeholders. It fills in automatically as sessions are recorded.</p>
+          </div>
           <div class="heatmap-wrap" id="heatmapWrap">
             <canvas id="heatmapCanvas" width="1120" height="490"></canvas>
             <div id="heatmapTip" class="heatmap-tip" hidden></div>
@@ -465,9 +489,10 @@
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="section">
+    <section id="faq" class="section section--alt">
       <div class="container">
         <div class="section-head">
+          <div class="eyebrow">Questions</div>
           <h2>FAQ</h2>
           <p class="muted">Short answers here — specifics get tailored after contact.</p>
         </div>
@@ -477,7 +502,7 @@
             <summary>What kinds of goals do you support?</summary>
             <div class="muted">
               Muscle gain (hypertrophy), fat loss, cardio/conditioning, general health, and nutrition guidance.
-              I could help in weight gain as well if that's your goal.
+              Weight gain, too, if that's your goal.
             </div>
           </details>
 
@@ -506,8 +531,9 @@
     <section id="contact-dean" class="section">
       <div class="container">
         <div class="section-head">
+          <div class="eyebrow">Get started</div>
           <h2>Contact DeanMethod</h2>
-          <p class="muted">Scheduling and coaching inquiries for DeanMethod.</p>
+          <p class="muted">Tell me your goal and what your schedule looks like — I'll reply with next steps.</p>
         </div>
 
         <div class="contact-grid contact-grid--single">
@@ -593,19 +619,21 @@
                 </div>
               </div>
             </form>
-            <div id="formStatus" style="display:none; margin-top:14px; padding:14px 16px; border-radius:12px; font-size:0.92rem; line-height:1.5;"></div>
+            <div id="formStatus" class="form-status" hidden role="status"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FOOTER -->
+  </main>
+
+
     <footer class="footer">
       <div class="container footer-inner">
         <div class="footer-brand">
           <div class="brand-logos">
             <img class="brand-logo" src="assets/logo.svg" alt="Method logo">
-            <img class="brand-logo" src="assets/dean-photo.jpg" alt="DeanMethod logo">
+            <img class="brand-logo" src="assets/dean-photo.jpg" alt="Photo of Dean">
           </div>
           <div>
             <div class="footer-title">Method</div>
@@ -650,146 +678,7 @@
         <div class="muted small">© <span id="year"></span> Method</div>
       </div>
     </footer>
-  </main>
-
-  <script src="src/site-config.js"></script>
-  <script src="src/app.js"></script>
-
-  <script>
-    (function(){
-      var form = document.getElementById("contactForm");
-      var statusEl = document.getElementById("formStatus");
-      if (!form) return;
-
-      form.addEventListener("submit", function(ev){
-        ev.preventDefault();
-
-        var data = new FormData(form);
-        var name = (data.get("name") || "").toString().trim();
-        var email = (data.get("email") || "").toString().trim();
-        var preferred = (data.get("preferred") || "").toString().trim();
-        var message = (data.get("message") || "").toString().trim();
-
-        var goals = data.getAll("goals").map(function(v){ return String(v).trim(); }).filter(Boolean);
-        var goalsLine = goals.length ? goals.join(", ") : "(none selected)";
-
-        var subject = "DeanMethod Inquiry \u2014 " + (goals.length ? goals[0] : "General");
-
-        var submitBtn = form.querySelector('button[type="submit"]');
-        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Sending\u2026"; }
-        if (statusEl) statusEl.style.display = "none";
-
-        fetch("https://formsubmit.co/ajax/method.dean@outlook.com", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({
-            name: name,
-            email: email,
-            goals: goalsLine,
-            preferred: preferred,
-            message: message,
-            _subject: subject,
-            _captcha: "false",
-            _template: "table"
-          })
-        })
-        .then(function(res){ return res.json(); })
-        .then(function(result){
-          if (result.success) {
-            if (statusEl) {
-              statusEl.style.display = "block";
-              statusEl.style.background = "rgba(34,197,94,0.08)";
-              statusEl.style.border = "1px solid rgba(34,197,94,0.25)";
-              statusEl.style.color = "#166534";
-              statusEl.textContent = "Message sent! We\u2019ll get back to you soon.";
-            }
-            form.reset();
-          } else {
-            throw new Error("fail");
-          }
-        })
-        .catch(function(){
-          if (statusEl) {
-            statusEl.style.display = "block";
-            statusEl.style.background = "rgba(239,68,68,0.08)";
-            statusEl.style.border = "1px solid rgba(239,68,68,0.25)";
-            statusEl.style.color = "#991b1b";
-            statusEl.textContent = "Something went wrong. Please try again or email directly.";
-          }
-        })
-        .finally(function(){
-          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Send"; }
-        });
-      });
-    })();
-
-    // Coverage map (Ventura County)
-    (function(){
-      var el = document.getElementById("coverageMap");
-      if (!el || !window.L) return;
-
-      var center = [34.332906481499236, -119.117673076886];
-
-      var map = L.map("coverageMap", {
-        zoomControl: true,
-        scrollWheelZoom: false,
-        dragging: true
-      }).setView(center, 9);
-
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png", {
-        subdomains: "abcd",
-        maxZoom: 20,
-        attribution: '&copy; OpenStreetMap &copy; CARTO'
-      }).addTo(map);
-
-      L.circle(center, {
-        radius: 42000,
-        color: "#2f6feb",
-        weight: 2,
-        opacity: 0.65,
-        fillColor: "#2f6feb",
-        fillOpacity: 0.10
-      }).addTo(map);
-
-      L.marker(center, {opacity: 0.9}).addTo(map).bindPopup("Ventura County coverage").openPopup();
-    })();
-
-    // Try 1 modal
-    (function(){
-      var openBtn = document.getElementById("openTrialBtn");
-      var dlg = document.getElementById("trialDialog");
-      if (!openBtn || !dlg) return;
-
-      function closeDialog(){
-        if (dlg.open) dlg.close();
-      }
-
-      openBtn.addEventListener("click", function(){
-        if (typeof dlg.showModal === "function") dlg.showModal();
-        else dlg.setAttribute("open", "open");
-      });
-
-      var closeBtn = dlg.querySelector(".modal-close");
-      if (closeBtn) closeBtn.addEventListener("click", closeDialog);
-
-      var dismissBtn = document.getElementById("trialDismissBtn");
-      if (dismissBtn) dismissBtn.addEventListener("click", closeDialog);
-
-      var cta = document.getElementById("trialCtaLink");
-      if (cta) cta.addEventListener("click", closeDialog);
-
-      dlg.addEventListener("click", function(ev){
-        var card = dlg.querySelector(".modal-card");
-        if (!card) return;
-        var r = card.getBoundingClientRect();
-        var inCard =
-          ev.clientX >= r.left && ev.clientX <= r.right &&
-          ev.clientY >= r.top  && ev.clientY <= r.bottom;
-        if (!inCard) closeDialog();
-      });
-
-      dlg.addEventListener("cancel", function(){ closeDialog(); });
-    })();
-  </script>
+  <script src="src/site-config.js" defer></script>
+  <script src="src/app.js" defer></script>
 </body>
 </html>
