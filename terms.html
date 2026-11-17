@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <!-- Favicon -->
-  <link rel="icon" href="assets/favicon.jpg" type="image/jpeg">
   <link rel="icon" href="assets/favicon.png" type="image/png">
   <title>Terms of Service | Method</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -22,13 +21,28 @@
     img-src 'self' data:;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' data: https://fonts.gstatic.com;
-    script-src 'self' 'unsafe-inline';
+    script-src 'self';
   ">
 </head>
 <body>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="DeanMethod home">
+      <div class="brand-logos">
+        <img class="brand-logo brand-logo--lg" src="assets/logo.svg" alt="Method logo">
+        <img class="brand-logo brand-logo--lg" src="assets/dean-photo.jpg" alt="Photo of Dean">
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">DeanMethod</div>
+        <div class="brand-sub">Method • Science-first coaching</div>
+      </div>
+    </a>
+    <nav class="nav"><a href="index.html">&larr; Back to site</a></nav>
+  </div>
+</header>
 <main class="legal container">
   <h1>Terms of Service</h1>
-  <p class="muted">Last updated: <span id="termsDate"></span></p>
+  <p class="muted">Last updated: October 1, 2026</p>
 
   <h2>1. Overview</h2>
   <p>
@@ -195,10 +209,11 @@
     Questions regarding these Terms may be directed through the contact page.
   </p>
 </main>
+<footer class="footer">
+  <div class="container footer-bottom">
+    <div class="muted small">&copy; 2026 Method &bull; <a href="index.html">DeanMethod home</a></div>
+  </div>
+</footer>
 
-<script>
-  document.getElementById("termsDate").textContent =
-    new Date().toLocaleDateString();
-</script>
 </body>
 </html>
