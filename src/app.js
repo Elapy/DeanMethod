@@ -409,6 +409,7 @@
 
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
 
     const cfg = window.DEANMETHOD_CONFIG || {};
     const endpoint = "https://formsubmit.co/ajax/" + (cfg.formsubmitEmail || "method.dean@outlook.com");
@@ -442,7 +443,8 @@
     })
       .then(function (res) { return res.json(); })
       .then(function (result) {
-        if (!result.success) throw new Error("fail");
+        // FormSubmit returns success as the string "true"/"false", and "false" is truthy — compare explicitly.
+        if (!(result.success === true || result.success === "true")) throw new Error("fail");
         showStatus("success", "Message sent! We\u2019ll get back to you soon.");
         form.reset();
       })

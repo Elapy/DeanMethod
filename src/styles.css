@@ -388,7 +388,7 @@ a{color:inherit}
   border:1px solid var(--line);
   background: rgba(0,0,0,.22);
 }
-canvas{display:block; max-width:100%}
+canvas{display:block; max-width:100%; height:auto}
 .heatmap-tip{
   position:absolute;
   transform: translate(-50%, -110%);
